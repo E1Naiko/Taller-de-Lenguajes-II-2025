@@ -1,20 +1,29 @@
 ```mermaid
 sequenceDiagram
-    actor Persona
+    actor Usuario
     participant Administrador
+    participant Metadatos
     participant Pelicula
     participant PlataformaTDL2
-    
-    Persona->>Administrador: 1. gestionarAltaDePelicula(datos)
+
+    Usuario->>Administrador: 1. gestionarAltaDePelicula(datos)
     activate Administrador
-    Administrador->>Pelicula: 2. <<create>> new Pelicula(datos)
+
+    Note over Administrador, Metadatos: Primero, se crea el objeto Metadatos
+    Administrador->>Metadatos: 2. <<create>> new Metadatos(datos.info)
+
+    Note over Administrador, Pelicula: Luego, se crea el objeto Pelicula.
+    Administrador->>Pelicula: 3. <<create>> new Pelicula(datos.archivo)
     
-    Administrador->>PlataformaTDL2: 3. agregarContenido(nuevaPelicula)
+    Administrador->>Pelicula: 4. setMetadatos(nuevosMetadatos)
+
+    Administrador->>PlataformaTDL2: 5. agregarContenido(nuevaPelicula)
     activate PlataformaTDL2
     
-    Note right of PlataformaTDL2: La plataforma añade la película <br> a su lista interna "catalogo".
+    Note right of PlataformaTDL2: La plataforma guarda la Película, <br> que ya contiene sus Metadatos.
     
-    PlataformaTDL2-->>Administrador: 4. (retorno)
+    PlataformaTDL2-->>Administrador: 6. (retorno)
     deactivate PlataformaTDL2
-    Administrador-->>Persona: 5. exito
+    
+    Administrador-->>Usuario: 7. exito
     deactivate Administrador
