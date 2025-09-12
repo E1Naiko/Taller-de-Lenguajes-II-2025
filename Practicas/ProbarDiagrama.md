@@ -1,11 +1,11 @@
 ```mermaid
 classDiagram
-    class Personaje {
+    class Personaje {s
         +String nombre
         +int nivel
         +int experiencia
         +Atributo[] atributos
-        +Clase clase
+        +Clase clases
         +Raza raza
         +Habilidad[] habilidades
         +Hechizo[] hechizos
