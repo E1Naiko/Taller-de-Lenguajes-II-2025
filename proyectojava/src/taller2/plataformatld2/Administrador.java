@@ -50,6 +50,7 @@ package taller2.plataformatld2;
     public boolean agregarContenido(Contenido cont, PlataformaTLD2 plataforma) {
         // Lógica para agregar contenido al catálogo de la plataforma.
         return true;
+    }
     
     public boolean eliminarContenido(Contenido cont) {
         // Lógica para eliminar contenido del catálogo de la plataforma.
