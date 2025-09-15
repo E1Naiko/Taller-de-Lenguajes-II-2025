@@ -13,9 +13,7 @@ sequenceDiagram
     Administrador->>Metadatos: 2. <<create>> new Metadatos(datos.info)
 
     Note over Administrador, Pelicula: Luego, se crea el objeto Pelicula.
-    Administrador->>Pelicula: 3. <<create>> new Pelicula(datos.archivo)
-    
-    Administrador->>Pelicula: 4. setMetadatos(nuevosMetadatos)
+    Administrador->>Pelicula: 3. <<create>> new Pelicula(datos.archivo,nuevosMetadatos)
 
     Administrador->>PlataformaTDL2: 5. agregarContenido(nuevaPelicula)
     activate PlataformaTDL2
