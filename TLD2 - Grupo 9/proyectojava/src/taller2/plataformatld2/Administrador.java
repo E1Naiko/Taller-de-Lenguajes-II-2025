@@ -1,4 +1,4 @@
-package taller2.plataformatld2;
+package taller2.plataformatdl2;
 
 /**
  * Clase que representa un administrador de la plataforma de streaming.
@@ -47,7 +47,7 @@ package taller2.plataformatld2;
      * @see PlataformaTDL2
      */
 
-    public boolean agregarContenido(Contenido cont, PlataformaTLD2 plataforma) {
+    public boolean agregarContenido(Contenido cont, PlataformaTDL2 plataforma) {
         // Lógica para agregar contenido al catálogo de la plataforma.
         return true;
     }

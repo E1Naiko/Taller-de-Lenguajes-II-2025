@@ -1,4 +1,4 @@
-package taller2.plataformatld2;
+package taller2.plataformatdl2;
 
 /**
  * Clase que representa un usuario de la plataforma de streaming.   

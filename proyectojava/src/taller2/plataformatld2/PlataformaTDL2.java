@@ -1,7 +1,7 @@
-package taller2.plataformatld2;
+package taller2.plataformatdl2;
 
-import java.util.arrayList;
-import java.util.list;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase principal que representa la plataforma de streaming.
@@ -11,18 +11,16 @@ import java.util.list;
  * @version 1.0 - 2025-09-15
  */
 
-public class PlataformaTLD2 {
+public class PlataformaTDL2 {
     private List<Usuario> usuarios;
     private List<Contenido> catalogo;
 
     /**
      * Constructor de la clase PlataformaTLD2.
      * Inicializa las listas de usuarios y catálogo.
-     * @param usuarios La lista de usuarios registrados.
-     * @param catalogo El catálogo de contenidos disponibles.
      */
 
-    public PlataformaTLD2() {
+    public PlataformaTDL2() {
         this.usuarios = new ArrayList<>();
         this.catalogo = new ArrayList<>();
     }

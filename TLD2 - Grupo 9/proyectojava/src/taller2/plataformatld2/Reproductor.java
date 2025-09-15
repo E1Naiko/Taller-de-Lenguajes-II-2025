@@ -1,5 +1,5 @@
-package taller2.plataformatld2;
-import java.sql.Time;
+package taller2.plataformatdl2;
+import java.time.LocalTime;
 /**
  * Clase que representa el reproductor de la plataforma de streaming.
  * Esta clase maneja la reproducción de contenidos, incluyendo el control de tiempo,
@@ -11,8 +11,8 @@ import java.sql.Time;
 
 public class Reproductor {
     private Contenido contenidoActual;
-    private Time tiempoActual;
-    private Time tiempoInicio;
+    private LocalTime tiempoActual;
+    private LocalTime tiempoInicio;
     // Aqui se declara tipo de datos objetos que no esta en la carpeta
     //private Subtitulo subtituloActual;
     //private AdaptativeBitrateStreaming controlABS;
@@ -20,15 +20,15 @@ public class Reproductor {
     /**
      * Constructor de la clase Reproductor.
      * 
-     * @param contenido El contenido a reproducir.
-     * @param subtitulo El subtitulo a usar.
-     * @param abs El control de streaming adaptativo.
+     * @param contenidoActual El contenido a reproducir.
+     //* @param subtitulo El subtitulo a usar.
+     //* @param abs El control de streaming adaptativo.
      * @param tiempoInicio El tiempo de inicio de la reproducción.
      * @param tiempoActual El tiempo actual de la reproducción.
      */
 
-    public Reproductor(Contenido contenido, /**Subtitulo subtitulo, AdaptativeBitrateStreaming abs **/ Time tiempoInicio, Time tiempoActual) {
-        this.contenidoActual = contenido;
+    public Reproductor(Contenido contenidoActual, /**Subtitulo subtitulo, AdaptativeBitrateStreaming abs **/ LocalTime tiempoInicio, LocalTime tiempoActual) {
+        this.contenidoActual = contenidoActual;
         //this.subtituloActual = subtitulo;
         //this.controlABS = abs;
         this.tiempoInicio = tiempoInicio;
@@ -45,19 +45,19 @@ public class Reproductor {
         this.contenidoActual = contenidoActual;
     }
 
-    public Time getTiempoActual() {
+    public LocalTime getTiempoActual() {
         return tiempoActual;
     }
 
-    public void setTiempoActual(Time tiempoActual) {
+    public void setTiempoActual(LocalTime tiempoActual) {
         this.tiempoActual = tiempoActual;
     }
 
-    public Time getTiempoInicio() {
+    public LocalTime getTiempoInicio() {
         return tiempoInicio;
     }
 
-    public void setTiempoInicio(Time tiempoInicio) {
+    public void setTiempoInicio(LocalTime tiempoInicio) {
         this.tiempoInicio = tiempoInicio;
     }
 
@@ -80,7 +80,7 @@ public class Reproductor {
     
     // --- Métodos para manejar la reproducción ---
 
-    public void play(Contenido Cont) {
+    public void play(Contenido cont) {
         // Logica para iniciar la reproducción del contenido..
     }
 
@@ -100,7 +100,7 @@ public class Reproductor {
         // Logica para actualizar la historia de reproduccion del usuario..
     }
 
-    public Time calcularTiempoVistos() {
+    public LocalTime calcularTiempoVistos() {
         // Logica para calcular el tiempo restante de la reproducción..
         return null;
     }
