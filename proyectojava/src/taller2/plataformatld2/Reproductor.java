@@ -1,7 +1,5 @@
 package taller2.plataformatld2;
-
 import java.sql.Time;
-
 /**
  * Clase que representa el reproductor de la plataforma de streaming.
  * Esta clase maneja la reproducción de contenidos, incluyendo el control de tiempo,
