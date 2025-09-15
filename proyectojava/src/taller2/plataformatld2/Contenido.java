@@ -27,6 +27,13 @@ package taller2.plataformatdl2;
         this.direccionArchivo = direccionArchivo;
     }
 
+    public Contenido(String calidad, String audio, String direccionArchivo, Metadatos metadatos) {
+        this.calidad = calidad;
+        this.audio = audio;
+        this.direccionArchivo = direccionArchivo;
+        this.metadatos = new Metadatos();
+    }
+
     // --- Getters y Setters ---
 
     public String getCalidad() {
