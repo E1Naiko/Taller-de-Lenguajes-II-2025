@@ -39,10 +39,60 @@ public class Metadatos {
         this.duracion = duracion;
         this.idioma = idioma;
         this.subtitulos = subtitulos;
-
-
-
-
+    }
     
-    
+    /**
+     * Getters y Setters para los atributos de la clase Metadatos.
+     * @return Atributos de la clase Metadatos.
+     * 
+     */
+
+    public String getTitulo() {
+        return titulo;
+    }
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+    public String getSinopsis() {
+        return sinopsis;
+    }
+    public void setSinopsis(String sinopsis) {
+        this.sinopsis = sinopsis;
+    }
+    public String[] getElenco() {
+        return elenco;
+    }
+    public void setElenco(String[] elenco) {
+        this.elenco = elenco;
+    }
+    public String getDirector() {
+        return director;
+    }
+    public void setDirector(String director) {
+        this.director = director;
+    }
+    public Time getDuracion() {
+        return duracion;
+    }
+    public void setDuracion(Time duracion) {
+        this.duracion = duracion;
+    }
+    public String getIdioma() {
+        return idioma;
+    }
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
+    }
+    public String[] getSubtitulos() {
+        return subtitulos;
+    }
+    public void setSubtitulos(String[] subtitulos) {
+        this.subtitulos = subtitulos;
+    }
+
+    // Metodo para eliminar elenco
+    public boolean removeElenco(String actor) {
+        // Buscar el actor en el arreglo de elenco
+        return true;
+    }
 }

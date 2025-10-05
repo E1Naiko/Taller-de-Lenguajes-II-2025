@@ -12,6 +12,7 @@ package taller2.plataformatdl2;
     protected String calidad;
     protected String audio;
     protected String direccionArchivo;
+    protected String genero;
 
     /**
      * Constructor de la clase Contenido.
@@ -25,6 +26,11 @@ package taller2.plataformatdl2;
         this.calidad = calidad;
         this.audio = audio;
         this.direccionArchivo = direccionArchivo;
+    }
+
+    public Contenido(String direccionArchivo, Metadatos metadatos, String genero) {
+        this.direccionArchivo = direccionArchivo;
+        this.genero = genero;
     }
 
     // --- Getters y Setters ---
@@ -51,5 +57,13 @@ package taller2.plataformatdl2;
 
     public void setDireccionMetadato(String direccionArchivo) {
         this.direccionArchivo = direccionArchivo;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
  }
