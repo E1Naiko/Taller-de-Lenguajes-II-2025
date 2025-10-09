@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0 - 2025-09-15
  */
 
-public class PlataformaTDL2 {
+public class main {
     private List<Usuario> usuarios;
     private List<Contenido> catalogo;
 
@@ -20,7 +20,7 @@ public class PlataformaTDL2 {
      * Inicializa las listas de usuarios y catálogo.
      */
 
-    public PlataformaTDL2() {
+    public main() {
         this.usuarios = new ArrayList<>();
         this.catalogo = new ArrayList<>();
     }
