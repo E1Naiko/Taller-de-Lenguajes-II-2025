@@ -49,80 +49,20 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     }
 
     @Override
-    public void encontrarResenia() {
+    public int encontrarIdResenia() {
       // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'encontrarResenia'");
+      throw new UnsupportedOperationException("Unimplemented method 'encontrarIdResenia'");
     }
 
     @Override
-    public void setCalificacion(int id) {
+    public ResultSet devolverResenia(int id) {
       // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setCalificacion'");
+      throw new UnsupportedOperationException("Unimplemented method 'devolverResenia'");
     }
 
     @Override
-    public void setComentario(int id) {
+    public Resena devolverResenia() {
       // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setComentario'");
-    }
-
-    @Override
-    public void setAprobado(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setAprobado'");
-    }
-
-    @Override
-    public void setHora(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setHora'");
-    }
-
-    @Override
-    public void setIdUsuario(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setIdUsuario'");
-    }
-
-    @Override
-    public void setIdPelicula(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'setIdPelicula'");
-    }
-
-    @Override
-    public int getCalificacion(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getCalificacion'");
-    }
-
-    @Override
-    public String getComentario(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getComentario'");
-    }
-
-    @Override
-    public Boolean getAprobado(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getAprobado'");
-    }
-
-    @Override
-    public Time getHora(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getHora'");
-    }
-
-    @Override
-    public int getIdUsuario(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getIdUsuario'");
-    }
-
-    @Override
-    public int getIdPelicula(int id) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'getIdPelicula'");
+      throw new UnsupportedOperationException("Unimplemented method 'devolverResenia'");
     }
 }
