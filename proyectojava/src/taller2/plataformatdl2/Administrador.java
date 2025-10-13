@@ -44,10 +44,10 @@ package taller2.plataformatdl2;
      * @param cont El contenido a agregar.
      * @param plataforma La instancia de la plataforma donde se agregará.
      * @return true si la operación fue exitosa, de lo contrario false.
-     * @see PlataformaTDL2
+     * @see main
      */
 
-    public boolean agregarContenido(Contenido cont, PlataformaTDL2 plataforma) {
+    public boolean agregarContenido(Contenido cont, main plataforma) {
         // Lógica para agregar contenido al catálogo de la plataforma.
         return true;
     }
