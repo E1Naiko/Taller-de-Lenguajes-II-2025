@@ -1,4 +1,6 @@
-package taller2.plataformatdl2;
+package taller2.DB.DAO;
+
+import taller2.plataformatdl2.Contenido;
 
 public interface PeliculasDAO {
     public void crearTablaPeliculas();

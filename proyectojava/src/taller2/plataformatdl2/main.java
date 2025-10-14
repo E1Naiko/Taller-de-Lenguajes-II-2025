@@ -1,5 +1,6 @@
 package taller2.plataformatdl2;
 
+import taller2.DB.*;
 import java.util.ArrayList;
 import java.util.List;
 
