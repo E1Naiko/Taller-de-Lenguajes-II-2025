@@ -11,8 +11,8 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     Statement stmt = null;
     try {
       Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:test.db");
-      System.out.println("Opened database successfully");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      System.out.println("PlataformaTDL2 - ReseniasDAOJDBC - Creando Tabla");
 
       stmt = c.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS RESENIAS " +
@@ -22,15 +22,14 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
           " Calificacion        INTEGER     NOT NULL, " +
           " Comentario          TEXT        NOT NULL, " +
           " Aprobado             INTEGER     NOT NULL   DEFAULT 0," + // 0 = false, 1 = true
-          " Hora                 TEXT        NOT NULL   DEFAULT (datetime('now'))" +
-          ")";
+          " Hora                 TEXT        NOT NULL   DEFAULT (datetime('now')))";
       stmt.executeUpdate(sql);
+      System.out.println("PlataformaTDL2 - ReseniasDAOJDBC - Tabla Creada Exitosamente");
       stmt.close();
       c.close();
     } catch (Exception e) {
       System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
-    System.out.println("PlataformaTDL2 - Tabla Creada Exitosamente");
   }
 
   @Override

@@ -12,11 +12,11 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         Statement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
-            System.out.println("Opened database successfully");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            System.out.println("PlataformaTDL2 - UsuariosFinal - Creando Tabla");
 
             stmt = c.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS RESENIAS " +
+            String sql = "CREATE TABLE IF NOT EXISTS USUARIOS_FINAL " +
                     "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " Nombre                  TEXT     NOT NULL, " +
                     " Email                   TEXT     NOT NULL, " +
@@ -24,15 +24,14 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                     " Idioma                  TEXT     NOT NULL, " +
                     " Generos_Preferidos      TEXT     NOT NULL, " + // TODO - IMPLEMENTAR TABLA DE Generos_Preferidos
                     " Historial               TEXT     NOT NULL, " + // TODO - IMPLEMENTAR TABLA DE Historial
-                    " Lista_Preferida         TEXT     NOT NULL, " + // TODO - IMPLEMENTAR TABLA DE Lista_Preferida
-                    ")";
+                    " Lista_Preferida         TEXT     NOT NULL)"; // TODO - IMPLEMENTAR TABLA DE Lista_Preferida
             stmt.executeUpdate(sql);
+            System.out.println("PlataformaTDL2 - UsuariosFinal - Tabla Creada Exitosamente");
             stmt.close();
             c.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("PlataformaTDL2 - UsuariosFinal - Tabla Creada Exitosamente");
     }
 
     @Override

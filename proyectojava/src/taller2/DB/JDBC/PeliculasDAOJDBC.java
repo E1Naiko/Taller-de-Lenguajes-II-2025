@@ -12,24 +12,23 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         Statement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
-            System.out.println("Opened database successfully");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Creando Tabla");
 
             stmt = c.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS RESENIAS " +
+            String sql = "CREATE TABLE IF NOT EXISTS PELICULAS " +
                     "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " Direccion_Archivo      TEXT     NOT NULL, " +
                     " Calidad                TEXT     NOT NULL, " +
                     " Audio                  TEXT     NOT NULL, " +
-                    " Genero                 TEXT     NOT NULL, " +
-                    ")";
+                    " Genero                 TEXT     NOT NULL)";
             stmt.executeUpdate(sql);
+            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Tabla Creada Exitosamente");
             stmt.close();
             c.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("PlataformaTDL2 - Tabla Creada Exitosamente");
     }
 
     @Override

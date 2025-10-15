@@ -47,7 +47,7 @@ package taller2.plataformatdl2;
      * @see main
      */
 
-    public boolean agregarContenido(Contenido cont, main plataforma) {
+    public boolean agregarContenido(Contenido cont/* , main plataforma*/) {
         // Lógica para agregar contenido al catálogo de la plataforma.
         return true;
     }
