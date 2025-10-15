@@ -1,7 +1,5 @@
 package taller2.plataformatdl2;
 
-import java.util.List;
-
 import taller2.DB.DAO.*;
 import taller2.DB.JDBC.PeliculasDAOJDBC;
 import taller2.DB.JDBC.ReseniasDAOJDBC;
