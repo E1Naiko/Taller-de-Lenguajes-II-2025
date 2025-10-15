@@ -39,7 +39,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinal - Intentando insertar elemento");
 

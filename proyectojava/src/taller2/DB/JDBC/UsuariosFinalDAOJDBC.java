@@ -38,29 +38,24 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     @Override
     public void insertarUsuarioFinal(UsuarioFinal usuario) {
         Connection c = null;
-        Statement stmt = null;
 
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinal - Intentando insertar elemento");
+            String sql = "INSERT INTO USUARIOS_FINAL (Nombre, Email, Contrasena, Idioma, Generos_Preferidos, Historial, Lista_Preferida) VALUES (?,?,?,?,?,?,?)";
+            try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setString(1, usuario.getNombre());
+                pstmt.setString(2, usuario.getEmail());
+                pstmt.setString(3, usuario.getContrasena());
+                pstmt.setString(4, usuario.getIdioma());
+                pstmt.setString(5, usuario.getGenerosPreferidos());
+                pstmt.setString(6, usuario.getHistorial());
+                pstmt.setString(7, usuario.getListaPreferida());
+                pstmt.executeUpdate();
+            }
 
-            stmt = c.createStatement();
-            String sql = "INSERT INTO USUARIOS_FINAL ('Nombre,Email,Contrasena,Idioma,Generos_Preferidos,Historial,Lista_Preferida') "
-                    +
-                    "VALUES ('" +
-                    usuario.getNombre() + ", " +
-                    usuario.getEmail() + ", " +
-                    usuario.getContrasena() + ", " +
-                    usuario.getIdioma() + ", " +
-                    usuario.getGenerosPreferidos() + ", " +
-                    usuario.getHistorial() + ", " +
-                    usuario.getListaPreferida() + ", " +
-                    "');";
-            stmt.executeUpdate(sql);
-
-            stmt.close();
             c.commit();
             c.close();
         } catch (Exception e) {
