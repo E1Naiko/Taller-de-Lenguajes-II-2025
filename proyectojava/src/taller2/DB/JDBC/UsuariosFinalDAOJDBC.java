@@ -3,6 +3,7 @@ package taller2.DB.JDBC;
 import java.sql.*;
 import taller2.DB.DAO.UsuariosFinalDAO;
 import taller2.plataformatdl2.Usuario;
+import taller2.plataformatdl2.UsuarioFinal;
 
 public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
 
@@ -35,7 +36,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     }
 
     @Override
-    public void insertarUsuarioFinal(Usuario usuario) {
+    public void insertarUsuarioFinal(UsuarioFinal usuario) {
         Connection c = null;
         Statement stmt = null;
 
@@ -53,9 +54,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                     usuario.getEmail() + ", " +
                     usuario.getContrasena() + ", " +
                     usuario.getIdioma() + ", " +
-                    // usuario.getGenerosPreferidos() + ", " +
-                    // usuario.getHistorial() + ", " +
-                    // usuario.getListaPreferida() + ", " +
+                    usuario.getGenerosPreferidos() + ", " +
+                    usuario.getHistorial() + ", " +
+                    usuario.getListaPreferida() + ", " +
                     "');";
             stmt.executeUpdate(sql);
 
