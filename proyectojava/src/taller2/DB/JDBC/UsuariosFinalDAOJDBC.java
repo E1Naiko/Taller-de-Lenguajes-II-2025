@@ -35,9 +35,37 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     }
 
     @Override
-    public void insertarUsuarioFinal() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertarUsuarioFinal'");
+    public void insertarUsuarioFinal(Usuario usuario) {
+        Connection c = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - UsuariosFinal - Intentando insertar elemento");
+
+            stmt = c.createStatement();
+            String sql = "INSERT INTO USUARIOS_FINAL ('Nombre,Email,Contrasena,Idioma,Generos_Preferidos,Historial,Lista_Preferida') "
+                    +
+                    "VALUES ('" +
+                    usuario.getNombre() + ", " +
+                    usuario.getEmail() + ", " +
+                    usuario.getContrasena() + ", " +
+                    usuario.getIdioma() + ", " +
+                    // usuario.getGenerosPreferidos() + ", " +
+                    // usuario.getHistorial() + ", " +
+                    // usuario.getListaPreferida() + ", " +
+                    "');";
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        System.out.println("\"PlataformaTDL2 - UsuariosFinal - Elemento insertado correctamente");
     }
 
     @Override
@@ -63,5 +91,5 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'devolverUsuarioFinal'");
     }
-    
+
 }

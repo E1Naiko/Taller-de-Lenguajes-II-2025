@@ -1,9 +1,7 @@
 package taller2.plataformatdl2;
 
 import taller2.DB.DAO.*;
-import taller2.DB.JDBC.PeliculasDAOJDBC;
-import taller2.DB.JDBC.ReseniasDAOJDBC;
-import taller2.DB.JDBC.UsuariosFinalDAOJDBC;
+import taller2.DB.JDBC.*;
 
 /**
  * Clase principal que representa la plataforma de streaming.

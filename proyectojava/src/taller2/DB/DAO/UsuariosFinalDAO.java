@@ -6,7 +6,7 @@ import taller2.plataformatdl2.Usuario;
 
 public interface UsuariosFinalDAO {
     public void crearTablaUsuarioFinal();
-    public void insertarUsuarioFinal();
+    public void insertarUsuarioFinal(Usuario usuario);
     public void eliminarUsuarioFinal();
     public int encontrarIdUsuarioFinal();
     public Usuario devolverUsuarioFinal();

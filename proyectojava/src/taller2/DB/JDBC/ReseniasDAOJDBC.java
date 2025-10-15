@@ -33,10 +33,33 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   }
 
   @Override
-  public void insertarResenia() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'insertarResenia'");
-  }
+  public void insertarResenia(int idUsuario, int idPelicula, Resena resenia) {
+        Connection c = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - UsuariosFinal - Intentando insertar elemento");
+
+            stmt = c.createStatement();
+            String sql = "INSERT INTO RESENIAS ('Id_Usuario,Id_Pelicula,Calificacion,Comentario,Aprobado,Hora') "
+                    +
+                    "VALUES ('" + idUsuario + ", " + idPelicula + ", " + 
+                    resenia.getPuntuacion() + ", " +
+                    resenia.getPuntuacion() + ", " +
+                    "');";
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        System.out.println("\"PlataformaTDL2 - UsuariosFinal - Elemento insertado correctamente");
+    }
 
   @Override
   public void eliminarResenia() {
