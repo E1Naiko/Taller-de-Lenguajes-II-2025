@@ -55,9 +55,8 @@ public abstract class Usuario {
 
     // --- Metodos especificos ---
 
-    public boolean login() {
+    public abstract void login() {
         // Logica de login..
-        return true;
     }
     
 }
