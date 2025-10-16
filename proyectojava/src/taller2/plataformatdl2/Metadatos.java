@@ -50,46 +50,89 @@ public class Metadatos {
     public String getTitulo() {
         return titulo;
     }
+    /** 
+     * @param titulo
+     */
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+    /** 
+     * @return String
+     */
     public String getSinopsis() {
         return sinopsis;
     }
+    /** 
+     * @param sinopsis
+     */
     public void setSinopsis(String sinopsis) {
         this.sinopsis = sinopsis;
     }
+    /** 
+     * @return String[]
+     */
     public String[] getElenco() {
         return elenco;
     }
+    /** 
+     * @param elenco
+     */
     public void setElenco(String[] elenco) {
         this.elenco = elenco;
     }
+    /** 
+     * @return String
+     */
     public String getDirector() {
         return director;
     }
+    /** 
+     * @param director
+     */
     public void setDirector(String director) {
         this.director = director;
     }
+    /** 
+     * @return Time
+     */
     public Time getDuracion() {
         return duracion;
     }
+    /** 
+     * @param duracion
+     */
     public void setDuracion(Time duracion) {
         this.duracion = duracion;
     }
+    /** 
+     * @return String
+     */
     public String getIdioma() {
         return idioma;
     }
+    /** 
+     * @param idioma
+     */
     public void setIdioma(String idioma) {
         this.idioma = idioma;
     }
+    /** 
+     * @return String[]
+     */
     public String[] getSubtitulos() {
         return subtitulos;
     }
+    /** 
+     * @param subtitulos
+     */
     public void setSubtitulos(String[] subtitulos) {
         this.subtitulos = subtitulos;
     }
 
+    /** 
+     * @param actor
+     * @return boolean
+     */
     // Metodo para eliminar elenco
     public boolean removeElenco(String actor) {
         // Buscar el actor en el arreglo de elenco

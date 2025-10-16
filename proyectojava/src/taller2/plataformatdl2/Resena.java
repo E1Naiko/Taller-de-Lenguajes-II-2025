@@ -39,24 +39,45 @@ public class Resena {
     public Usuario getUsuario() {
         return usuario;
     }
+    /** 
+     * @param usuario
+     */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+    /** 
+     * @return Contenido
+     */
     public Contenido getContenidovisual() {
         return contenidovisual;
     }
+    /** 
+     * @param contenidovisual
+     */
     public void setContenidovisual(Contenido contenidovisual) {
         this.contenidovisual = contenidovisual;
     }
+    /** 
+     * @return int
+     */
     public int getPuntuacion() {
         return puntuacion;
     }
+    /** 
+     * @param puntuacion
+     */
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
+    /** 
+     * @return String
+     */
     public String getComentario() {
         return comentario;
     }
+    /** 
+     * @param comentario
+     */
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }

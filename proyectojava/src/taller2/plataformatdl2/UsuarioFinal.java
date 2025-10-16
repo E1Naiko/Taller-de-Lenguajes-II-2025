@@ -23,36 +23,60 @@ public class UsuarioFinal extends Usuario {
 
     }
 
+    /** 
+     * @return String
+     */
     // Getters y Setters
 
     public String getIdioma() {
         return idioma;
     }
 
+    /** 
+     * @param idioma
+     */
     public void setIdioma(String idioma) {
         this.idioma = idioma;
     }
 
+    /** 
+     * @return String
+     */
     public String getGenerosPreferidos() {
         return generosPreferidos;
     }
 
+    /** 
+     * @param generosPreferidos
+     */
     public void setGenerosPreferidos(String generosPreferidos) {
         this.generosPreferidos = generosPreferidos;
     }
 
+    /** 
+     * @return String
+     */
     public String getListaPreferida() {
         return listaPreferida;
     }
 
+    /** 
+     * @param listaPreferida
+     */
     public void setListaPreferida(String listaPreferida) {
         this.listaPreferida = listaPreferida;
     }
 
+    /** 
+     * @return String
+     */
     public String getHistorial() {
         return historial;
     }
 
+    /** 
+     * @param historial
+     */
     public void setHistorial(String historial) {
         this.historial = historial;
     }

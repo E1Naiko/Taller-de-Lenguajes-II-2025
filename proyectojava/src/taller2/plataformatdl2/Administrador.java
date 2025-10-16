@@ -26,12 +26,18 @@ package taller2.plataformatdl2;
         this.codigoAdmin = codigoAdmin;
     }
 
+    /** 
+     * @return String
+     */
     // --- Getters y Setters ---
 
     public String getCodigoAdmin() {
         return codigoAdmin;
     }
 
+    /** 
+     * @param codigoAdmin
+     */
     public void setCodigoAdmin(String codigoAdmin) {
         this.codigoAdmin = codigoAdmin;
     }
@@ -52,11 +58,19 @@ package taller2.plataformatdl2;
         return true;
     }
     
+    /** 
+     * @param cont
+     * @return boolean
+     */
     public boolean eliminarContenido(Contenido cont) {
         // Lógica para eliminar contenido del catálogo de la plataforma.
         return true;
     }
 
+    /** 
+     * @param cont
+     * @return boolean
+     */
     public boolean modificarContenido(Contenido cont) {
         // Lógica para modificar contenido del catálogo de la plataforma.
         return true;

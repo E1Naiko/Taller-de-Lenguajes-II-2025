@@ -1,9 +1,7 @@
 package taller2.plataformatdl2;
 
 import taller2.DB.DAO.*;
-import taller2.DB.JDBC.PeliculasDAOJDBC;
-import taller2.DB.JDBC.ReseniasDAOJDBC;
-import taller2.DB.JDBC.UsuariosFinalDAOJDBC;
+import taller2.DB.JDBC.*;
 import java.util.Scanner;
 
 /**
@@ -16,6 +14,9 @@ import java.util.Scanner;
 
 public class Main {
     
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         PeliculasDAO peliculasDAO = new PeliculasDAOJDBC();
         ReseniasDAO reseniasDAO = new ReseniasDAOJDBC();
@@ -28,6 +29,9 @@ public class Main {
         UsuarioFinal nuevoUsuario= cargarUsuario();
         usuariosFinalDAO.insertarUsuarioFinal(nuevoUsuario);
     }
+    /** 
+     * @return UsuarioFinal
+     */
     //Metodo para registrar Usuario
     private static UsuarioFinal cargarUsuario(){
         Scanner scanner= new Scanner(System.in);

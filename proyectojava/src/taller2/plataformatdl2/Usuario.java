@@ -27,32 +27,53 @@ public abstract class Usuario {
         this.contrasena = contrasena;
     }
 
+    /** 
+     * @return String
+     */
     // --- Getters y Setters ---
 
     public String getNombre() {
         return nombre;
     }
 
+    /** 
+     * @param nombre
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /** 
+     * @return String
+     */
     public String getEmail() {
         return email;
     }
 
+    /** 
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /** 
+     * @return String
+     */
     public String getContrasena() {
         return contrasena;
     }
 
+    /** 
+     * @param contrasena
+     */
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
 
+    /** 
+     * @return boolean
+     */
     // --- Metodos especificos ---
 
     public boolean login() {

@@ -35,28 +35,46 @@ public class Reproductor {
         this.tiempoActual = tiempoActual;
     }
 
+    /** 
+     * @return Contenido
+     */
     // --- Getters y Setters ---
 
     public Contenido getContenidoActual() {
         return contenidoActual;
     }
 
+    /** 
+     * @param contenidoActual
+     */
     public void setContenidoActual(Contenido contenidoActual) {
         this.contenidoActual = contenidoActual;
     }
 
+    /** 
+     * @return LocalTime
+     */
     public LocalTime getTiempoActual() {
         return tiempoActual;
     }
 
+    /** 
+     * @param tiempoActual
+     */
     public void setTiempoActual(LocalTime tiempoActual) {
         this.tiempoActual = tiempoActual;
     }
 
+    /** 
+     * @return LocalTime
+     */
     public LocalTime getTiempoInicio() {
         return tiempoInicio;
     }
 
+    /** 
+     * @param tiempoInicio
+     */
     public void setTiempoInicio(LocalTime tiempoInicio) {
         this.tiempoInicio = tiempoInicio;
     }
@@ -96,10 +114,16 @@ public class Reproductor {
         // Logica para retroceder la reproducción..
     }       
 
+    /** 
+     * @param cont
+     */
     public void actualizarHistoria(Contenido cont) {
         // Logica para actualizar la historia de reproduccion del usuario..
     }
 
+    /** 
+     * @return LocalTime
+     */
     public LocalTime calcularTiempoVistos() {
         // Logica para calcular el tiempo restante de la reproducción..
         return null;

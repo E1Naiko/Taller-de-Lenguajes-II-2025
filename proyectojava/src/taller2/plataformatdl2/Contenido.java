@@ -33,36 +33,60 @@ package taller2.plataformatdl2;
         this.genero = genero;
     }
 
+    /** 
+     * @return String
+     */
     // --- Getters y Setters ---
 
     public String getCalidad() {
         return calidad;
     }
 
+    /** 
+     * @param calidad
+     */
     public void setCalidad(String calidad) {
         this.calidad = calidad;
     }
 
+    /** 
+     * @return String
+     */
     public String getAudio() {
         return audio;
     }
 
+    /** 
+     * @param audio
+     */
     public void setAudio(String audio) {
         this.audio = audio;
     }
 
+    /** 
+     * @return String
+     */
     public String getDireccionMetadato() {
         return direccionArchivo;
     }
 
+    /** 
+     * @param direccionArchivo
+     */
     public void setDireccionMetadato(String direccionArchivo) {
         this.direccionArchivo = direccionArchivo;
     }
 
+    /** 
+     * @return String
+     */
     public String getGenero() {
         return genero;
     }
 
+    /** 
+     * @param genero
+     */
     public void setGenero(String genero) {
         this.genero = genero;
     }

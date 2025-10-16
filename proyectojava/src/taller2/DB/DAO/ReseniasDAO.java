@@ -5,9 +5,8 @@ import taller2.plataformatdl2.Resena;
 
 public interface ReseniasDAO {
     public void crearTablaResenias();
-    public void insertarResenia(int idUsuario, int idPelicula, Resena resenia);
-    public void eliminarResenia();
-    public int encontrarIdResenia();
-    public Resena devolverResenia();
+    public void insertarResenia(int idUsuario, int idPelicula, Resena resenia, int aprobado);
+    public void eliminarResenia(int idResenia);
+    public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia);
     public ResultSet devolverResenia(int id);
 }

@@ -25,7 +25,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                     " Idioma                  TEXT     NOT NULL, " +
                     " Generos_Preferidos      TEXT     NOT NULL, " + // TODO - IMPLEMENTAR TABLA DE Generos_Preferidos
                     " Historial               TEXT     NOT NULL, " + // TODO - IMPLEMENTAR TABLA DE Historial
-                    " Lista_Preferida         TEXT     NOT NULL)"; // TODO - IMPLEMENTAR TABLA DE Lista_Preferida
+                    " Lista_Preferida         TEXT     NOT NULL)";   // TODO - IMPLEMENTAR TABLA DE Lista_Preferida
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - UsuariosFinal - Tabla Creada Exitosamente");
             stmt.close();
@@ -35,6 +35,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
 
+    /** 
+     * @param usuario
+     */
     @Override
     public void insertarUsuarioFinal(UsuarioFinal usuario) {
         Connection c = null;
@@ -43,7 +46,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinal - Intentando insertar elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando insertar elemento");
+
             String sql = "INSERT INTO USUARIOS_FINAL (Nombre, Email, Contrasena, Idioma, Generos_Preferidos, Historial, Lista_Preferida) VALUES (?,?,?,?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, usuario.getNombre());
@@ -56,12 +60,13 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                 pstmt.executeUpdate();
             }
 
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Elemento insertado correctamente");
+
             c.commit();
             c.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("\"PlataformaTDL2 - UsuariosFinal - Elemento insertado correctamente");
     }
 
     @Override
@@ -70,18 +75,28 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         throw new UnsupportedOperationException("Unimplemented method 'eliminarUsuarioFinal'");
     }
 
+    /** 
+     * @return int
+     */
     @Override
     public int encontrarIdUsuarioFinal() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'encontrarIdUsuarioFinal'");
     }
 
+    /** 
+     * @return Usuario
+     */
     @Override
     public Usuario devolverUsuarioFinal() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'devolverUsuarioFinal'");
     }
 
+    /** 
+     * @param id
+     * @return ResultSet
+     */
     @Override
     public ResultSet devolverUsuarioFinal(int id) {
         // TODO Auto-generated method stub

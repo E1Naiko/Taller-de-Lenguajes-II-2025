@@ -43,12 +43,20 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         throw new UnsupportedOperationException("Unimplemented method 'eliminarPeliculas'");
     }
 
+    /** 
+     * @param id
+     * @return Contenido
+     */
     @Override
     public Contenido encontrarPelicula(int id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'encontrarPelicula'");
     }
 
+    /** 
+     * @param pelicula
+     * @return int
+     */
     @Override
     public int encontrarIdPelicula(Contenido pelicula) {
         // TODO Auto-generated method stub
