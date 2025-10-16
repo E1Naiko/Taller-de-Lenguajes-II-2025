@@ -147,15 +147,4 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     }
     return idEncontrada;
   }
-  
-  /** 
-   * @param id
-   * @return ResultSet
-   */
-  @Override
-  public ResultSet devolverResenia(int id) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'devolverResenia'");
-  }
-  
 }
