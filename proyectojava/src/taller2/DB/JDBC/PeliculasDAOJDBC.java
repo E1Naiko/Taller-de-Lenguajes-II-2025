@@ -20,8 +20,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
                     "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " Direccion_Archivo      TEXT     NOT NULL, " +
                     " Calidad                TEXT     NOT NULL, " +
-                    " Audio                  TEXT     NOT NULL, " +
-                    " Genero                 TEXT     NOT NULL)";
+                    " Audio                  TEXT     NOT NULL)";
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Tabla Creada Exitosamente");
             stmt.close();
