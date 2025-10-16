@@ -34,11 +34,11 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   }
   
   /** 
-   * @param idUsuario
-   * @param idPelicula
-   * @param resenia
-   * @param aprobado
-   */
+  * @param idUsuario
+  * @param idPelicula
+  * @param resenia
+  * @param aprobado
+  */
   @Override
   public void insertarResenia(int idUsuario, int idPelicula, Resena resenia, int aprobado) {
     if  (aprobado == 0 || aprobado == 1)  {
@@ -49,7 +49,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
         c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
         c.setAutoCommit(false);
         
-        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando insertar elemento");
+        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando insertar elemento.");
         
         String sql = "INSERT INTO RESENIAS (Id_Usuario, Id_Pelicula, Puntuacion, Comentario, Aprobado, Hora) VALUES (?,?,?,?,?,?)";
         try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -65,17 +65,20 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
         c.commit();
         c.close();
         
-        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Elemento insertado correctamente");
+        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Elemento insertado correctamente.");
         
       } catch (Exception e) {
         System.err.println(e.getClass().getName() + ": " + e.getMessage());
       }
     }
+    else{
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - ERROR variable aprobado fuera de rango.");
+    }
   }
   
   /** 
-   * @param idResenia
-   */
+  * @param idResenia
+  */
   @Override
   public void eliminarResenia(int idResenia) {
     Connection c = null;
@@ -88,13 +91,13 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando eliminar elemento");
       
       String sql = "DELETE FROM RESENIAS WHERE ID = ?";
-        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
-          pstmt.setInt(1, idResenia);
+      try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+        pstmt.setInt(1, idResenia);
         if (pstmt.executeUpdate() == 0) {
-            System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró reseña con ID " + idResenia);
-          }
+          System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró reseña con ID " + idResenia);
+        }
       }
-
+      
       c.commit();
       c.close();
       
@@ -106,11 +109,11 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   }
   
   /** 
-   * @param idUsuario
-   * @param idPelicula
-   * @param resenia
-   * @return int
-   */
+  * @param idUsuario
+  * @param idPelicula
+  * @param resenia
+  * @return int
+  */
   @Override
   public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia) {
     int idEncontrada = 0;
@@ -122,25 +125,31 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
       c.setAutoCommit(false);
       
-      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando eliminar elemento");
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando id de elemento");
       
       stmt = c.createStatement();
       String sql = "SELECT from RESENIAS WHERE  (Id_Usuario, Id_Pelicula, Puntuacion, Comentario) VALUES (?,?,?,?)";
       try (PreparedStatement pstmt = c.prepareStatement(sql)) {
         pstmt.setInt(1, idUsuario);
-          pstmt.setInt(2, idPelicula);
-          pstmt.setInt(3, resenia.getPuntuacion());
-          pstmt.setString(4, resenia.getComentario());
+        pstmt.setInt(2, idPelicula);
+        pstmt.setInt(3, resenia.getPuntuacion());
+        pstmt.setString(4, resenia.getComentario());
+        
+        
         if (pstmt.executeUpdate() == 0) {
-            System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró el elemento");
+          System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró el elemento.");
+        }
+        else{
+          ResultSet rs = pstmt.getResultSet();
+          idEncontrada = rs.getInt("ID");
         }
       }
-
+      
       c.commit();
       stmt.close();
       c.close();
       
-      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Elemento eliminado correctamente");
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Elemento encontrado correctamente");
       
     } catch ( Exception e ) {
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );

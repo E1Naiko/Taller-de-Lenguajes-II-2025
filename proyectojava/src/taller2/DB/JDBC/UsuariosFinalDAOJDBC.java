@@ -2,7 +2,6 @@ package taller2.DB.JDBC;
 
 import java.sql.*;
 import taller2.DB.DAO.UsuariosFinalDAO;
-import taller2.plataformatdl2.Usuario;
 import taller2.plataformatdl2.UsuarioFinal;
 
 public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
@@ -14,7 +13,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-            System.out.println("PlataformaTDL2 - UsuariosFinal - Creando Tabla");
+            System.out.println("PlataformaTDL2 - UsuariosFinal - Creando Tabla.");
 
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS USUARIOS_FINAL " +
@@ -27,7 +26,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                     " Historial               TEXT     NOT NULL, " + // TODO - IMPLEMENTAR TABLA DE Historial
                     " Lista_Preferida         TEXT     NOT NULL)";   // TODO - IMPLEMENTAR TABLA DE Lista_Preferida
             stmt.executeUpdate(sql);
-            System.out.println("PlataformaTDL2 - UsuariosFinal - Tabla Creada Exitosamente");
+            System.out.println("PlataformaTDL2 - UsuariosFinal - Tabla Creada Exitosamente.");
             stmt.close();
             c.close();
         } catch (Exception e) {
@@ -46,7 +45,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando insertar elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando insertar elemento.");
 
             String sql = "INSERT INTO USUARIOS_FINAL (Nombre, Email, Contrasena, Idioma, Generos_Preferidos, Historial, Lista_Preferida) VALUES (?,?,?,?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -60,7 +59,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                 pstmt.executeUpdate();
             }
 
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Elemento insertado correctamente");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Elemento insertado correctamente.");
 
             c.commit();
             c.close();
@@ -70,37 +69,41 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     }
 
     @Override
-    public void eliminarUsuarioFinal() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarUsuarioFinal'");
+    public void eliminarUsuarioFinal(int idUsuario) {
+        Connection c = null;
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      c.setAutoCommit(false);
+      
+      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando eliminar elemento");
+      
+      String sql = "DELETE FROM USUARIOS_FINAL WHERE ID = ?";
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+          pstmt.setInt(1, idUsuario);
+        if (pstmt.executeUpdate() == 0) {
+            System.out.println("PlataformaTDL2 - UsuariosFinalDAO - No se encontró reseña con ID " + idUsuario);
+          }
+      }
+
+      c.commit();
+      c.close();
+      
+      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Elemento eliminado correctamente");
+      
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
     }
 
     /** 
      * @return int
      */
     @Override
-    public int encontrarIdUsuarioFinal() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'encontrarIdUsuarioFinal'");
+    public int devolverIdUsuarioFinal() {
+        int idEncontrada = 0;
+        
+        return idEncontrada;
     }
-
-    /** 
-     * @return Usuario
-     */
-    @Override
-    public Usuario devolverUsuarioFinal() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'devolverUsuarioFinal'");
-    }
-
-    /** 
-     * @param id
-     * @return ResultSet
-     */
-    @Override
-    public ResultSet devolverUsuarioFinal(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'devolverUsuarioFinal'");
-    }
-
 }
