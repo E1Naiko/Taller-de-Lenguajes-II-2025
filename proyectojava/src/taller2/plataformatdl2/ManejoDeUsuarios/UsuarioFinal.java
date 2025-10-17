@@ -1,4 +1,4 @@
-package taller2.plataformatdl2;
+package taller2.plataformatdl2.ManejoDeUsuarios;
 
 public class UsuarioFinal extends Usuario {
     public String idioma;

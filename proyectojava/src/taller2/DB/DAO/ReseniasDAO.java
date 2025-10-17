@@ -1,7 +1,7 @@
 package taller2.DB.DAO;
 
 import java.sql.ResultSet;
-import taller2.plataformatdl2.Resena;
+import taller2.plataformatdl2.ManejoDeContenido.*;;
 
 public interface ReseniasDAO {
     public void crearTablaResenias();

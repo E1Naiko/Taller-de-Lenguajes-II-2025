@@ -1,4 +1,5 @@
-package taller2.plataformatdl2;
+package taller2.plataformatdl2.ManejoDeUsuarios;
+import taller2.plataformatdl2.ManejoDeContenido.*;
 
 /**
  * Clase que representa un administrador de la plataforma de streaming.
@@ -53,7 +54,7 @@ package taller2.plataformatdl2;
      * @see main
      */
 
-    public boolean agregarContenido(Contenido cont/* , main plataforma*/) {
+    public boolean agregarContenido(ContenidoDAO cont/* , main plataforma*/) {
         // Lógica para agregar contenido al catálogo de la plataforma.
         return true;
     }
@@ -62,7 +63,7 @@ package taller2.plataformatdl2;
      * @param cont
      * @return boolean
      */
-    public boolean eliminarContenido(Contenido cont) {
+    public boolean eliminarContenido(ContenidoDAO cont) {
         // Lógica para eliminar contenido del catálogo de la plataforma.
         return true;
     }
@@ -71,7 +72,7 @@ package taller2.plataformatdl2;
      * @param cont
      * @return boolean
      */
-    public boolean modificarContenido(Contenido cont) {
+    public boolean modificarContenido(ContenidoDAO cont) {
         // Lógica para modificar contenido del catálogo de la plataforma.
         return true;
     }

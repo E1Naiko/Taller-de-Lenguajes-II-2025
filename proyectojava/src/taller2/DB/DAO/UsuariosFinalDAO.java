@@ -2,8 +2,7 @@ package taller2.DB.DAO;
 
 import java.sql.ResultSet;
 
-import taller2.plataformatdl2.Usuario;
-import taller2.plataformatdl2.UsuarioFinal;
+import taller2.plataformatdl2.ManejoDeUsuarios.*;
 
 public interface UsuariosFinalDAO {
     public void crearTablaUsuarioFinal();
