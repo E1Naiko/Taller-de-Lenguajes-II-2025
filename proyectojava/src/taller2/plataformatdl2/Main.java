@@ -2,8 +2,7 @@ package taller2.plataformatdl2;
 
 import java.util.Scanner;
 
-import taller2.DB.DAO.ControladorDAO;
-import taller2.plataformatdl2.ManejoDeUsuarios.UsuarioFinal;
+import taller2.DB.DAO.FactoryDAO;
 
 /**
  * Clase principal que representa la plataforma de streaming.
@@ -19,37 +18,30 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        UsuarioFinal nuevoUsuario = cargarUsuario();
-        ControladorDAO.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
+        Scanner in = new Scanner(System.in);
+        int entrada;
+        
+        FactoryDAO cntrlDAO = new FactoryDAO();
+        MenuResenia menu = new MenuResenia();
 
-        while (true){
+        while (true) {
 
+            entrada = in.nextInt();
+            if (entrada == 0) {
+                break;
+            } else {
+                switch (entrada) {
+                    case 1:
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-    }
 
-    /** 
-     * @return UsuarioFinal
-     */
-    //Metodo para registrar Usuario
-    private static UsuarioFinal cargarUsuario(){
-        Scanner scanner= new Scanner(System.in);
-        System.out.print("Ingrese nombre: ");
-        String nombre= scanner.nextLine();
-        System.out.print("Ingrese email: ");
-        String email = scanner.nextLine();
-        System.out.print("Ingrese contraseña: ");
-        String contrasena = scanner.nextLine();
-        System.out.print("Ingrese idioma: ");
-        String idioma = scanner.nextLine();
-        System.out.print("Ingrese géneros preferidos (separados por comas): ");
-        String generosPreferidos =scanner.nextLine();
-        System.out.print("Ingrese lista preferida (opcional): ");
-        String listaPreferida = scanner.nextLine();
-        System.out.print("Ingrese historial (opcional): ");
-        String historial = scanner.nextLine();
-        UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
-        System.out.println(nuevoUsuario.toString());
-        scanner.close();
-        return nuevoUsuario;
+        in.close();
+    }
+    private static void imprimirOpciones(){
+        System.out.println("");
     }
 }
