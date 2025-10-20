@@ -9,10 +9,10 @@ package taller2.plataformatdl2.ManejoDeContenido;
  */
 
  public abstract class Contenido {
-    protected String calidad;
+    protected String calidad; // TODO cambiar a enum
     protected String audio;
     protected String direccionArchivo;
-    protected String genero;
+    protected String genero; // TODO cambiar a enum
 
     /**
      * Constructor de la clase Contenido.

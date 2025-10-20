@@ -12,13 +12,15 @@ public class MenuResenia {
     public MenuResenia(){
     }
 
-    public void cargarUsuarioEnUsuariosFinalDAO(Scanner scanner){
-        UsuarioFinal nuevoUsuario = cargarUsuario(scanner);
+    public void cargarUsuarioEnUsuariosFinalDAO(){
+        
+        UsuarioFinal nuevoUsuario = cargarUsuario();
         Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
     }
-    
-    public void cargarPeliculaEnPeliculasDAO(Scanner scanner){
-        Pelicula nuevaPelicula = cargarPelicula(scanner);
+
+    public void cargarPeliculaEnPeliculasDAO(){
+        
+        Pelicula nuevaPelicula = cargarPelicula();
         Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
     }
 
@@ -65,10 +67,12 @@ public class MenuResenia {
         UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
         System.out.println(nuevoUsuario.toString());
         scanner.close();
+        scanner.close();
         return nuevoUsuario;
     }
 
-    private Pelicula cargarPelicula(Scanner scanner){
+    private Pelicula cargarPelicula(){
+        Scanner scanner= new Scanner(System.in);
 
         String calidad = null;
         String audio = null;
@@ -93,6 +97,7 @@ public class MenuResenia {
         } while (!verificarDireccionArchivo(direccionArchivo));
         
         Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo);
+        scanner.close();
         return nuevaPelicula;
     }
 
