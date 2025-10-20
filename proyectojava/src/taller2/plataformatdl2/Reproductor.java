@@ -12,7 +12,7 @@ import java.time.LocalTime;
  */
 
 public class Reproductor {
-    private ContenidoDAO contenidoActual;
+    private Contenido contenidoActual;
     private LocalTime tiempoActual;
     private LocalTime tiempoInicio;
     // Aqui se declara tipo de datos objetos que no esta en la carpeta
@@ -29,7 +29,7 @@ public class Reproductor {
      * @param tiempoActual El tiempo actual de la reproducción.
      */
 
-    public Reproductor(ContenidoDAO contenidoActual, /**Subtitulo subtitulo, AdaptativeBitrateStreaming abs **/ LocalTime tiempoInicio, LocalTime tiempoActual) {
+    public Reproductor(Contenido contenidoActual, /**Subtitulo subtitulo, AdaptativeBitrateStreaming abs **/ LocalTime tiempoInicio, LocalTime tiempoActual) {
         this.contenidoActual = contenidoActual;
         //this.subtituloActual = subtitulo;
         //this.controlABS = abs;
@@ -42,14 +42,14 @@ public class Reproductor {
      */
     // --- Getters y Setters ---
 
-    public ContenidoDAO getContenidoActual() {
+    public Contenido getContenidoActual() {
         return contenidoActual;
     }
 
     /** 
      * @param contenidoActual
      */
-    public void setContenidoActual(ContenidoDAO contenidoActual) {
+    public void setContenidoActual(Contenido contenidoActual) {
         this.contenidoActual = contenidoActual;
     }
 
@@ -100,7 +100,7 @@ public class Reproductor {
     
     // --- Métodos para manejar la reproducción ---
 
-    public void play(ContenidoDAO cont) {
+    public void play(Contenido cont) {
         // Logica para iniciar la reproducción del contenido..
     }
 
@@ -119,7 +119,7 @@ public class Reproductor {
     /** 
      * @param cont
      */
-    public void actualizarHistoria(ContenidoDAO cont) {
+    public void actualizarHistoria(Contenido cont) {
         // Logica para actualizar la historia de reproduccion del usuario..
     }
 

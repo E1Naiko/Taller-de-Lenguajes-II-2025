@@ -8,12 +8,12 @@ import taller2.plataformatdl2.ManejoDeUsuarios.*;
  * @author Alam Meza y Nicolas Peñalba
  * @version 1.0 - 2025-10-04
  * @see Usuario
- * @see ContenidoDAO
+ * @see Contenido
  */
 
 public class Resena {
     public Usuario usuario;
-    public ContenidoDAO contenidovisual;
+    public Contenido contenidovisual;
     public int  puntuacion;
     public String comentario;
 
@@ -25,7 +25,7 @@ public class Resena {
      * @param comentario   El comentario del usuario sobre el contenido.
      */
 
-    public Resena(Usuario usuario, ContenidoDAO contenidovisual, int puntuacion, String comentario) {
+    public Resena(Usuario usuario, Contenido contenidovisual, int puntuacion, String comentario) {
         this.usuario = usuario;
         this.contenidovisual = contenidovisual;
         this.puntuacion = puntuacion;
@@ -49,13 +49,13 @@ public class Resena {
     /** 
      * @return Contenido
      */
-    public ContenidoDAO getContenidovisual() {
+    public Contenido getContenidovisual() {
         return contenidovisual;
     }
     /** 
      * @param contenidovisual
      */
-    public void setContenidovisual(ContenidoDAO contenidovisual) {
+    public void setContenidovisual(Contenido contenidovisual) {
         this.contenidovisual = contenidovisual;
     }
     /** 

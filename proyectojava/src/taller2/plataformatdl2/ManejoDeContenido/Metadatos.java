@@ -7,7 +7,7 @@ import java.sql.Time;
  * 
  * @author Alam Meza y Nicolas Peñalba
  * @version 1.0 - 2025-09-15
- * @see ContenidoDAO
+ * @see Contenido
  */
 
 public class Metadatos {

@@ -54,7 +54,7 @@ import taller2.plataformatdl2.ManejoDeContenido.*;
      * @see main
      */
 
-    public boolean agregarContenido(ContenidoDAO cont/* , main plataforma*/) {
+    public boolean agregarContenido(Contenido cont/* , main plataforma*/) {
         // Lógica para agregar contenido al catálogo de la plataforma.
         return true;
     }
@@ -63,7 +63,7 @@ import taller2.plataformatdl2.ManejoDeContenido.*;
      * @param cont
      * @return boolean
      */
-    public boolean eliminarContenido(ContenidoDAO cont) {
+    public boolean eliminarContenido(Contenido cont) {
         // Lógica para eliminar contenido del catálogo de la plataforma.
         return true;
     }
@@ -72,7 +72,7 @@ import taller2.plataformatdl2.ManejoDeContenido.*;
      * @param cont
      * @return boolean
      */
-    public boolean modificarContenido(ContenidoDAO cont) {
+    public boolean modificarContenido(Contenido cont) {
         // Lógica para modificar contenido del catálogo de la plataforma.
         return true;
     }

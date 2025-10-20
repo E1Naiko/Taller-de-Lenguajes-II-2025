@@ -8,7 +8,7 @@ package taller2.plataformatdl2.ManejoDeContenido;
  * @version 1.0 - 2025-09-15
  */
 
- public abstract class ContenidoDAO {
+ public abstract class Contenido {
     protected String calidad;
     protected String audio;
     protected String direccionArchivo;
@@ -22,13 +22,13 @@ package taller2.plataformatdl2.ManejoDeContenido;
      * @param direccionArchivo La dirección de archivo.
      */
 
-    public ContenidoDAO(String calidad, String audio, String direccionArchivo) {
+    public Contenido(String calidad, String audio, String direccionArchivo) {
         this.calidad = calidad;
         this.audio = audio;
         this.direccionArchivo = direccionArchivo;
     }
 
-    public ContenidoDAO(String direccionArchivo, Metadatos metadatos, String genero) {
+    public Contenido(String direccionArchivo, Metadatos metadatos, String genero) {
         this.direccionArchivo = direccionArchivo;
         this.genero = genero;
     }
@@ -66,14 +66,14 @@ package taller2.plataformatdl2.ManejoDeContenido;
     /** 
      * @return String
      */
-    public String getDireccionMetadato() {
+    public String getDireccionArchivo() {
         return direccionArchivo;
     }
 
     /** 
      * @param direccionArchivo
      */
-    public void setDireccionMetadato(String direccionArchivo) {
+    public void setDireccionArchivo(String direccionArchivo) {
         this.direccionArchivo = direccionArchivo;
     }
 
