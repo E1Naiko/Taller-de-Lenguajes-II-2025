@@ -5,24 +5,22 @@ import taller2.DB.JDBC.PeliculasDAOJDBC;
 import taller2.DB.JDBC.ReseniasDAOJDBC;
 import taller2.DB.JDBC.UsuariosFinalDAOJDBC;
 
-public class FactoryDAO {
-    private static PeliculasDAO peliculasDAO = new PeliculasDAOJDBC();
-    private static ReseniasDAO reseniasDAO = new ReseniasDAOJDBC();
-    private static UsuariosFinalDAO usuariosFinalDAO = new UsuariosFinalDAOJDBC();
+public class Factory {
+    private static PeliculasDAO peliculasDAO = null;
+    private static ReseniasDAO reseniasDAO = null;
+    private static UsuariosFinalDAO usuariosFinalDAO = null;
     
-    public FactoryDAO(){
-        if (peliculasDAO == null){
+    static {
+        try {
             peliculasDAO = new PeliculasDAOJDBC();
             peliculasDAO.crearTablaPeliculas();
-        }
-        if (reseniasDAO == null){
             reseniasDAO = new ReseniasDAOJDBC();
             reseniasDAO.crearTablaResenias();
-        }
-        
-        if (usuariosFinalDAO == null){
             usuariosFinalDAO = new UsuariosFinalDAOJDBC();
             usuariosFinalDAO.crearTablaUsuarioFinal();
+            
+        } catch (Exception e) {
+            System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
         }
     }
     
