@@ -15,8 +15,15 @@ public class MenuResenia {
     public void cargarUsuarioEnUsuariosFinalDAO(){
         
         UsuarioFinal nuevoUsuario = cargarUsuario();
+    public void cargarUsuarioEnUsuariosFinalDAO(){
+        
+        UsuarioFinal nuevoUsuario = cargarUsuario();
         Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
     }
+
+    public void cargarPeliculaEnPeliculasDAO(){
+        
+        Pelicula nuevaPelicula = cargarPelicula();
 
     public void cargarPeliculaEnPeliculasDAO(){
         
@@ -73,6 +80,8 @@ public class MenuResenia {
 
     private Pelicula cargarPelicula(){
         Scanner scanner= new Scanner(System.in);
+    private Pelicula cargarPelicula(){
+        Scanner scanner= new Scanner(System.in);
 
         String calidad = null;
         String audio = null;
@@ -97,6 +106,7 @@ public class MenuResenia {
         } while (!verificarDireccionArchivo(direccionArchivo));
         
         Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo);
+        scanner.close();
         scanner.close();
         return nuevaPelicula;
     }
