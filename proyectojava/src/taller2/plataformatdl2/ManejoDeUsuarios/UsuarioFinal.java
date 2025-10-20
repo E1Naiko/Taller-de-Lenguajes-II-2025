@@ -20,7 +20,6 @@ public class UsuarioFinal extends Usuario {
         this.generosPreferidos = generosPreferidos;
         this.listaPreferida = listaPreferida;
         this.historial = historial;
-
     }
 
     /** 
