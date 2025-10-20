@@ -1,4 +1,5 @@
-package taller2.plataformatdl2;
+package taller2.plataformatdl2.ManejoDeContenido;
+import taller2.plataformatdl2.ManejoDeUsuarios.*;
 
 /**
  * Clase que representa una reseña realizada por un usuario sobre un contenido visual en la plataforma de streaming.
@@ -7,12 +8,12 @@ package taller2.plataformatdl2;
  * @author Alam Meza y Nicolas Peñalba
  * @version 1.0 - 2025-10-04
  * @see Usuario
- * @see Contenido
+ * @see ContenidoDAO
  */
 
 public class Resena {
     public Usuario usuario;
-    public Contenido contenidovisual;
+    public ContenidoDAO contenidovisual;
     public int  puntuacion;
     public String comentario;
 
@@ -24,7 +25,7 @@ public class Resena {
      * @param comentario   El comentario del usuario sobre el contenido.
      */
 
-    public Resena(Usuario usuario, Contenido contenidovisual, int puntuacion, String comentario) {
+    public Resena(Usuario usuario, ContenidoDAO contenidovisual, int puntuacion, String comentario) {
         this.usuario = usuario;
         this.contenidovisual = contenidovisual;
         this.puntuacion = puntuacion;
@@ -48,13 +49,13 @@ public class Resena {
     /** 
      * @return Contenido
      */
-    public Contenido getContenidovisual() {
+    public ContenidoDAO getContenidovisual() {
         return contenidovisual;
     }
     /** 
      * @param contenidovisual
      */
-    public void setContenidovisual(Contenido contenidovisual) {
+    public void setContenidovisual(ContenidoDAO contenidovisual) {
         this.contenidovisual = contenidovisual;
     }
     /** 

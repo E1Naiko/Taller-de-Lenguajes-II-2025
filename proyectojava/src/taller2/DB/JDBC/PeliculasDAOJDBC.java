@@ -2,7 +2,7 @@ package taller2.DB.JDBC;
 
 import java.sql.*;
 import taller2.DB.DAO.PeliculasDAO;
-import taller2.plataformatdl2.Contenido;
+import taller2.plataformatdl2.ManejoDeContenido.*;
 
 public class PeliculasDAOJDBC implements PeliculasDAO {
 
@@ -47,7 +47,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
      * @return Contenido
      */
     @Override
-    public Contenido encontrarPelicula(int id) {
+    public ContenidoDAO encontrarPelicula(int id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'encontrarPelicula'");
     }
@@ -57,7 +57,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
      * @return int
      */
     @Override
-    public int encontrarIdPelicula(Contenido pelicula) {
+    public int encontrarIdPelicula(ContenidoDAO pelicula) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'encontrarIdPelicula'");
     }

@@ -1,4 +1,4 @@
-package taller2.plataformatdl2;
+package taller2.plataformatdl2.ManejoDeContenido;
 
 /**
  * Clase que representa un contenido en la plataforma de streaming.
@@ -8,7 +8,7 @@ package taller2.plataformatdl2;
  * @version 1.0 - 2025-09-15
  */
 
- public abstract class Contenido {
+ public abstract class ContenidoDAO {
     protected String calidad;
     protected String audio;
     protected String direccionArchivo;
@@ -22,13 +22,13 @@ package taller2.plataformatdl2;
      * @param direccionArchivo La dirección de archivo.
      */
 
-    public Contenido(String calidad, String audio, String direccionArchivo) {
+    public ContenidoDAO(String calidad, String audio, String direccionArchivo) {
         this.calidad = calidad;
         this.audio = audio;
         this.direccionArchivo = direccionArchivo;
     }
 
-    public Contenido(String direccionArchivo, Metadatos metadatos, String genero) {
+    public ContenidoDAO(String direccionArchivo, Metadatos metadatos, String genero) {
         this.direccionArchivo = direccionArchivo;
         this.genero = genero;
     }

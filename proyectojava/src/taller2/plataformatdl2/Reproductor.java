@@ -1,5 +1,7 @@
 package taller2.plataformatdl2;
+import taller2.plataformatdl2.ManejoDeContenido.*;
 import java.time.LocalTime;
+
 /**
  * Clase que representa el reproductor de la plataforma de streaming.
  * Esta clase maneja la reproducción de contenidos, incluyendo el control de tiempo,
@@ -10,7 +12,7 @@ import java.time.LocalTime;
  */
 
 public class Reproductor {
-    private Contenido contenidoActual;
+    private ContenidoDAO contenidoActual;
     private LocalTime tiempoActual;
     private LocalTime tiempoInicio;
     // Aqui se declara tipo de datos objetos que no esta en la carpeta
@@ -27,7 +29,7 @@ public class Reproductor {
      * @param tiempoActual El tiempo actual de la reproducción.
      */
 
-    public Reproductor(Contenido contenidoActual, /**Subtitulo subtitulo, AdaptativeBitrateStreaming abs **/ LocalTime tiempoInicio, LocalTime tiempoActual) {
+    public Reproductor(ContenidoDAO contenidoActual, /**Subtitulo subtitulo, AdaptativeBitrateStreaming abs **/ LocalTime tiempoInicio, LocalTime tiempoActual) {
         this.contenidoActual = contenidoActual;
         //this.subtituloActual = subtitulo;
         //this.controlABS = abs;
@@ -40,14 +42,14 @@ public class Reproductor {
      */
     // --- Getters y Setters ---
 
-    public Contenido getContenidoActual() {
+    public ContenidoDAO getContenidoActual() {
         return contenidoActual;
     }
 
     /** 
      * @param contenidoActual
      */
-    public void setContenidoActual(Contenido contenidoActual) {
+    public void setContenidoActual(ContenidoDAO contenidoActual) {
         this.contenidoActual = contenidoActual;
     }
 
@@ -98,7 +100,7 @@ public class Reproductor {
     
     // --- Métodos para manejar la reproducción ---
 
-    public void play(Contenido cont) {
+    public void play(ContenidoDAO cont) {
         // Logica para iniciar la reproducción del contenido..
     }
 
@@ -117,7 +119,7 @@ public class Reproductor {
     /** 
      * @param cont
      */
-    public void actualizarHistoria(Contenido cont) {
+    public void actualizarHistoria(ContenidoDAO cont) {
         // Logica para actualizar la historia de reproduccion del usuario..
     }
 

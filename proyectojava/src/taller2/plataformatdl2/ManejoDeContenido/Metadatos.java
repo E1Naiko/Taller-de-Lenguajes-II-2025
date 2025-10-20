@@ -1,4 +1,4 @@
-package taller2.plataformatdl2;
+package taller2.plataformatdl2.ManejoDeContenido;
 import java.sql.Time;
 
 /**
@@ -7,7 +7,7 @@ import java.sql.Time;
  * 
  * @author Alam Meza y Nicolas Peñalba
  * @version 1.0 - 2025-09-15
- * @see Contenido
+ * @see ContenidoDAO
  */
 
 public class Metadatos {
