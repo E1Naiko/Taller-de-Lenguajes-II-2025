@@ -5,30 +5,32 @@ import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.ManejoDeContenido.*;
 
 public class PeliculasDAOJDBC implements PeliculasDAO {
-
+    
     @Override
     public void crearTablaPeliculas() {
         Connection c = null;
+        Statement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            try (Connection c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-                 Statement stmt = c.createStatement()) {
-
-                System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Creando Tabla");
-
-                String sql = "CREATE TABLE IF NOT EXISTS PELICULAS " +
-                        "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        " Direccion_Archivo      TEXT     NOT NULL, " +
-                        " Calidad                TEXT     NOT NULL, " +
-                        " Audio                  TEXT     NOT NULL)";
-                stmt.executeUpdate(sql);
-                System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Tabla Creada Exitosamente");
-            }
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Creando Tabla");
+            
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS PELICULAS " +
+            "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+            " Direccion_Archivo      TEXT     NOT NULL, " +
+            " Calidad                TEXT     NOT NULL, " +
+            " Audio                  TEXT     NOT NULL)";
+            stmt.executeUpdate(sql);
+            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Tabla Creada Exitosamente");
+            stmt.close();
+            c.close();
+            
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
-
+    
     @Override
     public void insertarPeliculas(Pelicula pelicula) {
         Connection c = null;
@@ -55,7 +57,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
-
+    
     @Override
     public void eliminarPeliculas(int idPelicula) {
         Connection c = null;
@@ -84,16 +86,15 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
     }
-
+    
     /** 
-     * @param pelicula
-     * @return int
-     */
+    * @param pelicula
+    * @return int
+    */
     @Override
     public int encontrarIdPelicula(Contenido pelicula) {
         int idEncontrada = 0;
         Connection c = null;
-        Statement stmt = null; // This line is now removed in the final patch
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -102,18 +103,18 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
             try (Statement stmt = c.createStatement()) {
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE Direccion_Archivo=" + pelicula.getDireccionArchivo() +
-            ", Calidad=" + pelicula.getCalidad() +
-            ", Idioma=" + pelicula.getAudio() + ";" );
-            
-            idEncontrada = rs.getInt("ID");
-            
-            if (idEncontrada==0)
+                ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE Direccion_Archivo=" + pelicula.getDireccionArchivo() +
+                ", Calidad=" + pelicula.getCalidad() +
+                ", Idioma=" + pelicula.getAudio() + ";" );
+                
+                idEncontrada = rs.getInt("ID");
+                
+                if (idEncontrada==0)
                 System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - ERROR no se encontro id del elemento");
-            else
+                else
                 System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - id del elemento encontrada correctamente");
-
-            rs.close();
+                
+                rs.close();
             }
             c.close();
         } catch ( Exception e ) {
@@ -122,5 +123,5 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         }
         return idEncontrada;
     }
-
+    
 }
