@@ -41,7 +41,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Intentando insertar elemento.");
             
-            String sql = "INSERT INTO USUARIOS_FINAL (Direccion_Archivo, Calidad, Audio) VALUES (?,?,?)";
+            String sql = "INSERT INTO PELICULAS (Direccion_Archivo, Calidad, Audio) VALUES (?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, pelicula.getDireccionArchivo());
                 pstmt.setString(2, pelicula.getCalidad());
