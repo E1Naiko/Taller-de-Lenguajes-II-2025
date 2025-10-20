@@ -15,15 +15,8 @@ public class MenuResenia {
     public void cargarUsuarioEnUsuariosFinalDAO(){
         
         UsuarioFinal nuevoUsuario = cargarUsuario();
-    public void cargarUsuarioEnUsuariosFinalDAO(){
-        
-        UsuarioFinal nuevoUsuario = cargarUsuario();
         Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
     }
-
-    public void cargarPeliculaEnPeliculasDAO(){
-        
-        Pelicula nuevaPelicula = cargarPelicula();
 
     public void cargarPeliculaEnPeliculasDAO(){
         
@@ -37,9 +30,8 @@ public class MenuResenia {
     //Metodo para registrar Usuario
     private static UsuarioFinal cargarUsuario(){
         Scanner scanner= new Scanner(System.in);
-        List<String> errores = new ArrayList<>(); //Creo una lista de errores para validar los errores en un solo intento
-        // Validar Nombre
-        System.out.println("Ingresar Nombre: ");
+
+        System.out.print("Ingrese nombre: ");
         String nombre= scanner.nextLine();
         if (nombre.trim().isEmpty()) { // Verifica si el nombre no esta vacio
             errores.add ("El nombre no puede estar vacio");
@@ -74,12 +66,9 @@ public class MenuResenia {
         UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
         System.out.println(nuevoUsuario.toString());
         scanner.close();
-        scanner.close();
         return nuevoUsuario;
     }
 
-    private Pelicula cargarPelicula(){
-        Scanner scanner= new Scanner(System.in);
     private Pelicula cargarPelicula(){
         Scanner scanner= new Scanner(System.in);
 
@@ -106,7 +95,6 @@ public class MenuResenia {
         } while (!verificarDireccionArchivo(direccionArchivo));
         
         Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo);
-        scanner.close();
         scanner.close();
         return nuevaPelicula;
     }
