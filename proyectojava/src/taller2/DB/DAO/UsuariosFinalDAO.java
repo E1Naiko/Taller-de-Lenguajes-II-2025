@@ -1,6 +1,6 @@
 package taller2.DB.DAO;
 
-import taller2.plataformatdl2.ManejoDeUsuarios.*;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.*;
 
 public interface UsuariosFinalDAO {
     public void crearTablaUsuarioFinal();

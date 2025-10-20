@@ -2,7 +2,7 @@ package taller2.DB.JDBC;
 
 import java.sql.*;
 import taller2.DB.DAO.UsuariosFinalDAO;
-import taller2.plataformatdl2.ManejoDeUsuarios.*;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.*;
 
 public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     

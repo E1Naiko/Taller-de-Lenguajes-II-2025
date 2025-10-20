@@ -3,7 +3,7 @@ package taller2.DB.JDBC;
 import java.sql.*;
 
 import taller2.DB.DAO.ReseniasDAO;
-import taller2.plataformatdl2.ManejoDeContenido.*;;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;;
 
 public class ReseniasDAOJDBC implements ReseniasDAO {
   @Override

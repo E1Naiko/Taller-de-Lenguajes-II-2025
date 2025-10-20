@@ -18,7 +18,6 @@ public class Main {
     * @param args
     */
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
         int entrada;
         
         Factory factory = new Factory();
@@ -27,7 +26,7 @@ public class Main {
         imprimirOpciones();
         boolean bucle = true;
         while (bucle) {
-            entrada = in.nextInt();
+            entrada = lecturaDeOpcion();
             switch (entrada) {
                 case 0:
                 bucle = false;
@@ -50,7 +49,6 @@ public class Main {
         }
         
         System.out.println("Cerrando Programa.");
-        in.close();
     }
     
     private static void imprimirOpciones(){
@@ -61,5 +59,12 @@ public class Main {
         "Ingresar Pelicula a BD (3), " +
         ".");
         System.out.println("Que operacion desea ejecutar?");
+    }
+
+    private static int lecturaDeOpcion(){
+        Scanner in = new Scanner(System.in);
+        int entrada = in.nextInt();
+        in.close();
+        return entrada;
     }
 }

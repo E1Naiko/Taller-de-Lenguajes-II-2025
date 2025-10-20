@@ -1,5 +1,5 @@
-package taller2.plataformatdl2.ManejoDeUsuarios;
-import taller2.plataformatdl2.ManejoDeContenido.*;
+package taller2.plataformatdl2.Model.ManejoDeUsuarios;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 
 /**
  * Clase que representa un administrador de la plataforma de streaming.

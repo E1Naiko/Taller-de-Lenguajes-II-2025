@@ -1,4 +1,4 @@
-package taller2.plataformatdl2.ManejoDeContenido;
+package taller2.plataformatdl2.Model.ManejoDeContenido;
 import java.sql.Time;
 
 /**

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import taller2.DB.DAO.Factory;
-import taller2.plataformatdl2.ManejoDeContenido.Pelicula;
-import taller2.plataformatdl2.ManejoDeUsuarios.UsuarioFinal;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 
 public class MenuResenia {
     public MenuResenia(){

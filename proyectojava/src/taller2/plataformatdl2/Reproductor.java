@@ -1,6 +1,7 @@
 package taller2.plataformatdl2;
-import taller2.plataformatdl2.ManejoDeContenido.*;
 import java.time.LocalTime;
+
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 
 /**
  * Clase que representa el reproductor de la plataforma de streaming.

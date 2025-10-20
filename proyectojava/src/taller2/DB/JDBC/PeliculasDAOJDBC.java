@@ -2,7 +2,7 @@ package taller2.DB.JDBC;
 
 import java.sql.*;
 import taller2.DB.DAO.PeliculasDAO;
-import taller2.plataformatdl2.ManejoDeContenido.*;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 
 public class PeliculasDAOJDBC implements PeliculasDAO {
     

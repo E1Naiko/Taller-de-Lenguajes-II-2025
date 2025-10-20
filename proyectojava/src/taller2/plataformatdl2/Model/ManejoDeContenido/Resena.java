@@ -1,5 +1,5 @@
-package taller2.plataformatdl2.ManejoDeContenido;
-import taller2.plataformatdl2.ManejoDeUsuarios.*;
+package taller2.plataformatdl2.Model.ManejoDeContenido;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.*;
 
 /**
  * Clase que representa una reseña realizada por un usuario sobre un contenido visual en la plataforma de streaming.
