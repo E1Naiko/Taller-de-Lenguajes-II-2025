@@ -115,37 +115,38 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   * @return int
   */
   @Override
-  public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia) {
-        int idEncontrada = 0;
-        Connection c = null;
-        Statement stmt = null;
-        
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
-            c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
-            
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE ID_USUARIO=" + idUsuario +
-            ", ID_PELICULA=" + idPelicula +
-            ", Contrasena=" + ReseniasDAO.get  + 
-            ", Idioma=" + ReseniasDAO.get + ";" );
-            
-            idEncontrada = rs.getInt("ID");
-            
-            if (idEncontrada==0)
-                System.out.println("\"PlataformaTDL2 - ReseniasDAO - ERROR no se encontro id del elemento");
-            else
-                System.out.println("\"PlataformaTDL2 - ReseniasDAO - id del elemento encontrada correctamente");
-
-            rs.close();
-            stmt.close();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        return idEncontrada;
+  public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia, int aprobado) {
+    int idEncontrada = 0;
+    Connection c = null;
+    Statement stmt = null;
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:test.db");
+      c.setAutoCommit(false);
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
+      
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE ID_USUARIO=" + idUsuario +
+      ", ID_PELICULA=" + idPelicula +
+      ", Puntuacion=" + resenia.getPuntuacion() + 
+      ", Comentario=" + resenia.getComentario() + 
+      ", Aprobado=" + aprobado);
+      
+      idEncontrada = rs.getInt("ID");
+      
+      if (idEncontrada==0)
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - ERROR no se encontro id del elemento");
+      else
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - id del elemento encontrada correctamente");
+      
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.exit(0);
     }
+    return idEncontrada;
+  }
 }
