@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 
 public class MenuResenia {
@@ -21,6 +22,12 @@ public class MenuResenia {
         Pelicula nuevaPelicula = cargarPelicula();
         Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
     }
+
+    public void cargarPeliculaEnReseniasDAO(){
+        Resena nuevaResenia = cargarResenia();
+        //Factory.getReseniasDAO().insertarResenia();// pasar todo a logica usando interfaces
+    }
+
 
     /** 
      * @return UsuarioFinal
@@ -175,4 +182,29 @@ public class MenuResenia {
         }
         return res;
     }
+
+    private Pelicula cargarResenia(){
+        Scanner scanner= new Scanner(System.in);
+
+
+/*
+        do {
+            System.out.println("Ingrese Calidad: ");
+            calidad = scanner.nextLine();
+
+        } while (!verificarCalidad(calidad));
+        
+        Resena nuevaResenia = new Resena();
+        scanner.close();
+        return nuevaResenia;
+    }
+*/
+    /*private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
+        boolean res = true;
+
+        if (!res){
+            System.out.println("ERROR - CALIDAD NO VALIDA");
+        }
+        return res;
+    }*/
 }
