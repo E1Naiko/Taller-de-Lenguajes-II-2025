@@ -185,6 +185,23 @@ public class MenuResenia {
 
     private Pelicula cargarResenia(){
         Scanner scanner= new Scanner(System.in);
+        String actNombre;
+        String actContrasenia;
+        boolean login = false;
+
+        do {
+            System.out.println("Ingrese nombre de usuario: ");
+            actNombre = scanner.next();
+            System.out.println("Ingrese contrasenia: ");
+            actContrasenia = scanner.next();
+            
+            login = Factory.getUsuariosFinalDAO().checkearUsuarioViaLogin(actNombre, actContrasenia);
+            if (login)
+                System.out.println("Usuario ingresado con exito.");
+            else
+                System.out.println("Error, usuario o contrasenia no válido.");
+            
+        } while (!login);
 
 
 /*
