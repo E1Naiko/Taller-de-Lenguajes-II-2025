@@ -7,4 +7,6 @@ public interface UsuariosFinalDAO {
     public void insertarUsuarioFinal(UsuarioFinal usuario);
     public void eliminarUsuarioFinal(int idUsuario);
     public int devolverIdUsuarioFinal(UsuarioFinal usuario);
+    public boolean existeUsuario(UsuarioFinal usuario);
+    public boolean checkearUsuarioViaLogin(String nombreUsuario, String contrasenia);
 }

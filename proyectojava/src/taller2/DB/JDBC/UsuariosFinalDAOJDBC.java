@@ -128,4 +128,41 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
         return idEncontrada;
     }
+
+    public boolean existeUsuario(UsuarioFinal usuario){
+        return devolverIdUsuarioFinal(usuario)!=0 ? true : false;
+    }
+
+    public boolean checkearUsuarioViaLogin(String nombreUsuario, String contrasenia){
+        int idEncontrada = 0;
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE NOMBRE=" + nombreUsuario +
+            ", Contrasena=" + contrasenia  + 
+            ";" );
+            
+            idEncontrada = rs.getInt("ID");
+            
+            if (idEncontrada==0)
+                System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - ERROR no se encontro id del elemento");
+            else
+                System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - id del elemento encontrada correctamente");
+
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return idEncontrada!=0;
+    }
 }
