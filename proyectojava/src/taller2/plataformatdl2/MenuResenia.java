@@ -1,7 +1,6 @@
 package taller2.plataformatdl2;
 
 import java.util.Scanner;
-
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
@@ -10,11 +9,41 @@ public class MenuResenia {
     public MenuResenia(){
     }
 
-    public void cargarUsuarioEnUsuariosFinalDAO(){
+    public void cargarUsuarioEnUsuariosFinalDAO() {
+        Scanner scanner = new Scanner(System.in);
         
-        UsuarioFinal nuevoUsuario = cargarUsuario();
-        Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
+        // Llamamos al método que carga los datos y le PASAMOS el scanner.
+        System.out.println("--- Inicio de Registro de Usuario ---");
+        UsuarioFinal nuevoUsuario = cargarUsuario(scanner);
+
+        //Mostrar al usuario todos los datos que acaba de ingresar.
+        System.out.println("\n=============================================");
+        System.out.println("    Por favor, revise los datos ingresados:");
+        System.out.println(nuevoUsuario.toString()); 
+        System.out.println("=============================================");
+
+        //Preguntar si los datos son correctos.
+        String confirmacion = "";
+        do {
+            System.out.print("¿Los datos son correctos? (s/n): ");
+            confirmacion = scanner.nextLine();
+        } while (!confirmacion.equalsIgnoreCase("s") && !confirmacion.equalsIgnoreCase("n"));
+
+        //Si confirma, se guardan en la Base de Datos.
+        if (confirmacion.equalsIgnoreCase("s")) {
+            Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
+            System.out.println("¡Usuario guardado exitosamente!");
+        } else {
+            System.out.println("Operación cancelada. El usuario no ha sido guardado.");
+        }
+        scanner.close();
     }
+
+    // TODO - Este es el metodo sin la verifacion de datos por el usuario
+    //public void cargarUsuarioEnUsuariosFinalDAO(){
+        //UsuarioFinal nuevoUsuario = cargarUsuario();
+        //Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
+    //}
 
     public void cargarPeliculaEnPeliculasDAO(){
         
@@ -26,8 +55,7 @@ public class MenuResenia {
      * @return UsuarioFinal
      */
     //Metodo para registrar Usuario
-    private UsuarioFinal cargarUsuario(){
-        Scanner scanner= new Scanner(System.in);
+    private UsuarioFinal cargarUsuario(Scanner scanner){
         String nombre= null;
         String email= null;
         String contrasena= null;
@@ -61,62 +89,47 @@ public class MenuResenia {
         String historial = "ListaVacia"; // TODO Por el momento lo tratamos como string luego cambiamos a lista
         
         UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
-        System.out.println(nuevoUsuario.toString());
-        scanner.close();
         return nuevoUsuario;
     }
 
     private boolean verificarNombre(String nombreIN){ 
-        boolean res = true;
-        if (!res){
-            if (nombreIN.trim().isEmpty()) { // Verifica si el nombre no esta vacio
+        if (nombreIN.trim().isEmpty()) { // Verifica si el nombre no esta vacio
             System.out.println ("El nombre no puede estar vacio");
-            res= false;
-        } else if (!nombreIN.matches("[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+")) {
+            return false;
+        } 
+        if (!nombreIN.matches("[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+")) { //Validacion de formato de nombre
             System.out.println("EL nombre solo puede tener letras y espacios");
-            res= false;
+            return false;
         }
-            System.out.println("ERROR - CALIDAD NO VALIDA");
-        }
-        return res;
+        return true;
     }
 
     private boolean verificarEmail(String emailIN){ 
-        boolean res = true;
-        if (!res){
-            if (emailIN.trim().isEmpty()) {
+        if (emailIN.trim().isEmpty()) { // Verifica si el email no esta vacio
             System.out.println("El email no puede estar vacio");
-            res= false;
-        } else if (!emailIN.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return false;
+        } 
+        if (!emailIN.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) { // Validacion de formato de email
             System.out.println("El email no cumple con el formato aaa@bbb");
-            res= false;
+            return false;  
         }
-            System.out.println("ERROR - CALIDAD NO VALIDA");
-        }
-        return res;
+        return true; 
     }
 
     private boolean verificarContrasena(String contrasenaIN){ 
-        boolean res = true;
-        if (!res){
-            if (contrasenaIN.trim().isEmpty()) {
+        if (contrasenaIN.trim().isEmpty()) { // Verifica si la contraseña no esta vacia
             System.out.println("La contraseña no puede estar vacia");
-            res= false;
+            return false;
         }
-        }
-        return res;
+        return true;
     }
 
     private boolean verificarIdioma(String idiomaIN){ 
-        boolean res = true;
-        if (!res){
-         if (idiomaIN.trim().isEmpty()) {
+        if (idiomaIN.trim().isEmpty()) { // Verifica si el idioma no esta vacio
             System.out.println("El idioma no puede estar vacio");
-            res= false;
+            return false;
         }
-            System.out.println("ERROR - CALIDAD NO VALIDA");
-        }
-        return res;
+        return true;
     }
 
     private Pelicula cargarPelicula(){
