@@ -107,7 +107,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE NOMBRE=" + usuario.getNombre() +
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE Nombre=" + usuario.getNombre() +
             ", Email=" + usuario.getEmail() +
             ", Contrasena=" + usuario.getContrasena()  + 
             ", Idioma=" + usuario.getIdioma() + ";" );
@@ -124,7 +124,6 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
         return idEncontrada;
     }
@@ -133,7 +132,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return devolverIdUsuarioFinal(usuario)!=0 ? true : false;
     }
 
-    public boolean checkearUsuarioViaLogin(String nombreUsuario, String contrasenia){
+    public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia){
         int idEncontrada = 0;
         Connection c = null;
         Statement stmt = null;
@@ -161,8 +160,44 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
         }
-        return idEncontrada!=0;
+        return idEncontrada;
+    }
+
+    public boolean checkUsuarioViaLogin(String nombreUsuario, String contrasenia){
+        return encontrarIdUsuarioViaLogin(nombreUsuario, contrasenia)!=0 ? true : false;
+    }
+
+    public UsuarioFinal encontrarUsuarioViaId(int id){
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE ID=" + id +
+            ";" );
+            
+            String nombre = rs.getString("Nombre");
+            String email = rs.getString("Email");
+            String contrasena = rs.getString("Contrasenia");
+            String idioma = rs.getString("");
+            String generosPreferidos = "PRUEBA GENERAL"; // TODO String temporal
+            String listaPreferida = "PRUEBA GENERAL"; // TODO String temporal
+            String historial = "PRUEBA GENERAL"; // TODO String temporal
+            
+            rs.close();
+            stmt.close();
+            c.close();
+            UsuarioFinal usuario = new UsuarioFinal(nombre, email, contrasena, idioma, generosPreferidos, listaPreferida, historial);
+            return usuario;
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return null;
     }
 }

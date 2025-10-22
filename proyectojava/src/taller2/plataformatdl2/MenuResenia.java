@@ -3,6 +3,7 @@ package taller2.plataformatdl2;
 import java.util.Scanner;
 
 import taller2.DB.DAO.Factory;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Contenido;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
@@ -183,7 +184,55 @@ public class MenuResenia {
         return res;
     }
 
-    private Pelicula cargarResenia(){
+    private Resena cargarResenia(){
+        int id = login();
+        Contenido contenido = null; // TODO Object temporal
+        /*
+        do {
+            System.out.println("Ingrese Calidad: ");
+            calidad = scanner.nextLine();
+
+        } while (!verificarCalidad(calidad));
+        scanner.close();
+        
+        */
+
+        int puntuacion = 0; // TODO int temporal
+        /*
+        do {
+            System.out.println("Ingrese Calidad: ");
+            calidad = scanner.nextLine();
+
+        } while (!verificarCalidad(calidad));
+        scanner.close();
+        
+        */
+
+        String comentario  = "PRUEBA GENERAL"; // TODO String temporal
+        /*
+        do {
+            System.out.println("Ingrese Calidad: ");
+            calidad = scanner.nextLine();
+
+        } while (!verificarCalidad(calidad));
+        scanner.close();
+        
+        */
+
+        Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().encontrarUsuarioViaId(id), contenido, puntuacion, comentario);
+        return nuevaResenia;
+    }
+
+    /*private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
+        boolean res = true;
+
+        if (!res){
+            System.out.println("ERROR - CALIDAD NO VALIDA");
+        }
+        return res;
+    }*/
+
+    private int login(){
         Scanner scanner= new Scanner(System.in);
         String actNombre;
         String actContrasenia;
@@ -195,33 +244,15 @@ public class MenuResenia {
             System.out.println("Ingrese contrasenia: ");
             actContrasenia = scanner.next();
             
-            login = Factory.getUsuariosFinalDAO().checkearUsuarioViaLogin(actNombre, actContrasenia);
+            login = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(actNombre, actContrasenia);
             if (login)
                 System.out.println("Usuario ingresado con exito.");
             else
                 System.out.println("Error, usuario o contrasenia no válido.");
             
         } while (!login);
-
-
-/*
-        do {
-            System.out.println("Ingrese Calidad: ");
-            calidad = scanner.nextLine();
-
-        } while (!verificarCalidad(calidad));
-        
-        Resena nuevaResenia = new Resena();
         scanner.close();
-        return nuevaResenia;
-    }
-*/
-    /*private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
-        boolean res = true;
 
-        if (!res){
-            System.out.println("ERROR - CALIDAD NO VALIDA");
-        }
-        return res;
-    }*/
+        return Factory.getUsuariosFinalDAO().encontrarIdUsuarioViaLogin(actNombre, actContrasenia);
+    }
 }
