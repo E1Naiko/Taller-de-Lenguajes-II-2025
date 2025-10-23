@@ -31,6 +31,9 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         }
     }
     
+    /** 
+     * @param pelicula
+     */
     @Override
     public void insertarPeliculas(Pelicula pelicula) {
         Connection c = null;
@@ -58,6 +61,9 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         }
     }
     
+    /** 
+     * @param idPelicula
+     */
     @Override
     public void eliminarPeliculas(int idPelicula) {
         Connection c = null;

@@ -100,6 +100,10 @@ public class MenuResenia {
         return nuevoUsuario;
     }
 
+    /** 
+     * @param nombreIN
+     * @return boolean
+     */
     private boolean verificarNombre(String nombreIN){ 
         if (nombreIN.trim().isEmpty()) { // Verifica si el nombre no esta vacio
             System.out.println ("El nombre no puede estar vacio");
@@ -112,6 +116,10 @@ public class MenuResenia {
         return true;
     }
 
+    /** 
+     * @param emailIN
+     * @return boolean
+     */
     private boolean verificarEmail(String emailIN){ 
         if (emailIN.trim().isEmpty()) { // Verifica si el email no esta vacio
             System.out.println("El email no puede estar vacio");
@@ -124,6 +132,10 @@ public class MenuResenia {
         return true; 
     }
 
+    /** 
+     * @param contrasenaIN
+     * @return boolean
+     */
     private boolean verificarContrasena(String contrasenaIN){ 
         if (contrasenaIN.trim().isEmpty()) { // Verifica si la contraseña no esta vacia
             System.out.println("La contraseña no puede estar vacia");
@@ -132,6 +144,10 @@ public class MenuResenia {
         return true;
     }
 
+    /** 
+     * @param idiomaIN
+     * @return boolean
+     */
     private boolean verificarIdioma(String idiomaIN){ 
         if (idiomaIN.trim().isEmpty()) { // Verifica si el idioma no esta vacio
             System.out.println("El idioma no puede estar vacio");
@@ -140,6 +156,9 @@ public class MenuResenia {
         return true;
     }
 
+    /** 
+     * @return Pelicula
+     */
     private Pelicula cargarPelicula(){
         Scanner scanner= new Scanner(System.in);
 
@@ -170,6 +189,10 @@ public class MenuResenia {
         return nuevaPelicula;
     }
 
+    /** 
+     * @param (!res
+     * @return boolean
+     */
     private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
         boolean res = true;
 
@@ -179,6 +202,10 @@ public class MenuResenia {
         return res;
     }
 
+    /** 
+     * @param (!res
+     * @return boolean
+     */
     private boolean verificarAudio(String audioIN){ // TODO - definir criterio para audio
         boolean res = true;
 
@@ -188,6 +215,10 @@ public class MenuResenia {
         return res;
     }
     
+    /** 
+     * @param (!res
+     * @return boolean
+     */
     private boolean verificarDireccionArchivo(String direccionArchivoIN){ // TODO - definir criterio para direccion de archivo
         boolean res = true;
         
@@ -197,6 +228,9 @@ public class MenuResenia {
         return res;
     }
 
+    /** 
+     * @return Resena
+     */
     private Resena cargarResenia(){
         int id = login();
         Contenido contenido = null; // TODO Object temporal
@@ -236,6 +270,10 @@ public class MenuResenia {
         return nuevaResenia;
     }
 
+    /** 
+     * @param !res
+     * @return int
+     */
     /*private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
         boolean res = true;
 

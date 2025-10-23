@@ -61,6 +61,9 @@ public class Main {
         System.out.println("Que operacion desea ejecutar?");
     }
 
+    /** 
+     * @return int
+     */
     private static int lecturaDeOpcion(){
         Scanner in = new Scanner(System.in);
         int entrada = in.nextInt();

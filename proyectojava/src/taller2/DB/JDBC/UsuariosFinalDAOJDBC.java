@@ -62,6 +62,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
+    /** 
+     * @param idUsuario
+     */
     @Override
     public void eliminarUsuarioFinal(int idUsuario) {
         Connection c = null;
@@ -128,10 +131,19 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
 
+    /** 
+     * @param usuario
+     * @return boolean
+     */
     public boolean existeUsuario(UsuarioFinal usuario){
         return devolverIdUsuarioFinal(usuario)!=0 ? true : false;
     }
 
+    /** 
+     * @param nombreUsuario
+     * @param contrasenia
+     * @return int
+     */
     public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia){
         int idEncontrada = 0;
         Connection c = null;
@@ -164,10 +176,19 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
 
+    /** 
+     * @param nombreUsuario
+     * @param contrasenia
+     * @return boolean
+     */
     public boolean checkUsuarioViaLogin(String nombreUsuario, String contrasenia){
         return encontrarIdUsuarioViaLogin(nombreUsuario, contrasenia)!=0 ? true : false;
     }
 
+    /** 
+     * @param id
+     * @return UsuarioFinal
+     */
     public UsuarioFinal encontrarUsuarioViaId(int id){
         Connection c = null;
         Statement stmt = null;
