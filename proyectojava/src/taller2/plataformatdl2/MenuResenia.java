@@ -48,10 +48,38 @@ public class MenuResenia {
     //}
 
     public void cargarPeliculaEnPeliculasDAO(){
-        
-        Pelicula nuevaPelicula = cargarPelicula();
-        Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
-    }
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("--- Inicio de Carga de Nueva Película ---");
+        //Llamamos al método que carga los datos
+        Pelicula nuevaPelicula = cargarPelicula(scanner);
+
+        //Mostrar al usuario todos los datos que acaba de ingresar.
+        System.out.println("\n=============================================");
+        System.out.println("    Por favor, revise los datos ingresados:");
+        System.out.println(nuevaPelicula.toString()); 
+        System.out.println("=============================================");
+
+        //Preguntar si los datos son correctos.
+        String confirmacion = "";
+        do {
+            System.out.print("¿Los datos son correctos? (s/n): ");
+            confirmacion = scanner.nextLine();
+        } while (!confirmacion.equalsIgnoreCase("s") && !confirmacion.equalsIgnoreCase("n"));
+
+        //Si confirma, se guardan en la Base de Datos.
+        if (confirmacion.equalsIgnoreCase("s")) {
+            Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
+            System.out.println("¡Película guardada exitosamente!");
+        } else {
+            System.out.println("Operación cancelada. La película no ha sido guardada.");
+        }
+        scanner.close();
+    }   
+
+    //public void cargarPeliculaEnPeliculasDAO(){  
+        //Pelicula nuevaPelicula = cargarPelicula();
+        //Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
+    //}
 
     public void cargarReseniaEnReseniasDAO(){
         Resena nuevaResenia = cargarResenia();
@@ -159,8 +187,7 @@ public class MenuResenia {
     /** 
      * @return Pelicula
      */
-    private Pelicula cargarPelicula(){
-        Scanner scanner= new Scanner(System.in);
+    private Pelicula cargarPelicula(Scanner scanner){ //TODO Verificar si hace falta mas atributo como metadatos
 
         String calidad = null;
         String audio = null;
@@ -169,23 +196,19 @@ public class MenuResenia {
         do {
             System.out.println("Ingrese Calidad: ");
             calidad = scanner.nextLine();
-
         } while (!verificarCalidad(calidad));
         
         do {
             System.out.println("Ingrese Audio: ");
             audio = scanner.nextLine();
-
         } while (!verificarAudio(audio));
         
         do {
             System.out.println("Ingrese Direccion del Archivo: ");
             direccionArchivo = scanner.nextLine();
-
         } while (!verificarDireccionArchivo(direccionArchivo));
         
         Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo);
-        scanner.close();
         return nuevaPelicula;
     }
 
@@ -193,39 +216,36 @@ public class MenuResenia {
      * @param (!res
      * @return boolean
      */
-    private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
-        boolean res = true;
-
-        if (!res){
-            System.out.println("ERROR - CALIDAD NO VALIDA");
+    private boolean verificarCalidad(String calidadIN){ 
+        if (calidadIN.trim().isEmpty()) { // Verifica si el idioma no esta vacio
+            System.out.println("La calidad no puede estar vacia");
+            return false;
         }
-        return res;
+        return true;
     }
 
     /** 
      * @param (!res
      * @return boolean
      */
-    private boolean verificarAudio(String audioIN){ // TODO - definir criterio para audio
-        boolean res = true;
-
-        if (!res){
-            System.out.println("ERROR - TIPO DE AUDIO NO VALIDO");
+    private boolean verificarAudio(String audioIN){ 
+        if (audioIN.trim().isEmpty()) { // Verifica si el idioma no esta vacio
+            System.out.println("EL audio no puede estar vacio");
+            return false;
         }
-        return res;
+        return true;
     }
     
     /** 
      * @param (!res
      * @return boolean
      */
-    private boolean verificarDireccionArchivo(String direccionArchivoIN){ // TODO - definir criterio para direccion de archivo
-        boolean res = true;
-        
-        if (!res){
-            System.out.println("ERROR - DIRECCION DE ARCHIVO NO VALIDA");
+    private boolean verificarDireccionArchivo(String direccionArchivoIN){ 
+        if (direccionArchivoIN.trim().isEmpty()) { // Verifica si el idioma no esta vacio
+            System.out.println("La direccion de archivo no puede estar vacia");
+            return false;
         }
-        return res;
+        return true;
     }
 
     /** 
