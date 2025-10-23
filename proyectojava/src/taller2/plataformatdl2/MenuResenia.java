@@ -233,56 +233,79 @@ public class MenuResenia {
      */
     private Resena cargarResenia(){
         int id = login();
-        Contenido contenido = null; // TODO Object temporal
-        /*
+        Scanner scanner= new Scanner(System.in);
+
+        int idContenido;
+        do {
+            System.out.println(" DEBUG - TABLA CONTENIDO NO IMPLEMENTADA - Ingrese el id del contenido: ");
+            idContenido = scanner.nextInt();
+
+        } while (!verificarIdContenido(idContenido));
+
+        Contenido contenido = null; // TODO - No hay tabla de contenidos implementada, solo hace falta asociar la di
+        
+        int puntuacion = 0;
         do {
             System.out.println("Ingrese Calidad: ");
-            calidad = scanner.nextLine();
+            puntuacion = scanner.nextInt();
 
-        } while (!verificarCalidad(calidad));
-        scanner.close();
+        } while (!verificarPuntuacion(puntuacion));
         
-        */
-
-        int puntuacion = 0; // TODO int temporal
-        /*
+        String comentario  = "PRUEBA GENERAL";
         do {
-            System.out.println("Ingrese Calidad: ");
-            calidad = scanner.nextLine();
+            System.out.println("Ingrese su comentario: ");
+            comentario = scanner.nextLine();
 
-        } while (!verificarCalidad(calidad));
+        } while (!verificarComentario(comentario));
         scanner.close();
-        
-        */
 
-        String comentario  = "PRUEBA GENERAL"; // TODO String temporal
-        /*
-        do {
-            System.out.println("Ingrese Calidad: ");
-            calidad = scanner.nextLine();
-
-        } while (!verificarCalidad(calidad));
         scanner.close();
-        
-        */
-
         Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().encontrarUsuarioViaId(id), contenido, puntuacion, comentario);
         return nuevaResenia;
     }
 
     /** 
-     * @param !res
-     * @return int
+     * @param (!res
+     * @return boolean
      */
-    /*private boolean verificarCalidad(String calidadIN){ // TODO - Definir criterio para calidad
+    private boolean verificarIdContenido(int idContenidoIN){ // TODO - Definir criterio para dirContenido
         boolean res = true;
 
         if (!res){
             System.out.println("ERROR - CALIDAD NO VALIDA");
         }
         return res;
-    }*/
+    }
 
+    /** 
+     * @param puntuacionIN
+     * @return boolean
+     */
+    private boolean verificarPuntuacion(int puntuacionIN){
+        boolean res = (puntuacionIN >= 0 && puntuacionIN <=10);
+
+        if (!res){
+            System.out.println("ERROR - CALIDAD NO VALIDA");
+        }
+        return res;
+    }
+
+    /** 
+     * @param !res
+     * @return int
+     */
+    private boolean verificarComentario(String comentarioIN){ // TODO - Definir criterio para comentario
+        boolean res = true;
+
+        if (!res){
+            System.out.println("ERROR - CALIDAD NO VALIDA");
+        }
+        return res;
+    }
+
+    /** 
+     * @return int
+     */
     private int login(){
         Scanner scanner= new Scanner(System.in);
         String actNombre;
