@@ -12,7 +12,7 @@ import taller2.DB.DAO.Factory;
 * @version 1.1 - 2025-10-15
 */
 
-public class Main {
+public class Jertrudis {
     
     /** 
     * @param args
@@ -29,17 +29,23 @@ public class Main {
             entrada = lecturaDeOpcion();
             switch (entrada) {
                 case 0:
-                bucle = false;
+                    bucle = false;
                 break;
+                
                 case 1: // Imprimir Opciones (1)
-                imprimirOpciones();
+                    imprimirOpciones();
+                break;
                 
                 case 2: // Ingresar Usuario a BD (2)
-                menu.cargarUsuarioEnUsuariosFinalDAO();
+                    menu.cargarUsuarioEnUsuariosFinalDAO();
                 break;
                 
                 case 3: // Ingresar Pelicula a BD (3)
-                menu.cargarPeliculaEnPeliculasDAO();
+                    menu.cargarPeliculaEnPeliculasDAO();
+                break;
+
+                case 4: // Ingresar Reseña a BD (4)
+                    menu.cargarReseniaEnReseniasDAO();
                 break;
                 
                 default:
