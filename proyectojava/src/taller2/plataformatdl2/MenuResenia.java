@@ -53,7 +53,7 @@ public class MenuResenia {
         Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
     }
 
-    public void cargarPeliculaEnReseniasDAO(){
+    public void cargarReseniaEnReseniasDAO(){
         Resena nuevaResenia = cargarResenia();
         //Factory.getReseniasDAO().insertarResenia();// pasar todo a logica usando interfaces
     }
