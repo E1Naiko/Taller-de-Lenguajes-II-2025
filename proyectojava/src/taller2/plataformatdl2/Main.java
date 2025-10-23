@@ -12,7 +12,7 @@ import taller2.DB.DAO.Factory;
 * @version 1.1 - 2025-10-15
 */
 
-public class Jertrudis {
+public class Main {
     
     /** 
     * @param args
