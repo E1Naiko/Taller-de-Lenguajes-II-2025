@@ -41,7 +41,7 @@ public class MenuResenia {
         scanner.close();
     }
 
-    // TODO - Este es el metodo sin la verifacion de datos por el usuario
+    // TODO - Este es el metodo sin la verificacion de datos por el usuario
     //public void cargarUsuarioEnUsuariosFinalDAO(){
         //UsuarioFinal nuevoUsuario = cargarUsuario();
         //Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
@@ -87,6 +87,14 @@ public class MenuResenia {
     }
 
 
+
+
+
+
+
+
+    // ----------------------------------- MANEJO DE USUARIO -----------------------------------
+
     /** 
      * @return UsuarioFinal
      */
@@ -102,6 +110,10 @@ public class MenuResenia {
             nombre= scanner.nextLine();
         } while (!verificarNombre(nombre));
     
+        // TODO - AGREGAR APELLIDO Y VERIFICADOR
+
+        // TODO - AGREGAR DNI
+
         do {
             System.out.println("Ingresar Email: ");
             email = scanner.nextLine();
@@ -118,11 +130,11 @@ public class MenuResenia {
         } while (!verificarIdioma(idioma));
 
         System.out.println("Ingresar Generos Preferidos: ");
-        String generosPreferidos ="Enumerativo"; // TODO Debe ser enumerativo pero por el momento es String
+        String generosPreferidos ="Enumerativo"; // FIXME - Debe ser enumerativo pero por el momento es String
         System.out.println("Ingresar Lista Preferida: ");
-        String listaPreferida = "ListaVacia"; //TODO Tambien como en Historial
+        String listaPreferida = "ListaVacia"; //FIXME - Tambien como en Historial
         System.out.println("Ingresar Historial: ");
-        String historial = "ListaVacia"; // TODO Por el momento lo tratamos como string luego cambiamos a lista
+        String historial = "ListaVacia"; // TODO - Por el momento lo tratamos como string luego cambiamos a lista
         
         UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
         return nuevoUsuario;
@@ -184,10 +196,19 @@ public class MenuResenia {
         return true;
     }
 
+
+
+
+
+
+
+
+    // ----------------------------------- MANEJO DE PELICULA -----------------------------------
+
     /** 
      * @return Pelicula
      */
-    private Pelicula cargarPelicula(Scanner scanner){ //TODO Verificar si hace falta mas atributo como metadatos
+    private Pelicula cargarPelicula(Scanner scanner){ // TODO - Verificar si hace falta mas atributo como metadatos
 
         String calidad = null;
         String audio = null;
@@ -203,11 +224,16 @@ public class MenuResenia {
             audio = scanner.nextLine();
         } while (!verificarAudio(audio));
         
+
+        // TODO - Falta la carga de genero a partir de un enumerativo
+        // FIXME - Replantear el uso de direccionArchivo
+        // TODO - "Todos los datos son requeridos a excepcion del Resumen" que carajos?
+
         do {
             System.out.println("Ingrese Direccion del Archivo: ");
             direccionArchivo = scanner.nextLine();
         } while (!verificarDireccionArchivo(direccionArchivo));
-        
+
         Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo);
         return nuevaPelicula;
     }
@@ -248,6 +274,15 @@ public class MenuResenia {
         return true;
     }
 
+
+
+
+
+
+
+
+    // ----------------------------------- MANEJO DE RESENIA -----------------------------------
+
     /** 
      * @return Resena
      */
@@ -261,6 +296,9 @@ public class MenuResenia {
             idContenido = scanner.nextInt();
 
         } while (!verificarIdContenido(idContenido));
+
+        // TODO - Listar las peliculas disponibles
+        // TODO - Seleccionar que peli se quiere hacer review
 
         Contenido contenido = null; // TODO - No hay tabla de contenidos implementada, solo hace falta asociar la di
         
@@ -349,4 +387,11 @@ public class MenuResenia {
 
         return Factory.getUsuariosFinalDAO().encontrarIdUsuarioViaLogin(actNombre, actContrasenia);
     }
+
+
+
+
+
+
+    // TODO - Aprobar reseña
 }

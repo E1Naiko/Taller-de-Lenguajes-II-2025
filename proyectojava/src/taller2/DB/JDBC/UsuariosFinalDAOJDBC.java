@@ -207,9 +207,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             String email = rs.getString("Email");
             String contrasena = rs.getString("Contrasenia");
             String idioma = rs.getString("");
-            String generosPreferidos = "PRUEBA GENERAL"; // TODO String temporal
-            String listaPreferida = "PRUEBA GENERAL"; // TODO String temporal
-            String historial = "PRUEBA GENERAL"; // TODO String temporal
+            String generosPreferidos = "PRUEBA GENERAL"; // TODO - String temporal
+            String listaPreferida = "PRUEBA GENERAL"; // TODO - String temporal
+            String historial = "PRUEBA GENERAL"; // TODO - String temporal
             
             rs.close();
             stmt.close();
