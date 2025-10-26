@@ -1,6 +1,6 @@
 package taller2.plataformatdl2.Model.ManejoDeContenido;
 
-enum Genero {
+public enum Genero {
     ACCION,
     AVENTURA,
     COMEDIA, 

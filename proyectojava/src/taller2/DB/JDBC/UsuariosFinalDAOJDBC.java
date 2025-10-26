@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import taller2.DB.DAO.UsuariosFinalDAO;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.*;
 
 public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
@@ -228,7 +229,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             String email = rs.getString("Email");
             String contrasena = rs.getString("Contrasenia");
             String idioma = rs.getString("");
-            String generosPreferidos = "PRUEBA GENERAL"; // TODO - String temporal
+            List<Genero> generosPreferidos = null; // TODO - Objeto temporal
             String listaPreferida = "PRUEBA GENERAL"; // TODO - String temporal
             String historial = "PRUEBA GENERAL"; // TODO - String temporal
             
