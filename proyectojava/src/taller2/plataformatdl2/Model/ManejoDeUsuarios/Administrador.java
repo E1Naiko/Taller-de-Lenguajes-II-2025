@@ -17,13 +17,14 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.*;
      * Constructor de la clase Administrador.
      * 
      * @param nombre      El nombre del administrador.
+     * @param apellido    El apellido del administrador.
      * @param email       El email del administrador.
      * @param contrasena  La contraseña del administrador.
      * @param codigoAdmin El código de administrador.
      */
 
-    public Administrador(String nombre, String email, String contrasena, String codigoAdmin) {
-        super(nombre, email, contrasena);
+    public Administrador(String nombre, String apellido, int DNI, String email, String contrasena, String codigoAdmin) {
+        super(nombre, apellido, DNI, email, contrasena);
         this.codigoAdmin = codigoAdmin;
     }
 

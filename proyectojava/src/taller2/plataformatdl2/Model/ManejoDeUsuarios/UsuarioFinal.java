@@ -16,8 +16,8 @@ public class UsuarioFinal extends Usuario {
      * @param historial historial de reproducciones del usuario
      */
 
-    public UsuarioFinal(String nombre, String email, String contrasena, String idioma, List<Genero> generosPreferidos, String listaPreferida, String historial) {
-        super(nombre,email,contrasena);
+    public UsuarioFinal(String nombre, String apellido, int DNI, String email, String contrasena, String idioma, List<Genero> generosPreferidos, String listaPreferida, String historial) {
+        super(nombre,apellido,DNI,email,contrasena);
         this.idioma = idioma;
         this.generosPreferidos = generosPreferidos;
         this.listaPreferida = listaPreferida;

@@ -115,16 +115,16 @@ public class MenuResenia {
             System.out.print("Ingrese nombre: ");
             nombre= scanner.nextLine();
         } while (!verificarNombre(nombre));
-        
+
         do { 
             System.out.print("Ingrese apellido: ");
             apellido= scanner.nextLine();
         } while (!verificarApellido(apellido));
         
         do { 
-            System.out.print("Ingrese DNI (7 u 8 dígitos): ");
+            System.out.print("Ingrese DNI: ");
             String input = scanner.nextLine();
-            //Validamos que no esté vacío
+            // 1. Validamos que no esté vacío
             if (input.trim().isEmpty()) {
                 System.out.println("Error: El DNI no puede estar vacío.");
                 continue; 
@@ -139,12 +139,7 @@ public class MenuResenia {
             }
             dniValido = verificarDNI(dni);
         } while (!dniValido);
-        
-        
-        // TODO - AGREGAR APELLIDO Y VERIFICADOR
-        
-        // TODO - AGREGAR DNI
-        
+
         do {
             System.out.println("Ingresar Email: ");
             email = scanner.nextLine();
@@ -203,7 +198,7 @@ public class MenuResenia {
         System.out.println("Ingresar Historial: ");
         String historial = "ListaVacia"; // TODO - Por el momento lo tratamos como string luego cambiamos a lista
         
-        UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
+        UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,apellido,dni,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
         return nuevoUsuario;
     }
     
@@ -250,11 +245,10 @@ public class MenuResenia {
             System.out.println("Error: El DNI debe tener entre 7 y 8 digitos numericos.");
             return false;
         }
-        //TODO lo pongo en comentario la verificacion de unicidad porque no tenemos el metodo en UsuarioFinalDAO
-        //if (Factory.getUsuariosFinalDAO().existeDNI(dniIN)) { //TODO {Prioridad ALTA} se debe implementar este metodo en UsuarioFinalDAO para verificar si el DNI ya existe
-        // System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
-        // return false;
-        // }
+        if (Factory.getUsuariosFinalDAO().checkUsuarioViaDNI(dniIN)) { //TODO {Prioridad ALTA} se debe implementar este metodo en UsuarioFinalDAO para verificar si el DNI ya existe
+            System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
+            return false;
+        }
         return true;
     }
     
@@ -399,14 +393,60 @@ public class MenuResenia {
         }
         return true;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+    // ----------------------------------- MANEJO DE LISTAS USUARIOS Y PELICULA -----------------------------------
+
+    /**
+     * Muestra todos los usuarios y permite ordenarlos por Nombre o Email.
+     */
+    /**public void listarUsuariosOrdenados() {
+        Scanner scanner= new Scanner(System.in);
+        System.out.println("--- Listado de Usuarios Registrados ---");
+        
+        //Obtener la lista COMPLETA de usuarios desde el DAO
+        // TODO Implementar metodo obtenerUsuarios en UsuarioFinalDAO
+        List<UsuarioFinal> usuarios = Factory.getUsuariosFinalDAO().obtenerUsuarios();
+        if (usuarios.isEmpty()) {
+            System.out.println("No hay usuarios registrados en el sistema.");
+            return;
+        }
+        //Preguntar al usuario el criterio de ordenación
+        System.out.println("¿Cómo desea ordenar la lista?");
+        System.out.println("  1. Por Nombre de Persona (A-Z)");
+        System.out.println("  2. Por Email (A-Z)");
+        System.out.println("  Cualquier otra tecla para cancelar.");
+        System.out.print("Seleccione una opción: ");
+        
+        String opcion = scanner.nextLine();
+        switch (opcion) {
+            case "1":
+                // Aquí usamos la interfaz: le pasamos un *objeto* que sabe cómo comparar por nombre
+                Collections.sort(usuarios, new ComparadorUsuarioPorNombre());
+                System.out.println("\n--- Usuarios ordenados por Nombre ---");
+                break;
+            case "2":
+                // Y aquí le pasamos un *objeto* que sabe cómo comparar por email
+                Collections.sort(usuarios, new ComparadorUsuarioPorEmail());
+                System.out.println("\n--- Usuarios ordenados por Email ---");
+                break;
+            default:
+                System.out.println("\n--- Usuarios sin ordenar ---");
+                // No se ordena, se muestra en el orden de la BD
+                break;
+        }
+        //Mostrar la lista
+        for (UsuarioFinal usuario : usuarios) {
+            System.out.println("---------------------------------");
+            System.out.println(usuario.toString());
+        }
+    }
+    */
+
+
     // ----------------------------------- MANEJO DE RESENIA -----------------------------------
     
     /** 

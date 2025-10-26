@@ -10,19 +10,24 @@ package taller2.plataformatdl2.Model.ManejoDeUsuarios;
 
 public abstract class Usuario {
     protected String nombre;
+    protected String apellido;
+    protected int DNI;
     protected String email;
     protected String contrasena;
 
     /**
      * Constructor de la clase Usuario.
      * 
-     * @param nombre    El nombre del usuario.
-     * @param email     El email del usuario.
+     * @param nombre     El nombre del usuario.
+     * @param apellido   El apellido del usuario.
+     * @param email      El email del usuario.
      * @param contrasena La contraseña del usuario.
      */
 
-    public Usuario(String nombre, String email, String contrasena) {
+    public Usuario(String nombre, String apellido, int DNI, String email, String contrasena) {
         this.nombre = nombre;
+        this.apellido = apellido;
+        this.DNI = DNI;
         this.email = email;
         this.contrasena = contrasena;
     }
@@ -41,6 +46,38 @@ public abstract class Usuario {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    /** 
+     * @return String
+     */
+    // --- Getters y Setters ---
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    /** 
+     * @param apellido
+     */
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    /** 
+     * @return int
+     */
+    // --- Getters y Setters ---
+
+    public int getDNI() {
+        return DNI;
+    }
+
+    /** 
+     * @param DNI
+     */
+    public void setDNI(int DNI) {
+        this.DNI = DNI;
     }
 
     /** 

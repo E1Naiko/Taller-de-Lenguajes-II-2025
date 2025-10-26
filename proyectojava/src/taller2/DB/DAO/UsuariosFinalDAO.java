@@ -11,4 +11,6 @@ public interface UsuariosFinalDAO {
     public boolean checkUsuarioViaLogin(String nombreUsuario, String contrasenia);
     public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia);
     public UsuarioFinal encontrarUsuarioViaId(int id);
+    public int encontrarIdUsuarioViaDNI(int dni);
+    public boolean checkUsuarioViaDNI(int dni);
 }
