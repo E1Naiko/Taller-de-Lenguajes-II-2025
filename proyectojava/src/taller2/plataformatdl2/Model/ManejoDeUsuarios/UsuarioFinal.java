@@ -1,8 +1,10 @@
 package taller2.plataformatdl2.Model.ManejoDeUsuarios;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
+import java.util.*;
 
 public class UsuarioFinal extends Usuario {
     public String idioma;
-    public String generosPreferidos;
+    public List<Genero> generosPreferidos;
     public String listaPreferida;
     public String historial;
 
@@ -14,7 +16,7 @@ public class UsuarioFinal extends Usuario {
      * @param historial historial de reproducciones del usuario
      */
 
-    public UsuarioFinal(String nombre, String email, String contrasena, String idioma, String generosPreferidos, String listaPreferida, String historial) {
+    public UsuarioFinal(String nombre, String email, String contrasena, String idioma, List<Genero> generosPreferidos, String listaPreferida, String historial) {
         super(nombre,email,contrasena);
         this.idioma = idioma;
         this.generosPreferidos = generosPreferidos;
@@ -41,14 +43,14 @@ public class UsuarioFinal extends Usuario {
     /** 
      * @return String
      */
-    public String getGenerosPreferidos() {
+    public List<Genero> getGenerosPreferidos() {
         return generosPreferidos;
     }
 
     /** 
      * @param generosPreferidos
      */
-    public void setGenerosPreferidos(String generosPreferidos) {
+    public void setGenerosPreferidos(List<Genero> generosPreferidos) {
         this.generosPreferidos = generosPreferidos;
     }
 
