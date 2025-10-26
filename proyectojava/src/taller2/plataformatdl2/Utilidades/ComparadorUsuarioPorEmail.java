@@ -1,4 +1,4 @@
-package taller2.Utilidades;
+package taller2.plataformatdl2.Utilidades;
 
 import java.util.Comparator;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
