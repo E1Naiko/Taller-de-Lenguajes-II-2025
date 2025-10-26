@@ -1,5 +1,6 @@
 package taller2.plataformatdl2;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,6 +8,7 @@ import java.util.Collections;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Contenido;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
@@ -326,7 +328,97 @@ public class MenuResenia {
     
     
     // ----------------------------------- MANEJO DE PELICULA -----------------------------------
-    
+    /**
+     * @return Metadatos
+     */
+    private Metadatos cargarMetadatos(Scanner scanner) {
+        String titulo;
+        String resumen;
+        String[] elenco;
+        String director;
+        Time duracion = null;
+        String idioma;
+        String[] subtitulos;
+        
+        do {
+            System.out.print("Ingrese Título: ");
+            titulo = scanner.nextLine();
+        } while (!verificarCampoRequerido(titulo, "Título"));
+        System.out.print("Ingrese Resumen (Opcional, presione Enter para omitir): ");
+        resumen = scanner.nextLine();
+        if (resumen.trim().isEmpty()) {
+            resumen = "NULL"; // O null, si tu BD lo prefiere
+        }
+        do {
+            System.out.print("Ingrese Director: ");
+            director = scanner.nextLine();
+        } while (!verificarCampoRequerido(director, "Director"));
+        do {
+            System.out.print("Ingrese Idioma: ");
+            idioma = scanner.nextLine();
+        } while (!verificarCampoRequerido(idioma, "Idioma"));
+        do {
+            System.out.print("Ingrese Duración (formato HH:mm:ss, ej: 01:30:00): ");
+            String duracionStr = scanner.nextLine();
+            duracion = verificarDuracion(duracionStr);
+        } while (duracion == null); 
+        // Usamos una lista temporal y luego la convertimos a array
+        List<String> elencoList = new ArrayList<>();
+        String respuestaElenco = "";
+        System.out.println("--- Ingresar Elenco (miembros del reparto) ---");
+        do {
+            System.out.print("Ingrese nombre de un actor/actriz (o 'fin' para no agregar): ");
+            String actor = scanner.nextLine();
+            if (actor.equalsIgnoreCase("fin") || actor.trim().isEmpty()) {
+                if(elencoList.isEmpty()) System.out.println("Elenco omitido.");
+                break;
+            } 
+            elencoList.add(actor.trim());
+            System.out.print("¿Desea agregar otro miembro? (s/n): ");
+            respuestaElenco = scanner.nextLine();
+        } while (respuestaElenco.equalsIgnoreCase("s"));
+        // Convertimos la lista a un array de String
+        elenco = elencoList.toArray(new String[0]);
+        List<String> subtitulosList = new ArrayList<>();
+        String respuestaSub = "";
+        do {
+            System.out.print("Ingrese un idioma de subtítulo (o 'fin' para no agregar): ");
+            String sub = scanner.nextLine();  
+            if (sub.equalsIgnoreCase("fin") || sub.trim().isEmpty()) {
+                if(subtitulosList.isEmpty()) System.out.println("Subtítulos omitidos.");
+                break;
+            }
+            subtitulosList.add(sub.trim());
+            System.out.print("¿Desea agregar otro idioma? (s/n): ");
+            respuestaSub = scanner.nextLine();
+        } while (respuestaSub.equalsIgnoreCase("s"));
+        // Convertimos la lista a un array de String
+        subtitulos = subtitulosList.toArray(new String[0]);
+        System.out.println("--- Metadatos cargados exitosamente ---");
+        return new Metadatos(titulo, resumen, elenco, director, duracion, idioma, subtitulos);
+    }
+
+    private boolean verificarCampoRequerido(String input, String nombreCampo) {
+        if (input.trim().isEmpty()) {
+            System.out.println("Error: El campo '" + nombreCampo + "' no puede estar vacío.");
+            return false;
+        }
+        return true;
+    }
+
+    private Time verificarDuracion(String input) {
+        if (input.trim().isEmpty()) {
+            System.out.println("Error: La duración no puede estar vacía.");
+            return null;
+        }
+        try {
+            Time duracion = Time.valueOf(input); // Formato "hh:mm:ss"
+            return duracion;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: Formato de duración incorrecto. Debe ser HH:mm:ss");
+            return null;
+        }
+    }
     /** 
     * @return Pelicula
     */
@@ -336,12 +428,13 @@ public class MenuResenia {
         String audio = null;
         String direccionArchivo = null;
         
+        Metadatos metadatosPelicula= cargarMetadatos(scanner);
         do {
             System.out.println("Ingrese Calidad: ");
             calidad = scanner.nextLine();
         } while (!verificarCalidad(calidad));
         
-        do {
+        do {    
             System.out.println("Ingrese Audio: ");
             audio = scanner.nextLine();
         } while (!verificarAudio(audio));
@@ -356,7 +449,7 @@ public class MenuResenia {
             direccionArchivo = scanner.nextLine();
         } while (!verificarDireccionArchivo(direccionArchivo));
         
-        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo);
+        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
         return nuevaPelicula;
     }
     
