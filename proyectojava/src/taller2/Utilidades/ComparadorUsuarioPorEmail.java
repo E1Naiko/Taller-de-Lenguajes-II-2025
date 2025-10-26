@@ -1,7 +1,7 @@
 package taller2.Utilidades;
 
-import taller2.Model.ManejoDeUsuarios.UsuarioFinal;
 import java.util.Comparator;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 /**
  * Esta clase implementa la interfaz Comparator para enseñarle a Java
  * cómo ordenar dos objetos UsuarioFinal basándose en su email.
