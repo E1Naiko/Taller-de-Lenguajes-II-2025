@@ -112,20 +112,16 @@ public class MenuResenia {
             System.out.print("Ingrese nombre: ");
             nombre= scanner.nextLine();
         } while (!verificarNombre(nombre));
-        
-        // TODO - AGREGAR APELLIDO Y VERIFICADOR
 
         do { 
             System.out.print("Ingrese apellido: ");
             apellido= scanner.nextLine();
         } while (!verificarApellido(apellido));
 
-        // TODO - AGREGAR DNI
-
         do { 
             System.out.print("Ingrese DNI: ");
             String input = scanner.nextLine();
-            //Validamos que no esté vacío
+            // 1. Validamos que no esté vacío
             if (input.trim().isEmpty()) {
                 System.out.println("Error: El DNI no puede estar vacío.");
                 continue; 
@@ -163,7 +159,7 @@ public class MenuResenia {
         System.out.println("Ingresar Historial: ");
         String historial = "ListaVacia"; // TODO - Por el momento lo tratamos como string luego cambiamos a lista
         
-        UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
+        UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,apellido,dni,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
         return nuevoUsuario;
     }
 
@@ -210,11 +206,10 @@ public class MenuResenia {
             System.out.println("Error: El DNI debe tener entre 7 y 8 digitos numericos.");
         return false;
         }
-        //TODO lo pongo en comentario la verificacion de unicidad porque no tenemos el metodo en UsuarioFinalDAO
-        //if (Factory.getUsuariosFinalDAO().existeDNI(dniIN)) { //TODO {Prioridad ALTA} se debe implementar este metodo en UsuarioFinalDAO para verificar si el DNI ya existe
-           // System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
-           // return false;
-       // }
+        if (Factory.getUsuariosFinalDAO().checkUsuarioViaDNI(dniIN)) { //TODO {Prioridad ALTA} se debe implementar este metodo en UsuarioFinalDAO para verificar si el DNI ya existe
+            System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
+            return false;
+        }
         return true;
     }
 
