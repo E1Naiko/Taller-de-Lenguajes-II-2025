@@ -9,6 +9,11 @@ import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
  */
 public class ComparadorUsuarioPorNombre implements Comparator<UsuarioFinal> {
     
+    /** 
+     * @param u1
+     * @param u2
+     * @return int
+     */
     @Override
     public int compare(UsuarioFinal u1, UsuarioFinal u2) {
         // Obtener los nombres de las personas asociadas a los usuarios
