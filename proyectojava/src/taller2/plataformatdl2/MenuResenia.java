@@ -3,12 +3,14 @@ package taller2.plataformatdl2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Collections;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Contenido;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
+import taller2.plataformatdl2.Utilidades.*;
 
 public class MenuResenia {
     public MenuResenia(){
@@ -403,7 +405,7 @@ public class MenuResenia {
     /**
      * Muestra todos los usuarios y permite ordenarlos por Nombre o Email.
      */
-    /**public void listarUsuariosOrdenados() {
+    public void listarUsuariosOrdenados() {
         Scanner scanner= new Scanner(System.in);
         System.out.println("--- Listado de Usuarios Registrados ---");
         
@@ -444,7 +446,6 @@ public class MenuResenia {
             System.out.println(usuario.toString());
         }
     }
-    */
 
 
     // ----------------------------------- MANEJO DE RESENIA -----------------------------------
@@ -482,7 +483,6 @@ public class MenuResenia {
             
         } while (!verificarComentario(comentario));
         scanner.close();
-        
         scanner.close();
         Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().encontrarUsuarioViaId(id), contenido, puntuacion, comentario);
         return nuevaResenia;
