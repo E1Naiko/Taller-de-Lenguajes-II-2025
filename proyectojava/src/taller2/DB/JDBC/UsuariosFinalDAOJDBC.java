@@ -229,7 +229,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             String email = rs.getString("Email");
             String contrasena = rs.getString("Contrasenia");
             String idioma = rs.getString("");
-            List<Genero> generosPreferidos = null; // TODO - Objeto temporal
+            List<Genero> generosPreferidos = null; // TODO - Objeto temporal . Hay que implementar la tabla de generos
             String listaPreferida = "PRUEBA GENERAL"; // TODO - String temporal
             String historial = "PRUEBA GENERAL"; // TODO - String temporal
             

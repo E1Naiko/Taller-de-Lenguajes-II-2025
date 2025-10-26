@@ -445,6 +445,8 @@ public class MenuResenia {
             System.out.println("---------------------------------");
             System.out.println(usuario.toString());
         }
+
+        scanner.close();
     }
 
 
