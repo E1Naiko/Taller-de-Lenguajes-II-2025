@@ -101,6 +101,9 @@ public class MenuResenia {
     //Metodo para registrar Usuario
     private UsuarioFinal cargarUsuario(Scanner scanner){
         String nombre= null;
+        String apellido= null;
+        int dni= 0;
+        boolean dniValido = false;
         String email= null;
         String contrasena= null;
         String idioma= null;
@@ -109,6 +112,31 @@ public class MenuResenia {
             System.out.print("Ingrese nombre: ");
             nombre= scanner.nextLine();
         } while (!verificarNombre(nombre));
+        
+        do { 
+            System.out.print("Ingrese apellido: ");
+            apellido= scanner.nextLine();
+        } while (!verificarApellido(apellido));
+
+        do { 
+            System.out.print("Ingrese DNI (7 u 8 dígitos): ");
+            String input = scanner.nextLine();
+            //Validamos que no esté vacío
+            if (input.trim().isEmpty()) {
+                System.out.println("Error: El DNI no puede estar vacío.");
+                continue; 
+            }
+
+            // 2. Validamos que sea un número
+            try {
+                dni = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: El DNI debe ser un valor numérico.");
+                continue;
+            }
+            dniValido = verificarDNI(dni);
+        } while (!dniValido);
+
     
         // TODO - AGREGAR APELLIDO Y VERIFICADOR
 
@@ -153,6 +181,41 @@ public class MenuResenia {
             System.out.println("EL nombre solo puede tener letras y espacios");
             return false;
         }
+        return true;
+    }
+
+    /** 
+     * @param apellidoIN
+     * @return boolean
+     */
+    private boolean verificarApellido(String apellidoIN){ 
+        if (apellidoIN.trim().isEmpty()) { // Verifica si el apellido no esta vacio
+            System.out.println("El apellido no puede estar vacio");
+            return false;
+        } 
+        if (!apellidoIN.matches("[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+")) { //Validacion de formato de apellido
+            System.out.println("El apellido solo puede tener letras y espacios");
+            return false;
+        }
+        return true;
+    }
+
+    /** 
+     * @param dniIN
+     * @return boolean
+     */
+    private boolean verificarDNI(int dniIN){ 
+        String dniStr = Integer.toString(dniIN);
+        //Validar formato
+        if (!dniStr.matches("\\d{7,8}")) {
+            System.out.println("Error: El DNI debe tener entre 7 y 8 digitos numericos.");
+        return false;
+        }
+        //TODO lo pongo en comentario la verificacion de unicidad porque no tenemos el metodo en UsuarioFinalDAO
+        //if (Factory.getUsuariosFinalDAO().existeDNI(dniIN)) { //TODO {Prioridad ALTA} se debe implementar este metodo en UsuarioFinalDAO para verificar si el DNI ya existe
+           // System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
+           // return false;
+       // }
         return true;
     }
 
