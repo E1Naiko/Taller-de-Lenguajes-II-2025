@@ -1,6 +1,9 @@
 package taller2.DB.JDBC;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import taller2.DB.DAO.UsuariosFinalDAO;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.*;
 
@@ -33,6 +36,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
+
+    
     /** 
     * @param usuario
     */
@@ -64,6 +69,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
+
+
     /** 
     * @param idUsuario
     */
@@ -96,6 +103,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
+
+
     /** 
     * @return int
     */
@@ -107,7 +116,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
@@ -133,6 +142,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
     
+
+
     /** 
     * @param usuario
     * @return boolean
@@ -141,6 +152,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return devolverIdUsuarioFinal(usuario)!=0 ? true : false;
     }
     
+
+
     /** 
     * @param nombreUsuario
     * @param contrasenia
@@ -153,7 +166,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
@@ -178,6 +191,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
     
+
+
     /** 
     * @param nombreUsuario
     * @param contrasenia
@@ -187,6 +202,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return encontrarIdUsuarioViaLogin(nombreUsuario, contrasenia)!=0 ? true : false;
     }
     
+
+
     /** 
     * @param id
     * @return UsuarioFinal
@@ -197,7 +214,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
@@ -226,6 +243,12 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return null;
     }
     
+
+
+    /** 
+     * @param dni
+     * @return int
+     */
     @Override
     public int encontrarIdUsuarioViaDNI(int dni) {
         int idEncontrada = 0;
@@ -234,7 +257,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
@@ -259,8 +282,62 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
     
+
+
+    /** 
+     * @param dni
+     * @return boolean
+     */
     @Override
     public boolean checkUsuarioViaDNI(int dni) {
         return encontrarIdUsuarioViaDNI(dni)!=0 ? true : false;
+    }
+    
+
+
+    /** 
+     * @return List<UsuarioFinal>
+     */
+    @Override
+    public List<UsuarioFinal> obtenerUsuarios() {
+        // Aclaración: somos totalmente concientes que hay formas mas optimizadas de devolver todos los usuarios
+        //   pero elegimos usar esta ya que reutiliza codigo
+        List<UsuarioFinal> lista = new ArrayList<UsuarioFinal>();
+        int maxId = this.getMaxId();
+
+        for (int i=1; i<=maxId; i++)
+            lista.add(this.encontrarUsuarioViaId(i));
+
+        return lista;
+    }
+    
+
+
+    /** 
+     * @return int
+     */
+    public int getMaxId() {
+        int maxId = 0;
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar maxId del elemento");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM USUARIOS_FINAL");
+
+            maxId = rs.getInt("last_id");
+            
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return maxId;
     }
 }

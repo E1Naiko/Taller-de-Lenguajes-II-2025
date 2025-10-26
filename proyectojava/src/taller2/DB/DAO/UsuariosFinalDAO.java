@@ -1,5 +1,7 @@
 package taller2.DB.DAO;
 
+import java.util.List;
+
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.*;
 
 public interface UsuariosFinalDAO {
@@ -13,4 +15,6 @@ public interface UsuariosFinalDAO {
     public UsuarioFinal encontrarUsuarioViaId(int id);
     public int encontrarIdUsuarioViaDNI(int dni);
     public boolean checkUsuarioViaDNI(int dni);
+    public List<UsuarioFinal> obtenerUsuarios();
+    public int getMaxId();
 }
