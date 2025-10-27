@@ -581,13 +581,13 @@ public class MenuResenia {
     /** 
      * Muestra todas las películas y permite ordenarlas por Título, Género o Duración.
      *
-     
+     */
     private void listarPeliculasOrdenadas() {
         Scanner scanner= new Scanner(System.in);
         System.out.println("--- Listado de Películas Registradas ---");
         
         //Obtener la lista COMPLETA de películas desde el DAO
-        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerTodas(); //TODO Implementar metodo obtenerTodas en PeliculasDAO
+        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerPeliculas();
 
         if (peliculas.isEmpty()) {
             System.out.println("No hay películas registradas en el sistema.");
@@ -630,7 +630,6 @@ public class MenuResenia {
         }
         System.out.println("---------------------------------");
     }
-    */
 
 
     // ----------------------------------- MANEJO DE RESENIA -----------------------------------
