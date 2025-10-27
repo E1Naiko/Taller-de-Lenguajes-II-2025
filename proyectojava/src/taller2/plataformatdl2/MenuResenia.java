@@ -595,7 +595,6 @@ public class MenuResenia {
         //Mostrar la lista
         for (Pelicula peli : peliculas) {
             System.out.println("---------------------------------");
-            // (Necesitás un buen toString() en Pelicula y Metadatos)
             System.out.println(peli.toString()); 
         }
         System.out.println("---------------------------------");
