@@ -481,7 +481,6 @@ public class MenuResenia {
         } while (!verificarAudio(audio));
         
         // FIXME - Replantear el uso de direccionArchivo
-        // TODO - "Todos los datos son requeridos a excepcion del Resumen" que carajos?
         
         do {
             System.out.println("Ingrese Direccion del Archivo: ");
@@ -714,19 +713,6 @@ public class MenuResenia {
             System.out.println("Operación cancelada por el usuario.");
             return null; 
         }
-    }
-    
-    /** 
-    * @param (!res
-    * @return boolean
-    */
-    private boolean verificarIdContenido(int idContenidoIN){ // TODO - Definir criterio para dirContenido
-        boolean res = true;
-        
-        if (!res){
-            System.out.println("ERROR - CALIDAD NO VALIDA");
-        }
-        return res;
     }
     
     /** 
