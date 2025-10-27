@@ -13,7 +13,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     try {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-      System.out.println("PlataformaTDL2 - ReseniasDAOJDBC - Creando Tabla");
+      System.out.println("PlataformaTDL2 - ReseniasDAO - Creando Tabla");
       
       stmt = c.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS RESENIAS " +
@@ -25,7 +25,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       " Aprobado             INTEGER     NOT NULL   DEFAULT 0," + // 0 = false, 1 = true
       " Hora                 TEXT        NOT NULL   DEFAULT (datetime('now')))";
       stmt.executeUpdate(sql);
-      System.out.println("PlataformaTDL2 - ReseniasDAOJDBC - Tabla Creada Exitosamente");
+      System.out.println("PlataformaTDL2 - ReseniasDAO - Tabla Creada Exitosamente");
       stmt.close();
       c.close();
     } catch (Exception e) {
@@ -127,11 +127,11 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
       
       stmt = c.createStatement();
-      ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE ID_USUARIO=" + idUsuario +
-      ", ID_PELICULA=" + idPelicula +
-      ", Puntuacion=" + resenia.getPuntuacion() + 
-      ", Comentario=" + resenia.getComentario() + 
-      ", Aprobado=" + aprobado);
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM RESENIAS WHERE ID_USUARIO=" + idUsuario +
+      " AND ID_PELICULA=" + idPelicula +
+      " AND Puntuacion=" + resenia.getPuntuacion() + 
+      " AND Comentario=" + resenia.getComentario() + 
+      " AND Aprobado=" + aprobado);
       
       idEncontrada = rs.getInt("ID");
       

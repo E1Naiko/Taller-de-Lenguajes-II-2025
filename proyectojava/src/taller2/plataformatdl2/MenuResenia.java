@@ -486,7 +486,7 @@ public class MenuResenia {
         } while (!verificarComentario(comentario));
         scanner.close();
         scanner.close();
-        Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().encontrarUsuarioViaId(id), contenido, puntuacion, comentario);
+        Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(id), contenido, puntuacion, comentario);
         return nuevaResenia;
     }
     
