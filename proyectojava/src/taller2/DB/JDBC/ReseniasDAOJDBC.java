@@ -224,7 +224,6 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   public void aprobarReseniaViaId(int id) {
   Connection c = null;
     Statement stmt = null;
-    Resena ret = null;
     
     try {
       Class.forName("org.sqlite.JDBC");

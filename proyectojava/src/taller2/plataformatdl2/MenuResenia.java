@@ -32,19 +32,27 @@ public class MenuResenia {
                 break;
                 
                 case 2: // Ingresar Usuario a BD (2)
-                    this.cargarUsuarioEnUsuariosFinalDAO();
+                cargarUsuarioEnUsuariosFinalDAO();
                 break;
                 
                 case 3: // Ingresar Pelicula a BD (3)
-                    this.cargarPeliculaEnPeliculasDAO();
+                cargarPeliculaEnPeliculasDAO();
                 break;
-
-                case 4: // Ingresar Reseña a BD (4)
-                    this.cargarReseniaEnReseniasDAO();
+                
+                case 4: // Listar Usuarios (4)
+                listarUsuariosOrdenados();
                 break;
-
-                case 5: //Listar Usuarios
-                    this.listarUsuariosOrdenados();
+                
+                case 5: // Listar Peliculas (5)
+                listarPeliculasOrdenadas();
+                break;
+                
+                case 6: // Ingresar Resenia (6)
+                cargarReseniaEnReseniasDAO();
+                break;
+                
+                case 7: // Aprobar Reseña (7)
+                aprobarReseña();
                 break;
                 
                 default:
@@ -629,6 +637,7 @@ public class MenuResenia {
             System.out.println(peli.toString()); 
         }
         System.out.println("---------------------------------");
+        scanner.close();
     }
 
 
@@ -760,6 +769,69 @@ public class MenuResenia {
         return true; // Si pasa todo, es válido
     }
     
+
+
+    // ----------------------------------- MANEJO DE APROBAR RESEÑA -----------------------------------
+    
+    private void aprobarReseña(){
+        List<Resena> noAprobadas = Factory.getReseniasDAO().devolverReseniasNoAprobadas();
+        this.imprimirNoAprobadas(noAprobadas);
+    }
+    
+    private void imprimirNoAprobadas(List<Resena> lista){
+        int i=0;
+        for (Resena resena : lista) {
+            System.out.println(" -" + i + " - ");
+            imprimirResenia(resena);
+            i++;
+        }
+        System.out.println("Que reseña desea aprobar?");
+        Scanner scanner= new Scanner(System.in);
+        int select = scanner.nextInt();
+        
+        if (select >= 0 && select < lista.size()){
+            Resena resena = lista.get(select);
+            int idResena = Factory.getReseniasDAO().encontrarIdResenia(
+            Factory.getUsuariosFinalDAO().devolverIdUsuarioFinal((UsuarioFinal) resena.getUsuario()),
+            Factory.getPeliculasDAO().encontrarIdPelicula(resena.getContenidovisual()),
+            resena, 0);
+            if (Factory.getReseniasDAO().reseniaExiste(idResena)){
+                System.out.println("Reseña seleccionada:");
+                imprimirResenia(resena);
+                
+                System.out.println("Aprobar reseña? (SI/NO)");
+                String completar = scanner.next();
+                while (completar.toUpperCase().equals("SI") || completar.toUpperCase().equals("NO") ){
+                    System.out.println("Error opcion no valida");
+                    completar = scanner.next();
+                }
+                
+                if (completar.equals("SI")){
+                    Factory.getReseniasDAO().aprobarReseniaViaId(idResena);
+                }
+            }
+            else
+            System.out.println("Error - La Resenia no existe");
+        }
+        else
+        System.out.println("Error - La Resenia no existe");
+        scanner.close();
+    }
+    
+    private void imprimirResenia(Resena resenia){
+        System.out.print(resenia.getUsuario().getNombre() + " " +
+        resenia.getUsuario().getApellido() + " - " +
+        resenia.getContenidovisual().getMetadatos().getTitulo() +
+        ", Puntuación: " + resenia.getPuntuacion() + 
+        ", Comentario: " + resenia.getComentario());
+    }
+    
+    
+    
+    
+    
+    // ----------------------------------- MANEJO DE OPCIONES EN MENU PRINCIPAL -----------------------------------
+    
     /** 
     * @return int
     */
@@ -796,6 +868,9 @@ public class MenuResenia {
         "Ingresar Usuario a BD (2), " +
         "Ingresar Pelicula a BD (3), " +
         "Listar Usuarios (4), " +
+        "Listar Peliculas (5), " +
+        "Ingresar Resenia (6), " +
+        "Aprobar Reseña (7)" +
         ".");
         System.out.println("Que operacion desea ejecutar?");
     }
