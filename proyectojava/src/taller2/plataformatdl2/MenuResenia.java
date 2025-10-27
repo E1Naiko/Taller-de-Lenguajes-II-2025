@@ -48,12 +48,8 @@ public class MenuResenia {
         scanner.close();
     }
     
-    // TODO - Este es el metodo sin la verificacion de datos por el usuario
-    //public void cargarUsuarioEnUsuariosFinalDAO(){
-    //UsuarioFinal nuevoUsuario = cargarUsuario();
-    //Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUsuario);
-    //}
-    
+
+
     public void cargarPeliculaEnPeliculasDAO(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("--- Inicio de Carga de Nueva Película ---");
@@ -195,8 +191,7 @@ public class MenuResenia {
             System.out.println("Géneros preferidos seleccionados: " + generosPreferidos);
         }
         
-        //System.out.println("Ingresar Generos Preferidos: ");
-        //String generosPreferidos ="Enumerativo"; // FIXME - Debe ser enumerativo pero por el momento es String
+
         System.out.println("Ingresar Lista Preferida: ");
         String listaPreferida = "ListaVacia"; //FIXME - Tambien como en Historial
         System.out.println("Ingresar Historial: ");
@@ -249,7 +244,7 @@ public class MenuResenia {
             System.out.println("Error: El DNI debe tener entre 7 y 8 digitos numericos.");
             return false;
         }
-        if (Factory.getUsuariosFinalDAO().checkUsuarioViaDNI(dniIN)) { //TODO {Prioridad ALTA} se debe implementar este metodo en UsuarioFinalDAO para verificar si el DNI ya existe
+        if (Factory.getUsuariosFinalDAO().checkUsuarioViaDNI(dniIN)) {
             System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
             return false;
         }
@@ -508,7 +503,6 @@ public class MenuResenia {
         System.out.println("--- Listado de Usuarios Registrados ---");
         
         //Obtener la lista COMPLETA de usuarios desde el DAO
-        // TODO Implementar metodo obtenerUsuarios en UsuarioFinalDAO
         List<UsuarioFinal> usuarios = Factory.getUsuariosFinalDAO().obtenerUsuarios();
         if (usuarios.isEmpty()) {
             System.out.println("No hay usuarios registrados en el sistema.");
