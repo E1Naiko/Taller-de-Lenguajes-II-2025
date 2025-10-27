@@ -1,9 +1,13 @@
 package taller2.DB.JDBC;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.ReseniasDAO;
-import taller2.plataformatdl2.Model.ManejoDeContenido.*;;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;;
 
 public class ReseniasDAOJDBC implements ReseniasDAO {
   @Override
@@ -148,5 +152,93 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       System.exit(0);
     }
     return idEncontrada;
+  }
+  
+  /** 
+  * @param id
+  * @return Resena
+  */
+  public Resena devolverReseniaViaId(int idResenia){
+    Connection c = null;
+    Statement stmt = null;
+    
+    UsuarioFinal usuario = null;
+    int puntuacion = 0;
+    String comentario = null;
+    int idContenido = 0;
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      c.setAutoCommit(false);
+      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+      
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE ID=" + idResenia +
+      ";" );
+      
+      if (rs.next()){
+        int idUsuario = rs.getInt("IdUsuario");
+        usuario = taller2.DB.DAO.Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(idUsuario);
+        idContenido = rs.getInt("IdPelicula");
+        puntuacion = rs.getInt("Puntuacion");
+        comentario = rs.getString("Comentario");
+      }
+      
+      rs.close();
+      stmt.close();
+      c.close();
+      Resena resenia = new Resena(usuario, Factory.getPeliculasDAO().devolverPeliculaViaId(idContenido), puntuacion, comentario);
+      return resenia;
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
+    return null;
+  }
+  
+  /** 
+  * @return List<Resena>
+  */
+  @Override
+  public List<Resena> obtenerResenias() {
+    // Aclaración: somos totalmente concientes que hay formas mas optimizadas de devolver todos los usuarios
+    //   pero elegimos usar esta ya que reutiliza codigo
+    List<Resena> lista = new ArrayList<Resena>();
+    int maxId = this.getMaxId();
+    
+    for (int i=1; i<=maxId; i++)
+    lista.add(this.devolverReseniaViaId(i));
+    
+    return lista;
+  }
+  
+  
+  
+  /** 
+  * @return int
+  */
+  public int getMaxId() {
+    int maxId = 0;
+    Connection c = null;
+    Statement stmt = null;
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      c.setAutoCommit(false);
+      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar maxId del elemento");
+      
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM USUARIOS_FINAL");
+      
+      maxId = rs.getInt("last_id");
+      
+      rs.close();
+      stmt.close();
+      c.close();
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
+    return maxId;
   }
 }

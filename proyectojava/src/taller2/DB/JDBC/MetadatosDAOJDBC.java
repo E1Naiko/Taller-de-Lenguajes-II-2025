@@ -41,6 +41,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         }
     }
     
+    /** 
+     * @param metadatos
+     */
     @Override
     public void insertarMetadatos(Metadatos metadatos) {
         Connection c = null;
@@ -72,6 +75,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         }
     }
     
+    /** 
+     * @param idMetadatos
+     */
     @Override
     public void eliminarMetadatos(int idMetadatos) {
         Connection c = null;
@@ -101,6 +107,10 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         }
     }
     
+    /** 
+     * @param metadatos
+     * @return int
+     */
     @Override
     public int encontrarIdMetadatos(Metadatos metadatos) {
         int idEncontrada = 0;
@@ -140,6 +150,10 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         return idEncontrada;
     }
     
+    /** 
+     * @param idMetadatos
+     * @return Metadatos
+     */
     @Override
     public Metadatos devolverMetadatosViaId(int idMetadatos) {
         Connection c = null;

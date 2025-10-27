@@ -1,6 +1,8 @@
 package taller2.DB.JDBC;
 
 import java.sql.*;
+
+import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 
@@ -18,9 +20,10 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS PELICULAS " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " Direccion_Archivo      TEXT     NOT NULL, " +
-            " Calidad                TEXT     NOT NULL, " +
-            " Audio                  TEXT     NOT NULL)";
+            " Direccion_Archivo      TEXT       NOT NULL, " +
+            " Calidad                TEXT       NOT NULL, " +
+            " Audio                  TEXT       NOT NULL, " +
+            " IdMetadatos            INTEGER    NOT NULL)";
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Tabla Creada Exitosamente");
             stmt.close();
@@ -130,4 +133,48 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         return idEncontrada;
     }
     
+    
+    /** 
+     * @param idPelicula
+     * @return Pelicula
+     */
+    @Override
+    public Pelicula devolverPeliculaViaId(int idPelicula) {
+        Connection c = null;
+        Statement stmt = null;
+        
+        String calidad = null;
+        String audio = null;
+        String dirArchivo = null;
+        Genero genero = null;
+        int idMetadatos = 0;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - PeliculasDAO - Intentando encontrar id del elemento");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM PELICULAS WHERE ID=" + idPelicula +
+            ";" );
+            
+            if (rs.next()){
+                calidad = rs.getString("Calidad");
+                audio = rs.getString("Audio");
+                dirArchivo = rs.getString("Direccion_Archivo");
+                idMetadatos = rs.getInt("IdMetadatos");
+            }
+            
+            rs.close();
+            stmt.close();
+            c.close();
+            Pelicula ret = new Pelicula(calidad, audio, dirArchivo, genero, Factory.getMetadatosDAO().devolverMetadatosViaId(idMetadatos));
+            return ret;
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return null;
+    }
+
 }

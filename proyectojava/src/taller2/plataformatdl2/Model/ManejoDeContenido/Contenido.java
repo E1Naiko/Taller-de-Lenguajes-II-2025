@@ -12,7 +12,7 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
     protected String calidad; // FIXME - Cambiar a enum
     protected String audio;
     protected String direccionArchivo;
-    protected String genero; // FIXME - Cambiar a enum
+    protected Genero genero;
 
     /**
      * Constructor de la clase Contenido.
@@ -28,7 +28,7 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
         this.direccionArchivo = direccionArchivo;
     }
 
-    public Contenido(String direccionArchivo, Metadatos metadatos, String genero) {
+    public Contenido(String direccionArchivo, Metadatos metadatos, Genero genero) {
         this.direccionArchivo = direccionArchivo;
         this.genero = genero;
     }
@@ -80,14 +80,14 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
     /** 
      * @return String
      */
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
     /** 
      * @param genero
      */
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
  }
