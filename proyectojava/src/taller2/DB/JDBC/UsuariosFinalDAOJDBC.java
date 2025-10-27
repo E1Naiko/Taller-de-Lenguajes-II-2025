@@ -37,7 +37,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
-
+    
     
     /** 
     * @param usuario
@@ -72,8 +72,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
-
-
+    
+    
     /** 
     * @param idUsuario
     */
@@ -106,8 +106,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         }
     }
     
-
-
+    
+    
     /** 
     * @return int
     */
@@ -145,8 +145,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
     
-
-
+    
+    
     /** 
     * @param usuario
     * @return boolean
@@ -155,8 +155,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return devolverIdUsuarioFinal(usuario)!=0 ? true : false;
     }
     
-
-
+    
+    
     /** 
     * @param nombreUsuario
     * @param contrasenia
@@ -194,8 +194,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
     
-
-
+    
+    
     /** 
     * @param nombreUsuario
     * @param contrasenia
@@ -205,8 +205,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return encontrarIdUsuarioViaLogin(nombreUsuario, contrasenia)!=0 ? true : false;
     }
     
-
-
+    
+    
     /** 
     * @param id
     * @return UsuarioFinal
@@ -214,6 +214,16 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     public UsuarioFinal devolverUsuarioFinalViaId(int id){
         Connection c = null;
         Statement stmt = null;
+        
+        String nombre = null;
+        String apellido = null;
+        int DNI = 0;
+        String email = null;
+        String contrasena = null;
+        String idioma = null;
+        List<Genero> generosPreferidos = null;
+        String listaPreferida = null;
+        String historial = null;
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -225,15 +235,17 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE ID=" + id +
             ";" );
             
-            String nombre = rs.getString("Nombre");
-            String apellido = rs.getString("Apellido");
-            int DNI = rs.getInt("DNI");
-            String email = rs.getString("Email");
-            String contrasena = rs.getString("Contrasenia");
-            String idioma = rs.getString("");
-            List<Genero> generosPreferidos = null; // TODO - Objeto temporal . Hay que implementar la tabla de generos
-            String listaPreferida = "PRUEBA GENERAL"; // TODO - String temporal
-            String historial = "PRUEBA GENERAL"; // TODO - String temporal
+            if (rs.next()){
+                nombre = rs.getString("Nombre");
+                apellido = rs.getString("Apellido");
+                DNI = rs.getInt("DNI");
+                email = rs.getString("Email");
+                contrasena = rs.getString("Contrasena");
+                idioma = rs.getString("Idioma");
+                generosPreferidos = null; // TODO - Objeto temporal . Hay que implementar la tabla de generos
+                listaPreferida = "PRUEBA GENERAL"; // TODO - String temporal
+                historial = "PRUEBA GENERAL"; // TODO - String temporal
+            }
             
             rs.close();
             stmt.close();
@@ -246,12 +258,12 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return null;
     }
     
-
-
+    
+    
     /** 
-     * @param dni
-     * @return int
-     */
+    * @param dni
+    * @return int
+    */
     @Override
     public int encontrarIdUsuarioViaDNI(int dni) {
         int idEncontrada = 0;
@@ -285,40 +297,41 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         return idEncontrada;
     }
     
-
-
+    
+    
     /** 
-     * @param dni
-     * @return boolean
-     */
+    * @param dni
+    * @return boolean
+    */
     @Override
     public boolean checkUsuarioViaDNI(int dni) {
         return encontrarIdUsuarioViaDNI(dni)!=0 ? true : false;
     }
     
-
-
+    
+    
     /** 
-     * @return List<UsuarioFinal>
-     */
+    * @return List<UsuarioFinal>
+    */
     @Override
     public List<UsuarioFinal> obtenerUsuarios() {
         // Aclaración: somos totalmente concientes que hay formas mas optimizadas de devolver todos los usuarios
         //   pero elegimos usar esta ya que reutiliza codigo
         List<UsuarioFinal> lista = new ArrayList<UsuarioFinal>();
         int maxId = this.getMaxId();
-
+        System.out.println("DEBUG - maxId encontrada " + maxId);
+        
         for (int i=1; i<=maxId; i++)
-            lista.add(this.devolverUsuarioFinalViaId(i));
-
+        lista.add(this.devolverUsuarioFinalViaId(i));
+        
         return lista;
     }
     
-
-
+    
+    
     /** 
-     * @return int
-     */
+    * @return int
+    */
     public int getMaxId() {
         int maxId = 0;
         Connection c = null;
@@ -332,7 +345,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM USUARIOS_FINAL");
-
+            
             maxId = rs.getInt("last_id");
             
             rs.close();
