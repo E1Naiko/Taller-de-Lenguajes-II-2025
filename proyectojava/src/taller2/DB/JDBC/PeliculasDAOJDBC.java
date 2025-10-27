@@ -75,7 +75,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             
             System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Intentando eliminar elemento");
             
-            String sql = "DELETE FROM USUARIOS_FINAL WHERE ID = ?";
+            String sql = "DELETE FROM PELICULAS WHERE ID = ?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idPelicula);
                 if (pstmt.executeUpdate() == 0) {
@@ -106,19 +106,19 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:test.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAO - Intentando encontrar id del elemento");
             
             try (Statement stmt = c.createStatement()) {
-                ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE Direccion_Archivo=" + pelicula.getDireccionArchivo() +
-                ", Calidad=" + pelicula.getCalidad() +
-                ", Idioma=" + pelicula.getAudio() + ";" );
+                ResultSet rs = stmt.executeQuery( "SELECT * FROM PELICULAS WHERE Direccion_Archivo=" + pelicula.getDireccionArchivo() +
+                " AND Calidad=" + pelicula.getCalidad() +
+                " AND Idioma=" + pelicula.getAudio() + ";" );
                 
                 idEncontrada = rs.getInt("ID");
                 
                 if (idEncontrada==0)
-                System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - ERROR no se encontro id del elemento");
+                System.out.println("\"PlataformaTDL2 - PeliculasDAO - ERROR no se encontro id del elemento");
                 else
-                System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - id del elemento encontrada correctamente");
+                System.out.println("\"PlataformaTDL2 - PeliculasDAO - id del elemento encontrada correctamente");
                 
                 rs.close();
             }
