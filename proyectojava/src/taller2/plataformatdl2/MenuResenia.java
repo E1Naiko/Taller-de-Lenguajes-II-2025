@@ -650,9 +650,45 @@ public class MenuResenia {
         } while (!verificarIdContenido(idContenido));
         
         // TODO - Listar las peliculas disponibles
+        System.out.println("--- Películas Disponibles ---");
+        //Traemos la lista de películas del DAO
+        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerTodas();
+        if (peliculas.isEmpty()) {
+            System.out.println("Error: No hay películas cargadas para reseñar.");
+            return null;
+        }
+        //Mostramos la lista numerada
+        for (int i = 0; i < peliculas.size(); i++) {
+            System.out.println("  " + (i + 1) + ". " + peliculas.get(i).getMetadatos().getTitulo());
+        }
+        System.out.println("  0. Cancelar");
+        //Pedimos que elija una
+        int seleccion = -1;
+        Contenido contenido = null; // Tu variable 'contenido' ahora se llena acá
+        do {
+            System.out.print("Indique el número de la película que desea reseñar: ");
+            try {
+                seleccion = scanner.nextInt(); 
+                if (seleccion > 0 && seleccion <= peliculas.size()) {
+                    // ¡Selección válida!
+                    contenido = peliculas.get(seleccion - 1); // -1 por el índice del array
+                } else if (seleccion == 0) {
+                    System.out.println("Operación cancelada.");
+                    scanner.close();
+                    return null;
+                } else {
+                    System.out.println("Error: Número fuera de rango.");
+                    seleccion = -1; 
+                }
+            } catch (Exception e) {
+                System.out.println("Error: Debe ingresar un número.");
+                scanner.next(); //Limpiamos el buffer si puso letras
+                seleccion = -1;
+            }
+        } while (seleccion == -1);
         // TODO - Seleccionar que peli se quiere hacer review
         
-        Contenido contenido = null; // TODO - No hay tabla de contenidos implementada, solo hace falta asociar la di
+        //Contenido contenido = null; // TODO - No hay tabla de contenidos implementada, solo hace falta asociar la di
         
         int puntuacion = 0;
         do {
@@ -667,7 +703,6 @@ public class MenuResenia {
             comentario = scanner.nextLine();
             
         } while (!verificarComentario(comentario));
-        scanner.close();
         scanner.close();
         Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(id), contenido, puntuacion, comentario);
         return nuevaResenia;
@@ -691,10 +726,10 @@ public class MenuResenia {
     * @return boolean
     */
     private boolean verificarPuntuacion(int puntuacionIN){
-        boolean res = (puntuacionIN >= 0 && puntuacionIN <=10);
+        boolean res = (puntuacionIN >= 0 && puntuacionIN <= 10);
         
         if (!res){
-            System.out.println("ERROR - CALIDAD NO VALIDA");
+            System.out.println("Error: La puntuación debe ser un número entre 0 y 10.");
         }
         return res;
     }
@@ -703,13 +738,20 @@ public class MenuResenia {
     * @param !res
     * @return int
     */
-    private boolean verificarComentario(String comentarioIN){ // TODO - Definir criterio para comentario
-        boolean res = true;
-        
-        if (!res){
-            System.out.println("ERROR - CALIDAD NO VALIDA");
+    private boolean verificarComentario(String comentarioIN){
+        //No puede estar vacío
+        if (comentarioIN.trim().isEmpty()) {
+            System.out.println("Error: El comentario no puede estar vacío.");
+            return false;
         }
-        return res;
+        
+        //Límite de caracteres (ejemplo)
+        if (comentarioIN.length() > 500) {
+            System.out.println("Error: El comentario es muy largo (máx 500 caracteres).");
+            return false;
+        }
+        
+        return true; // Si pasa todo, es válido
     }
     
     /** 
