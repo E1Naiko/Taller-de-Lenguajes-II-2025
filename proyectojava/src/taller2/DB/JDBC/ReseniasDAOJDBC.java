@@ -7,7 +7,6 @@ import java.util.List;
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.ReseniasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
-import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;;
 
 public class ReseniasDAOJDBC implements ReseniasDAO {
   @Override
@@ -184,6 +183,24 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );
     }
     return lista;
+  }
+
+  @Override
+  public Resena devolverReseniaViaId(int id) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'devolverReseniaViaId'");
+  }
+
+  @Override
+  public List<Resena> obtenerResenias() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'obtenerResenias'");
+  }
+
+  @Override
+  public int getMaxId() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getMaxId'");
   }
   
 }
