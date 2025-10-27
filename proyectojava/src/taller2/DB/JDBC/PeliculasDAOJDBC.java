@@ -1,10 +1,13 @@
 package taller2.DB.JDBC;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 
 public class PeliculasDAOJDBC implements PeliculasDAO {
     
@@ -177,4 +180,49 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         return null;
     }
 
+    /** 
+     * @return List<Pelicula>
+     */
+    @Override
+    public List<Pelicula> obtenerPeliculas() {
+        // Aclaración: somos totalmente concientes que hay formas mas optimizadas de devolver todos los usuarios
+        //   pero elegimos usar esta ya que reutiliza codigo
+        List<Pelicula> lista = new ArrayList<Pelicula>();
+        int maxId = this.getMaxId();
+
+        for (int i=1; i<=maxId; i++)
+            lista.add(this.devolverPeliculaViaId(i));
+
+        return lista;
+    }
+    
+
+
+    /** 
+     * @return int
+     */
+    public int getMaxId() {
+        int maxId = 0;
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - PeliculasDAO - Intentando encontrar maxId del elemento");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM Peliculas");
+
+            maxId = rs.getInt("last_id");
+            
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return maxId;
+    }
 }
