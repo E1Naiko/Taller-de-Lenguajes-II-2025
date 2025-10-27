@@ -6,16 +6,52 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import taller2.DB.DAO.Factory;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Contenido;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 import taller2.plataformatdl2.Utilidades.*;
 
 public class MenuResenia {
     public MenuResenia(){
+        
+    }
+
+    public void usarMenuDeConsola(){
+        int entrada;
+
+        imprimirOpciones();
+        boolean bucle = true;
+        while (bucle) {
+            entrada = lecturaDeOpcion();
+            switch (entrada) {
+                case 0:
+                    bucle = false;
+                break;
+                
+                case 1: // Imprimir Opciones (1)
+                    imprimirOpciones();
+                break;
+                
+                case 2: // Ingresar Usuario a BD (2)
+                    this.cargarUsuarioEnUsuariosFinalDAO();
+                break;
+                
+                case 3: // Ingresar Pelicula a BD (3)
+                    this.cargarPeliculaEnPeliculasDAO();
+                break;
+
+                case 4: // Ingresar Reseña a BD (4)
+                    this.cargarReseniaEnReseniasDAO();
+                break;
+
+                case 5: //Listar Usuarios
+                    this.listarUsuariosOrdenados();
+                break;
+                
+                default:
+                System.out.println("Error opcion no valida.");
+                break;
+            }
+        }
     }
     
     public void cargarUsuarioEnUsuariosFinalDAO() {
@@ -703,10 +739,26 @@ public class MenuResenia {
         return Factory.getUsuariosFinalDAO().encontrarIdUsuarioViaLogin(actNombre, actContrasenia);
     }
     
+
     
-    
-    
-    
-    
-    // TODO - Aprobar reseña
+    private static void imprimirOpciones(){
+        System.out.println("Opciones Disponibles:" +
+        "Salir (0), " +
+        "Imprimir Opciones (1), " +
+        "Ingresar Usuario a BD (2), " +
+        "Ingresar Pelicula a BD (3), " +
+        "Listar Usuarios (4), " +
+        ".");
+        System.out.println("Que operacion desea ejecutar?");
+    }
+
+    /** 
+     * @return int
+     */
+    private static int lecturaDeOpcion(){
+        Scanner in = new Scanner(System.in);
+        int entrada = in.nextInt();
+        in.close();
+        return entrada;
+    }
 }
