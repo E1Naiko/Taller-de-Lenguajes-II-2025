@@ -1,7 +1,6 @@
 package taller2.DB.DAO;
 
 import java.util.List;
-
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 
 public interface ReseniasDAO {
@@ -9,7 +8,8 @@ public interface ReseniasDAO {
     public void insertarResenia(int idUsuario, int idPelicula, Resena resenia, int aprobado);
     public void eliminarResenia(int idResenia);
     public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia, int Aprobado);
+    public List<Resena> devolverReseniasNoAprobadas();
+    public boolean reseniaExiste(int idResenia);
     public Resena devolverReseniaViaId(int id);
-    public List<Resena> obtenerResenias();
-    public int getMaxId();
+    public void aprobarReseniaViaId(int id);
 }

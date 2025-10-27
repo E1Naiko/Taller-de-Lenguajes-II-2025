@@ -13,6 +13,7 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
     protected String audio;
     protected String direccionArchivo;
     protected Genero genero;
+    protected Metadatos metadatos;
 
     /**
      * Constructor de la clase Contenido.
@@ -22,10 +23,11 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
      * @param direccionArchivo La dirección de archivo.
      */
 
-    public Contenido(String calidad, String audio, String direccionArchivo) {
+    public Contenido(String calidad, String audio, String direccionArchivo, Metadatos metadatos) {
         this.calidad = calidad;
         this.audio = audio;
         this.direccionArchivo = direccionArchivo;
+        this.metadatos = metadatos;
     }
 
     public Contenido(String direccionArchivo, Metadatos metadatos, Genero genero) {
@@ -54,6 +56,13 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
      */
     public String getAudio() {
         return audio;
+    }
+
+    /** 
+     * @return Metadatos
+     */
+    public Metadatos getMetadatos() {
+        return metadatos;
     }
 
     /** 
