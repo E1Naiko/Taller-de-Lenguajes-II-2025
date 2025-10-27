@@ -161,13 +161,13 @@ public class MenuResenia {
         do { 
             System.out.print("Ingrese DNI: ");
             String input = scanner.nextLine();
-            // 1. Validamos que no esté vacío
+            //Validamos que no esté vacío
             if (input.trim().isEmpty()) {
                 System.out.println("Error: El DNI no puede estar vacío.");
                 continue; 
             }
             
-            // 2. Validamos que sea un número
+            //Validamos que sea un número
             try {
                 dni = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -644,7 +644,7 @@ public class MenuResenia {
         // TODO - Listar las peliculas disponibles
         System.out.println("--- Lista de Películas Disponibles ---");
         //Traemos la lista de películas del DAO
-        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerTodas();
+        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerPeliculas();
         if (peliculas.isEmpty()) {
             System.out.println("Error: No hay películas cargadas para reseñar.");
             return null;
@@ -698,7 +698,7 @@ public class MenuResenia {
 
         scanner.close();
         Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(id), contenido, puntuacion, comentario);
-        System.out.println("\n--- Por favor, confirme los datos de la reseña ---");
+        System.out.println("\n Confirmar los datos de la reseña");
         System.out.println(nuevaResenia.toString());
         System.out.println("==============================================");
         String confirmacion = "";
@@ -711,7 +711,7 @@ public class MenuResenia {
             System.out.println("Reseña guardada");
             return nuevaResenia; 
         } else {
-            System.out.println("Operación cancelada por el usuario.");
+            System.out.println("Operación cancelada.");
             return null; 
         }
         return nuevaResenia;
@@ -748,14 +748,12 @@ public class MenuResenia {
     * @return int
     */
     private boolean verificarComentario(String comentarioIN){
-        //No puede estar vacío
-        if (comentarioIN.trim().isEmpty()) {
+        if (comentarioIN.trim().isEmpty()) { // No puede estar vacio
             System.out.println("Error: El comentario no puede estar vacío.");
             return false;
         }
         
-        //Límite de caracteres (ejemplo)
-        if (comentarioIN.length() > 500) {
+        if (comentarioIN.length() > 500) { // Limite de 500 caracteres de comentario
             System.out.println("Error: El comentario es muy largo (máx 500 caracteres).");
             return false;
         }
@@ -799,6 +797,9 @@ public class MenuResenia {
         "Ingresar Usuario a BD (2), " +
         "Ingresar Pelicula a BD (3), " +
         "Listar Usuarios (4), " +
+        "Listar Peliculas (5)" +
+        "Ingresar Reseña a BD (6)" +
+        "Aprobar Reseña (7)" +
         ".");
         System.out.println("Que operacion desea ejecutar?");
     }
