@@ -1,7 +1,10 @@
 package taller2.DB.JDBC;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.ReseniasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;;
 
@@ -122,7 +125,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     
     try {
       Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:test.db");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
       c.setAutoCommit(false);
       System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
       
@@ -133,6 +136,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       " AND Comentario=" + resenia.getComentario() + 
       " AND Aprobado=" + aprobado);
       
+      if (rs.next())
       idEncontrada = rs.getInt("ID");
       
       if (idEncontrada==0)
@@ -145,8 +149,40 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       c.close();
     } catch ( Exception e ) {
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      System.exit(0);
     }
     return idEncontrada;
   }
+  
+  @Override
+  public List<Resena> devolverReseniasNoAprobadas() {
+    Connection c = null;
+    Statement stmt = null;
+    List<Resena> lista = new ArrayList<Resena>();
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      c.setAutoCommit(false);
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar todos los elementos deonde Aprobado = 0");
+      
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM RESENIAS WHERE Aprobado=0;" );
+      
+      while (rs.next()) {
+        lista.add(new Resena(
+        Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("idUsuario")),
+        Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("IdContenido")),
+        rs.getInt("Puntuacion"),
+        rs.getString("Comentario"))
+        );
+      }
+      
+      rs.close();
+      c.close();
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
+    return lista;
+  }
+  
 }

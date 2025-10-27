@@ -87,7 +87,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idMetadatos);
                 if (pstmt.executeUpdate() == 0) {
-                    System.out.println("PlataformaTDL2 - MetadatosDAO - No se encontró reseña con ID " + idMetadatos);
+                    System.out.println("PlataformaTDL2 - MetadatosDAO - No se encontró metadatos con ID " + idMetadatos);
                 }
             }
             

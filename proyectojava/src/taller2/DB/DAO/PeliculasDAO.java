@@ -7,4 +7,5 @@ public interface PeliculasDAO {
     public void insertarPeliculas(Pelicula pelicula);
     public void eliminarPeliculas(int idPelicula);
     public int encontrarIdPelicula(Contenido pelicula);
+    public Pelicula devolverPeliculaViaId(int idPelicula);
 }
