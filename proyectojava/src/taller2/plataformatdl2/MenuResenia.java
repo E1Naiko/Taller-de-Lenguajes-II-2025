@@ -114,6 +114,7 @@ public class MenuResenia {
         String email= null;
         String contrasena= null;
         String idioma= null;
+        List<Genero> generosPreferidos = new ArrayList<>();
         
         do {
             System.out.print("Ingrese nombre: ");
@@ -159,7 +160,6 @@ public class MenuResenia {
             idioma = scanner.nextLine();
         } while (!verificarIdioma(idioma));
         
-        List<Genero> generosPreferidos = new ArrayList<>();
         String respuesta = "";
         System.out.println("\n--- Ingresar Géneros Preferidos ---");
         //Pregunta si quiere agregar (al menos) un género
@@ -427,7 +427,7 @@ public class MenuResenia {
         String calidad = null;
         String audio = null;
         String direccionArchivo = null;
-        
+
         Metadatos metadatosPelicula= cargarMetadatos(scanner);
         do {
             System.out.println("Ingrese Calidad: ");
