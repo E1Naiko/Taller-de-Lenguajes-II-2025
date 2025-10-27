@@ -5,5 +5,19 @@ public class Pelicula extends Contenido{
 
     public Pelicula(String calidad, String audio, String direccionArchivo, Genero genero, Metadatos metadatosPelicula){
         super(calidad, audio, direccionArchivo);
-    };
+        this.setGenero(genero);
+        this.metadatosPelicula= metadatosPelicula;
+    }
+    /** 
+     * @return Metadatos
+     */
+    public Metadatos getMetadatos() {
+        return metadatosPelicula;
+    }
+    /** 
+     * @param Metadatos
+     */
+    public void setSinopsis(Metadatos metadatosPelicula) {
+        this.metadatosPelicula = metadatosPelicula;
+    }
 }
