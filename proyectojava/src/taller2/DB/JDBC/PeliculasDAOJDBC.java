@@ -128,14 +128,9 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
         }
         return idEncontrada;
-    }
-
-    @Override
-    public Pelicula devolverPeliculaViaId(int idPelicula) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'devolverPeliculaViaId'");
     }
     
     

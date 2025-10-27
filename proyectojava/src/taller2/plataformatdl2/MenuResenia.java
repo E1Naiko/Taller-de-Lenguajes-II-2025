@@ -54,7 +54,7 @@ public class MenuResenia {
         }
     }
     
-    public void cargarUsuarioEnUsuariosFinalDAO() {
+    private void cargarUsuarioEnUsuariosFinalDAO() {
         Scanner scanner = new Scanner(System.in);
         
         // Llamamos al método que carga los datos y le PASAMOS el scanner.
@@ -86,7 +86,7 @@ public class MenuResenia {
     
 
 
-    public void cargarPeliculaEnPeliculasDAO(){
+    private void cargarPeliculaEnPeliculasDAO(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("--- Inicio de Carga de Nueva Película ---");
         //Llamamos al método que carga los datos
@@ -115,12 +115,12 @@ public class MenuResenia {
         scanner.close();
     }   
     
-    //public void cargarPeliculaEnPeliculasDAO(){  
+    //private void cargarPeliculaEnPeliculasDAO(){  
     //Pelicula nuevaPelicula = cargarPelicula();
     //Factory.getPeliculasDAO().insertarPeliculas(nuevaPelicula);
     //}
     
-    public void cargarReseniaEnReseniasDAO(){
+    private void cargarReseniaEnReseniasDAO(){
         Resena nuevaResenia = cargarResenia();
         //Factory.getReseniasDAO().insertarResenia();// pasar todo a logica usando interfaces
     }
@@ -534,7 +534,7 @@ public class MenuResenia {
     /**
      * Muestra todos los usuarios y permite ordenarlos por Nombre o Email.
      */
-    public void listarUsuariosOrdenados() {
+    private void listarUsuariosOrdenados() {
         Scanner scanner= new Scanner(System.in);
         System.out.println("--- Listado de Usuarios Registrados ---");
         
@@ -582,7 +582,7 @@ public class MenuResenia {
      * Muestra todas las películas y permite ordenarlas por Título, Género o Duración.
      *
      
-    public void listarPeliculasOrdenadas() {
+    private void listarPeliculasOrdenadas() {
         Scanner scanner= new Scanner(System.in);
         System.out.println("--- Listado de Películas Registradas ---");
         
