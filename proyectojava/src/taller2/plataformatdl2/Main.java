@@ -47,6 +47,10 @@ public class Main {
                 case 4: // Ingresar Reseña a BD (4)
                     menu.cargarReseniaEnReseniasDAO();
                 break;
+
+                case 5: //Listar Usuarios
+                    menu.listarUsuariosOrdenados();
+                break;
                 
                 default:
                 System.out.println("Error opcion no valida.");
@@ -63,6 +67,7 @@ public class Main {
         "Imprimir Opciones (1), " +
         "Ingresar Usuario a BD (2), " +
         "Ingresar Pelicula a BD (3), " +
+        "Listar Usuarios (4), " +
         ".");
         System.out.println("Que operacion desea ejecutar?");
     }

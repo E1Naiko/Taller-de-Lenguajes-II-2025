@@ -4,11 +4,6 @@ import java.util.Comparator;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 
 public class ComparadorPeliculaPorTitulo implements Comparator<Pelicula> {
-    /** 
-     * @param p1
-     * @param p2
-     * @return int
-     */
     @Override
     public int compare(Pelicula p1, Pelicula p2) {
         // Accedemos al título a través de los metadatos

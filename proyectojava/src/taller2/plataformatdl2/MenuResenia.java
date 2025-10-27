@@ -1,12 +1,14 @@
 package taller2.plataformatdl2;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Collections;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Contenido;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
@@ -112,6 +114,7 @@ public class MenuResenia {
         String email= null;
         String contrasena= null;
         String idioma= null;
+        List<Genero> generosPreferidos = new ArrayList<>();
         
         do {
             System.out.print("Ingrese nombre: ");
@@ -157,7 +160,6 @@ public class MenuResenia {
             idioma = scanner.nextLine();
         } while (!verificarIdioma(idioma));
         
-        List<Genero> generosPreferidos = new ArrayList<>();
         String respuesta = "";
         System.out.println("\n--- Ingresar Géneros Preferidos ---");
         //Pregunta si quiere agregar (al menos) un género
@@ -396,11 +398,6 @@ public class MenuResenia {
         return new Metadatos(titulo, resumen, elenco, director, duracion, idioma, subtitulos);
     }
 
-    /** 
-     * @param input
-     * @param nombreCampo
-     * @return boolean
-     */
     private boolean verificarCampoRequerido(String input, String nombreCampo) {
         if (input.trim().isEmpty()) {
             System.out.println("Error: El campo '" + nombreCampo + "' no puede estar vacío.");
@@ -409,10 +406,6 @@ public class MenuResenia {
         return true;
     }
 
-    /** 
-     * @param input
-     * @return Time
-     */
     private Time verificarDuracion(String input) {
         if (input.trim().isEmpty()) {
             System.out.println("Error: La duración no puede estar vacía.");
@@ -429,24 +422,23 @@ public class MenuResenia {
     /** 
     * @return Pelicula
     */
-    private Pelicula cargarPelicula(Scanner scanner){ // TODO - Verificar si hace falta mas atributo como metadatos
+    private Pelicula cargarPelicula(Scanner scanner){ 
         
         String calidad = null;
         String audio = null;
         String direccionArchivo = null;
-        
+        Genero genero = null; 
+
         do {
             System.out.println("Ingrese Calidad: ");
             calidad = scanner.nextLine();
         } while (!verificarCalidad(calidad));
         
-        do {
+        do {    
             System.out.println("Ingrese Audio: ");
             audio = scanner.nextLine();
         } while (!verificarAudio(audio));
         
-        
-        // TODO - Falta la carga de genero a partir de un enumerativo
         // FIXME - Replantear el uso de direccionArchivo
         // TODO - "Todos los datos son requeridos a excepcion del Resumen" que carajos?
         
@@ -462,7 +454,7 @@ public class MenuResenia {
         } while (genero == null); //null si el género no es válido
         
         Metadatos metadatosPelicula= cargarMetadatos(scanner);
-        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero, metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
+        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero.name(), metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
         return nuevaPelicula;
     }
     
@@ -555,6 +547,60 @@ public class MenuResenia {
 
         scanner.close();
     }
+
+    /** 
+     * Muestra todas las películas y permite ordenarlas por Título, Género o Duración.
+     *
+     
+    public void listarPeliculasOrdenadas() {
+        Scanner scanner= new Scanner(System.in);
+        System.out.println("--- Listado de Películas Registradas ---");
+        
+        //Obtener la lista COMPLETA de películas desde el DAO
+        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerTodas(); //TODO Implementar metodo obtenerTodas en PeliculasDAO
+
+        if (peliculas.isEmpty()) {
+            System.out.println("No hay películas registradas en el sistema.");
+            return;
+        }
+
+        //Preguntar el criterio de ordenación
+        System.out.println("¿Cómo desea ordenar la lista?");
+        System.out.println("  1. Por Título (A-Z)");
+        System.out.println("  2. Por Género (A-Z)");
+        System.out.println("  3. Por Duración (Más corta a más larga)");
+        System.out.println("  Cualquier otra tecla para mostrar sin ordenar.");
+        System.out.print("Seleccione una opción: ");
+        
+        String opcion = scanner.nextLine();
+
+        //Aplicar el Comparador elegido
+        switch (opcion) {
+            case "1":
+                Collections.sort(peliculas, new ComparadorPeliculaPorTitulo());
+                System.out.println("\n--- Películas ordenadas por Título ---");
+                break;
+            case "2":
+                Collections.sort(peliculas, new ComparadorPeliculaPorGenero());
+                System.out.println("\n--- Películas ordenadas por Género ---");
+                break;
+            case "3":
+                Collections.sort(peliculas, new ComparadorPeliculaPorDuracion());
+                System.out.println("\n--- Películas ordenadas por Duración ---");
+                break;
+            default:
+                System.out.println("\n--- Películas (orden por defecto de BD) ---");
+                break;
+        }
+
+        //Mostrar la lista
+        for (Pelicula peli : peliculas) {
+            System.out.println("---------------------------------");
+            System.out.println(peli.toString()); 
+        }
+        System.out.println("---------------------------------");
+    }
+    */
 
 
     // ----------------------------------- MANEJO DE RESENIA -----------------------------------
