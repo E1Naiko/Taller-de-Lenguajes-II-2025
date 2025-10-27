@@ -177,6 +177,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             pstmt.setString(1, nombreUsuario);
             pstmt.setString(2, contrasenia);
             
+            // Intenamos comparar como lo veniamos haciendo pero se rompia el codigo
+            // asi que compiamos el uso de prepared statement
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 idEncontrada = rs.getInt("ID");

@@ -17,7 +17,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Creando Tabla");
+            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - crearTablaPeliculas - Creando Tabla");
             
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS PELICULAS " +
@@ -27,7 +27,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             " Audio                  TEXT       NOT NULL, " +
             " IdMetadatos            INTEGER    NOT NULL)";
             stmt.executeUpdate(sql);
-            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - Tabla Creada Exitosamente");
+            System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - crearTablaPeliculas - Tabla Creada Exitosamente");
             stmt.close();
             c.close();
             
@@ -47,7 +47,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Intentando insertar elemento.");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - insertarPeliculas - Intentando insertar elemento.");
             
             String sql = "INSERT INTO PELICULAS (Direccion_Archivo, Calidad, Audio, IdMetadatos) VALUES (?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -56,10 +56,11 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
                 pstmt.setString(3, pelicula.getAudio());
                 Factory.getMetadatosDAO().insertarMetadatos(pelicula.getMetadatos());
                 pstmt.setInt(4, Factory.getMetadatosDAO().encontrarIdMetadatos(pelicula.getMetadatos()));
+                pstmt.toString();
                 pstmt.executeUpdate();
             }
             
-            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Elemento insertado correctamente.");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - insertarPeliculas - Elemento insertado correctamente.");
             
             c.commit();
             c.close();
@@ -80,20 +81,20 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             
-            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Intentando eliminar elemento");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - eliminarPeliculas - Intentando eliminar elemento");
             
             String sql = "DELETE FROM PELICULAS WHERE ID=?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idPelicula);
                 if (pstmt.executeUpdate() == 0) {
-                    System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - No se encontró reseña con ID " + idPelicula);
+                    System.out.println("PlataformaTDL2 - PeliculasDAOJDBC - eliminarPeliculas - No se encontró reseña con ID " + idPelicula);
                 }
             }
             
             c.commit();
             c.close();
             
-            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Elemento eliminado correctamente");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - eliminarPeliculas - Elemento eliminado correctamente");
             
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -113,7 +114,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:test.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - PeliculasDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - Intentando encontrar id del elemento");
             
             try (Statement stmt = c.createStatement()) {
                 ResultSet rs = stmt.executeQuery( "SELECT * FROM PELICULAS WHERE Direccion_Archivo=" + pelicula.getDireccionArchivo() +
@@ -123,9 +124,9 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
                 idEncontrada = rs.getInt("ID");
                 
                 if (idEncontrada==0)
-                System.out.println("\"PlataformaTDL2 - PeliculasDAO - ERROR no se encontro id del elemento");
+                System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - ERROR no se encontro id del elemento");
                 else
-                System.out.println("\"PlataformaTDL2 - PeliculasDAO - id del elemento encontrada correctamente");
+                System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - id del elemento encontrada correctamente");
                 
                 rs.close();
             }
@@ -157,7 +158,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - PeliculasDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAO - devolverPeliculaViaId - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM PELICULAS WHERE ID=" + idPelicula +
@@ -211,7 +212,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - PeliculasDAO - Intentando encontrar maxId del elemento");
+            System.out.println("\"PlataformaTDL2 - PeliculasDAO - getMaxId - Intentando encontrar maxId del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM Peliculas");
