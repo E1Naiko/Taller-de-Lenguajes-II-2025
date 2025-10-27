@@ -2,9 +2,9 @@ package taller2.plataformatdl2;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Collections;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Contenido;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
@@ -422,13 +422,13 @@ public class MenuResenia {
     /** 
     * @return Pelicula
     */
-    private Pelicula cargarPelicula(Scanner scanner){ // TODO - Verificar si hace falta mas atributo como metadatos
+    private Pelicula cargarPelicula(Scanner scanner){ 
         
         String calidad = null;
         String audio = null;
         String direccionArchivo = null;
+        Genero genero = null; 
 
-        Metadatos metadatosPelicula= cargarMetadatos(scanner);
         do {
             System.out.println("Ingrese Calidad: ");
             calidad = scanner.nextLine();
@@ -439,8 +439,6 @@ public class MenuResenia {
             audio = scanner.nextLine();
         } while (!verificarAudio(audio));
         
-        
-        // TODO - Falta la carga de genero a partir de un enumerativo
         // FIXME - Replantear el uso de direccionArchivo
         // TODO - "Todos los datos son requeridos a excepcion del Resumen" que carajos?
         
@@ -448,8 +446,15 @@ public class MenuResenia {
             System.out.println("Ingrese Direccion del Archivo: ");
             direccionArchivo = scanner.nextLine();
         } while (!verificarDireccionArchivo(direccionArchivo));
+
+        do {
+        System.out.println("Ingrese Género: ");
+            String generoInput = scanner.nextLine();
+            genero = verificarGenero(generoInput); 
+        } while (genero == null); //null si el género no es válido
         
-        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
+        Metadatos metadatosPelicula= cargarMetadatos(scanner);
+        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero.name(), metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
         return nuevaPelicula;
     }
     
