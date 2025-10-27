@@ -17,7 +17,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-            System.out.println("PlataformaTDL2 - UsuariosFinal - Creando Tabla.");
+            System.out.println("PlataformaTDL2 - UsuariosFinal - crearTablaUsuarioFinal - Creando Tabla.");
             
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS USUARIOS_FINAL " +
@@ -29,7 +29,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             " Contrasena              TEXT         NOT NULL, " +
             " Idioma                  TEXT         NOT NULL)";
             stmt.executeUpdate(sql);
-            System.out.println("PlataformaTDL2 - UsuariosFinal - Tabla Creada Exitosamente.");
+            System.out.println("PlataformaTDL2 - UsuariosFinal - crearTablaUsuarioFinal - Tabla Creada Exitosamente.");
             stmt.close();
             c.close();
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando insertar elemento.");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - insertarUsuarioFinal - Intentando insertar elemento.");
             
             String sql = "INSERT INTO USUARIOS_FINAL (Nombre, Apellido, DNI, Email, Contrasena, Idioma) VALUES (?,?,?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -63,7 +63,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
                 pstmt.executeUpdate();
             }
             
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Elemento insertado correctamente.");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - insertarUsuarioFinal - Elemento insertado correctamente.");
             
             c.commit();
             c.close();
@@ -86,20 +86,20 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando eliminar elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - eliminarUsuarioFinal - Intentando eliminar elemento");
             
             String sql = "DELETE FROM USUARIOS_FINAL WHERE ID = ?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idUsuario);
                 if (pstmt.executeUpdate() == 0) {
-                    System.out.println("PlataformaTDL2 - UsuariosFinalDAO - No se encontró reseña con ID " + idUsuario);
+                    System.out.println("PlataformaTDL2 - UsuariosFinalDAO - eliminarUsuarioFinal - No se encontró reseña con ID " + idUsuario);
                 }
             }
             
             c.commit();
             c.close();
             
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Elemento eliminado correctamente");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - eliminarUsuarioFinal - Elemento eliminado correctamente");
             
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -121,7 +121,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE Nombre=" + usuario.getNombre() +
@@ -132,9 +132,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             idEncontrada = rs.getInt("ID");
             
             if (idEncontrada==0)
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - ERROR no se encontro id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - ERROR no se encontro id del elemento");
             else
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - id del elemento encontrada correctamente");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - id del elemento encontrada correctamente");
             
             rs.close();
             stmt.close();
@@ -165,34 +165,40 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia){
         int idEncontrada = 0;
         Connection c = null;
-        Statement stmt = null;
         
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaLogin - Intentando encontrar id del elemento");
             
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE Nombre=" + nombreUsuario +
-            " AND Contrasena=" + contrasenia  + 
-            ";" );
+            String sql = "SELECT ID FROM USUARIOS_FINAL WHERE Nombre = ? AND Contrasena = ?";
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setString(1, nombreUsuario);
+            pstmt.setString(2, contrasenia);
             
-            idEncontrada = rs.getInt("ID");
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                idEncontrada = rs.getInt("ID");
+                System.out.println("PlataformaTDL2 - Login exitoso para usuario: " + nombreUsuario);
+            } else {
+                System.out.println("PlataformaTDL2 - Credenciales inválidas para: " + nombreUsuario);
+            }
             
             if (idEncontrada==0)
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - ERROR no se encontro id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaLogin - ERROR no se encontro id del elemento");
             else
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - id del elemento encontrada correctamente");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaLogin - id del elemento encontrada correctamente");
             
             rs.close();
-            stmt.close();
+            pstmt.close();
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
         return idEncontrada;
     }
+    
     
     
     
@@ -229,7 +235,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverUsuarioFinalViaId - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE ID=" + id +
@@ -274,7 +280,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaDNI - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE DNI=" + dni + ";" );
@@ -284,9 +290,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             }
             
             if (idEncontrada==0)
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - ERROR no se encontro id del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaDNI - ERROR no se encontro id del elemento");
             else
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - id del elemento encontrada correctamente");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaDNI - id del elemento encontrada correctamente");
             
             rs.close();
             stmt.close();
@@ -341,7 +347,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar maxId del elemento");
+            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaDNI - Intentando encontrar maxId del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM USUARIOS_FINAL");

@@ -20,6 +20,9 @@ public class MenuResenia {
         
         boolean bucle = true;
         while (bucle) {
+            System.out.println();
+            System.out.println("------------------");
+            System.out.println();
             imprimirOpciones();
             entrada = scanner.nextInt();
             switch (entrada) {
@@ -59,9 +62,6 @@ public class MenuResenia {
                 System.out.println("Error opcion no valida.");
                 break;
             }
-            System.out.println();
-            System.out.println();
-            System.out.println();
         }
         scanner.close();
     }
@@ -452,12 +452,14 @@ public class MenuResenia {
         }
         try {
             Time duracion = Time.valueOf(input); // Formato "hh:mm:ss"
+            System.out.println("DEBUG - tiempo: " + duracion);
             return duracion;
         } catch (IllegalArgumentException e) {
             System.out.println("Error: Formato de duración incorrecto. Debe ser HH:mm:ss");
             return null;
         }
     }
+
     /** 
     * @return Pelicula
     */
@@ -849,16 +851,17 @@ public class MenuResenia {
     
     
     private static void imprimirOpciones(){
-        System.out.println("Opciones Disponibles:" +
-        "Salir (0), " +
-        "Imprimir Opciones (1), " +
-        "Ingresar Usuario a BD (2), " +
-        "Ingresar Pelicula a BD (3), " +
-        "Listar Usuarios (4), " +
-        "Listar Peliculas (5), " +
-        "Ingresar Resenia (6), " +
+        System.out.println("Opciones Disponibles:" + '\n' +
+        "Salir (0), " + '\n' +
+        "Imprimir Opciones (1), " + '\n' +
+        "Ingresar Usuario a BD (2), " + '\n' +
+        "Ingresar Pelicula a BD (3), " + '\n' +
+        "Listar Usuarios (4), " + '\n' +
+        "Listar Peliculas (5), " + '\n' +
+        "Ingresar Resenia (6), " + '\n' +
         "Aprobar Reseña (7)" +
-        ".");
+        "." + '\n');
+
         System.out.println("Que operacion desea ejecutar?");
     }
 
