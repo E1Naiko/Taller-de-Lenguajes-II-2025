@@ -122,10 +122,10 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE Nombre=" + usuario.getNombre() +
-            ", Email=" + usuario.getEmail() +
-            ", Contrasena=" + usuario.getContrasena()  + 
-            ", Idioma=" + usuario.getIdioma() + ";" );
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE Nombre=" + usuario.getNombre() +
+            " AND Email=" + usuario.getEmail() +
+            " AND Contrasena=" + usuario.getContrasena()  + 
+            " AND Idioma=" + usuario.getIdioma() + ";" );
             
             idEncontrada = rs.getInt("ID");
             
@@ -172,8 +172,8 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE Nombre=" + nombreUsuario +
-            ", Contrasena=" + contrasenia  + 
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE Nombre=" + nombreUsuario +
+            " AND Contrasena=" + contrasenia  + 
             ";" );
             
             idEncontrada = rs.getInt("ID");
@@ -209,7 +209,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     * @param id
     * @return UsuarioFinal
     */
-    public UsuarioFinal encontrarUsuarioViaId(int id){
+    public UsuarioFinal devolverUsuarioFinalViaId(int id){
         Connection c = null;
         Statement stmt = null;
         
@@ -220,7 +220,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE ID=" + id +
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE ID=" + id +
             ";" );
             
             String nombre = rs.getString("Nombre");
@@ -263,7 +263,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY WHERE DNI=" + dni + ";" );
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE DNI=" + dni + ";" );
             
             if (rs.next()) {
                 idEncontrada = rs.getInt("ID");
@@ -307,7 +307,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
         int maxId = this.getMaxId();
 
         for (int i=1; i<=maxId; i++)
-            lista.add(this.encontrarUsuarioViaId(i));
+            lista.add(this.devolverUsuarioFinalViaId(i));
 
         return lista;
     }

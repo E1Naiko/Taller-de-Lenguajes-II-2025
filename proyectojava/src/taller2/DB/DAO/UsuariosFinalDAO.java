@@ -12,7 +12,7 @@ public interface UsuariosFinalDAO {
     public boolean existeUsuario(UsuarioFinal usuario);
     public boolean checkUsuarioViaLogin(String nombreUsuario, String contrasenia);
     public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia);
-    public UsuarioFinal encontrarUsuarioViaId(int id);
+    public UsuarioFinal devolverUsuarioFinalViaId(int id);
     public int encontrarIdUsuarioViaDNI(int dni);
     public boolean checkUsuarioViaDNI(int dni);
     public List<UsuarioFinal> obtenerUsuarios();
