@@ -641,15 +641,8 @@ public class MenuResenia {
         int id = login();
         Scanner scanner= new Scanner(System.in);
         
-        int idContenido;
-        do {
-            System.out.println(" DEBUG - TABLA CONTENIDO NO IMPLEMENTADA - Ingrese el id del contenido: ");
-            idContenido = scanner.nextInt();
-            
-        } while (!verificarIdContenido(idContenido));
-        
         // TODO - Listar las peliculas disponibles
-        System.out.println("--- Películas Disponibles ---");
+        System.out.println("--- Lista de Películas Disponibles ---");
         //Traemos la lista de películas del DAO
         List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerTodas();
         if (peliculas.isEmpty()) {
@@ -665,7 +658,7 @@ public class MenuResenia {
         int seleccion = -1;
         Contenido contenido = null; // Tu variable 'contenido' ahora se llena acá
         do {
-            System.out.print("Indique el número de la película que desea reseñar: ");
+            System.out.print("Escribir el número de la película que desea reseñar: ");
             try {
                 seleccion = scanner.nextInt(); 
                 if (seleccion > 0 && seleccion <= peliculas.size()) {
@@ -680,7 +673,7 @@ public class MenuResenia {
                     seleccion = -1; 
                 }
             } catch (Exception e) {
-                System.out.println("Error: Debe ingresar un número.");
+                System.out.println("Error: Debe ser un número.");
                 scanner.next(); //Limpiamos el buffer si puso letras
                 seleccion = -1;
             }
@@ -702,8 +695,25 @@ public class MenuResenia {
             comentario = scanner.nextLine();
             
         } while (!verificarComentario(comentario));
+
         scanner.close();
         Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(id), contenido, puntuacion, comentario);
+        System.out.println("\n--- Por favor, confirme los datos de la reseña ---");
+        System.out.println(nuevaResenia.toString());
+        System.out.println("==============================================");
+        String confirmacion = "";
+        do {
+            System.out.print("¿Desea guardar esta reseña? (s/n): ");
+            confirmacion = scanner.nextLine();
+        } while (!confirmacion.equalsIgnoreCase("s") && !confirmacion.equalsIgnoreCase("n")); 
+        scanner.close();
+        if (confirmacion.equalsIgnoreCase("s")) {
+            System.out.println("Reseña guardada");
+            return nuevaResenia; 
+        } else {
+            System.out.println("Operación cancelada por el usuario.");
+            return null; 
+        }
         return nuevaResenia;
     }
     
