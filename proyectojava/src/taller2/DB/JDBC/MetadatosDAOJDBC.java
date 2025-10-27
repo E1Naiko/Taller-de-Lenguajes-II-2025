@@ -24,13 +24,13 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS METADATOS " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " Titulo         TEXT       NULL, " +
-            " Sinopsis       TEXT       NULL, " +
-            " Elenco         TEXT       NULL, " +  // TODO - crear tabla de Elenco
-            " Director       TEXT       NULL, " +
-            " Duracion       TIME       NULL, " +
-            " Idioma         TEXT       NULL, " +  // TODO - crear tabla de Idiomas
-            " Subtitulos     TEXT       NULL" +
+            " Titulo         TEXT       NOT NULL, " +
+            " Sinopsis       TEXT       NOT NULL, " +
+            " Elenco         TEXT       NOT NULL, " +  // TODO - crear tabla de Elenco
+            " Director       TEXT       NOT NULL, " +
+            " Duracion       TIME       NOT NULL, " +
+            " Idioma         TEXT       NOT NULL, " +  // TODO - crear tabla de Idiomas
+            " Subtitulos     TEXT       NOT NULL" +
             ")";
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - Metadatos - Tabla Creada Exitosamente.");
@@ -42,8 +42,8 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
     }
     
     /** 
-     * @param metadatos
-     */
+    * @param metadatos
+    */
     @Override
     public void insertarMetadatos(Metadatos metadatos) {
         Connection c = null;
@@ -58,11 +58,23 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, metadatos.getTitulo());
                 pstmt.setString(2, metadatos.getSinopsis());
-                pstmt.setString(3, null);
+                
+                // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla elenco en la bd
+                String elencoStr = (metadatos.getElenco() != null) 
+                ? String.join(", ", metadatos.getElenco()) 
+                : null;
+                pstmt.setString(3, elencoStr); // Ahora es un String
+                
                 pstmt.setString(4, metadatos.getDirector());
                 pstmt.setTime(5, metadatos.getDuracion());
                 pstmt.setString(6, metadatos.getIdioma());
-                pstmt.setString(7, null);
+
+                // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd
+                String subtitulosStr = (metadatos.getSubtitulos() != null) 
+                ? String.join(", ", metadatos.getSubtitulos()) 
+                : null;
+                
+                pstmt.setString(7, subtitulosStr); // Ahora es un String
                 pstmt.executeUpdate();
             }
             
@@ -76,8 +88,8 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
     }
     
     /** 
-     * @param idMetadatos
-     */
+    * @param idMetadatos
+    */
     @Override
     public void eliminarMetadatos(int idMetadatos) {
         Connection c = null;
@@ -108,9 +120,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
     }
     
     /** 
-     * @param metadatos
-     * @return int
-     */
+    * @param metadatos
+    * @return int
+    */
     @Override
     public int encontrarIdMetadatos(Metadatos metadatos) {
         int idEncontrada = 0;
@@ -151,9 +163,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
     }
     
     /** 
-     * @param idMetadatos
-     * @return Metadatos
-     */
+    * @param idMetadatos
+    * @return Metadatos
+    */
     @Override
     public Metadatos devolverMetadatosViaId(int idMetadatos) {
         Connection c = null;
