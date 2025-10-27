@@ -24,13 +24,13 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS METADATOS " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " Titulo         TEXT       NOT NULL, " +
-            " Sinopsis       TEXT       NOT NULL, " +
-            " Elenco         TEXT, " +  // TODO - crear tabla de Elenco
-            " Director       TEXT       NOT NULL, " +
-            " Duracion       TIME       NOT NULL, " +
-            " Idioma         TEXT, " +  // TODO - crear tabla de Idiomas
-            " Subtitulos     TEXT       NOT NULL" +
+            " Titulo         TEXT       NULL, " +
+            " Sinopsis       TEXT       NULL, " +
+            " Elenco         TEXT       NULL, " +  // TODO - crear tabla de Elenco
+            " Director       TEXT       NULL, " +
+            " Duracion       TIME       NULL, " +
+            " Idioma         TEXT       NULL, " +  // TODO - crear tabla de Idiomas
+            " Subtitulos     TEXT       NULL" +
             ")";
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - Metadatos - Tabla Creada Exitosamente.");
@@ -58,11 +58,11 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, metadatos.getTitulo());
                 pstmt.setString(2, metadatos.getSinopsis());
-                // TODO  - pstmt.setString(3, null;
+                pstmt.setString(3, null);
                 pstmt.setString(4, metadatos.getDirector());
                 pstmt.setTime(5, metadatos.getDuracion());
                 pstmt.setString(6, metadatos.getIdioma());
-                // TODO  - pstmt.setString(7, metadatos.getSubtitulos());
+                pstmt.setString(7, null);
                 pstmt.executeUpdate();
             }
             

@@ -52,12 +52,14 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando insertar elemento.");
             
-            String sql = "INSERT INTO USUARIOS_FINAL (Nombre, Email, Contrasena, Idioma) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO USUARIOS_FINAL (Nombre, Apellido, DNI, Email, Contrasena, Idioma) VALUES (?,?,?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, usuario.getNombre());
-                pstmt.setString(2, usuario.getEmail());
-                pstmt.setString(3, usuario.getContrasena());
-                pstmt.setString(4, usuario.getIdioma());
+                pstmt.setString(2, usuario.getApellido());
+                pstmt.setInt(3, usuario.getDNI());
+                pstmt.setString(4, usuario.getEmail());
+                pstmt.setString(5, usuario.getContrasena());
+                pstmt.setString(6, usuario.getIdioma());
                 pstmt.executeUpdate();
             }
             

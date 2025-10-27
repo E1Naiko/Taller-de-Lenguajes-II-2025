@@ -11,24 +11,24 @@ import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 import taller2.plataformatdl2.Utilidades.*;
 
 public class MenuResenia {
+    private static Scanner scanner = new Scanner(System.in);
     public MenuResenia(){
-        
     }
-
+    
     public void usarMenuDeConsola(){
         int entrada;
-
-        imprimirOpciones();
+        
         boolean bucle = true;
         while (bucle) {
-            entrada = lecturaDeOpcion();
+            imprimirOpciones();
+            entrada = scanner.nextInt();
             switch (entrada) {
                 case 0:
-                    bucle = false;
+                bucle = false;
                 break;
                 
                 case 1: // Imprimir Opciones (1)
-                    imprimirOpciones();
+                imprimirOpciones();
                 break;
                 
                 case 2: // Ingresar Usuario a BD (2)
@@ -59,15 +59,17 @@ public class MenuResenia {
                 System.out.println("Error opcion no valida.");
                 break;
             }
+            System.out.println();
+            System.out.println();
+            System.out.println();
         }
+        scanner.close();
     }
     
     private void cargarUsuarioEnUsuariosFinalDAO() {
-        Scanner scanner = new Scanner(System.in);
-        
-        // Llamamos al método que carga los datos y le PASAMOS el scanner.
+        // Llamamos al método que carga los datos
         System.out.println("--- Inicio de Registro de Usuario ---");
-        UsuarioFinal nuevoUsuario = cargarUsuario(scanner);
+        UsuarioFinal nuevoUsuario = cargarUsuario();
         
         //Mostrar al usuario todos los datos que acaba de ingresar.
         System.out.println("\n=============================================");
@@ -79,7 +81,7 @@ public class MenuResenia {
         String confirmacion = "";
         do {
             System.out.print("¿Los datos son correctos? (s/n): ");
-            confirmacion = scanner.nextLine();
+            confirmacion = scanner.next();
         } while (!confirmacion.equalsIgnoreCase("s") && !confirmacion.equalsIgnoreCase("n"));
         
         //Si confirma, se guardan en la Base de Datos.
@@ -89,16 +91,14 @@ public class MenuResenia {
         } else {
             System.out.println("Operación cancelada. El usuario no ha sido guardado.");
         }
-        scanner.close();
     }
     
-
-
+    
+    
     private void cargarPeliculaEnPeliculasDAO(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("--- Inicio de Carga de Nueva Película ---");
         //Llamamos al método que carga los datos
-        Pelicula nuevaPelicula = cargarPelicula(scanner);
+        Pelicula nuevaPelicula = cargarPelicula();
         
         //Mostrar al usuario todos los datos que acaba de ingresar.
         System.out.println("\n=============================================");
@@ -110,7 +110,7 @@ public class MenuResenia {
         String confirmacion = "";
         do {
             System.out.print("¿Los datos son correctos? (s/n): ");
-            confirmacion = scanner.nextLine();
+            confirmacion = scanner.next();
         } while (!confirmacion.equalsIgnoreCase("s") && !confirmacion.equalsIgnoreCase("n"));
         
         //Si confirma, se guardan en la Base de Datos.
@@ -120,7 +120,6 @@ public class MenuResenia {
         } else {
             System.out.println("Operación cancelada. La película no ha sido guardada.");
         }
-        scanner.close();
     }   
     
     //private void cargarPeliculaEnPeliculasDAO(){  
@@ -146,29 +145,29 @@ public class MenuResenia {
     * @return UsuarioFinal
     */
     //Metodo para registrar Usuario
-    private UsuarioFinal cargarUsuario(Scanner scanner){
-        String nombre= null;
-        String apellido= null;
-        int dni= 0;
+    private UsuarioFinal cargarUsuario(){
+        String nombre = null;
+        String apellido = null;
+        int dni = 0;
         boolean dniValido = false;
-        String email= null;
-        String contrasena= null;
-        String idioma= null;
+        String email = null;
+        String contrasena = null;
+        String idioma = null;
         List<Genero> generosPreferidos = new ArrayList<>();
         
         do {
             System.out.print("Ingrese nombre: ");
-            nombre= scanner.nextLine();
+            nombre = scanner.next();
         } while (!verificarNombre(nombre));
-
+        
         do { 
             System.out.print("Ingrese apellido: ");
-            apellido= scanner.nextLine();
+            apellido = scanner.next();
         } while (!verificarApellido(apellido));
         
         do { 
             System.out.print("Ingrese DNI: ");
-            String input = scanner.nextLine();
+            String input = scanner.next();
             // 1. Validamos que no esté vacío
             if (input.trim().isEmpty()) {
                 System.out.println("Error: El DNI no puede estar vacío.");
@@ -184,20 +183,20 @@ public class MenuResenia {
             }
             dniValido = verificarDNI(dni);
         } while (!dniValido);
-
+        
         do {
             System.out.println("Ingresar Email: ");
-            email = scanner.nextLine();
+            email = scanner.next();
         } while (!verificarEmail(email));
         
         do {
             System.out.println("Ingresar Contraseña: ");
-            contrasena = scanner.nextLine();
+            contrasena = scanner.next();
         } while (!verificarContrasena(contrasena));
         
         do {
             System.out.println("Ingresar Idioma: ");
-            idioma = scanner.nextLine();
+            idioma = scanner.next();
         } while (!verificarIdioma(idioma));
         
         String respuesta = "";
@@ -208,7 +207,7 @@ public class MenuResenia {
             //Pide UN género y lo valida 
             do {
                 System.out.println("Ingrese un género (o escriba 'fin' para terminar): ");
-                String generoInput = scanner.nextLine();
+                String generoInput = scanner.next();
                 if (generoInput.equalsIgnoreCase("fin")) {
                     respuesta = "n"; // Forzamos la salida del bucle externo
                     break; // Rompemos el bucle interno
@@ -225,7 +224,7 @@ public class MenuResenia {
                 generosPreferidos.add(generoSeleccionado);
                 System.out.println("'" + generoSeleccionado.name() + "' agregado.");
                 System.out.print("¿Desea agregar otro género? (s/n): ");
-                respuesta = scanner.nextLine();
+                respuesta = scanner.next();
             }
         } while (respuesta.equalsIgnoreCase("s"));
         //Al final, mostramos la lista completa
@@ -235,7 +234,7 @@ public class MenuResenia {
             System.out.println("Géneros preferidos seleccionados: " + generosPreferidos);
         }
         
-
+        
         System.out.println("Ingresar Lista Preferida: ");
         String listaPreferida = "ListaVacia"; //FIXME - Tambien como en Historial
         System.out.println("Ingresar Historial: ");
@@ -288,10 +287,6 @@ public class MenuResenia {
             System.out.println("Error: El DNI debe tener entre 7 y 8 digitos numericos.");
             return false;
         }
-        if (Factory.getUsuariosFinalDAO().checkUsuarioViaDNI(dniIN)) {
-            System.out.println("Error: El DNI " + dniIN + " ya se encuentra registrado en el sistema.");
-            return false;
-        }
         return true;
     }
     
@@ -337,15 +332,14 @@ public class MenuResenia {
     
     /**
     * 
-    * @param scanner
     * @return Genero
     */
     private Genero verificarGenero(String generoIN) {
         if (generoIN.trim().isEmpty()) {
-        System.out.println("Error: No se puede ingresar un género vacío.");
-        return null;
+            System.out.println("Error: No se puede ingresar un género vacío.");
+            return null;
         }
-
+        
         try {
             Genero genero = Genero.valueOf(generoIN.toUpperCase());
             return genero;
@@ -368,9 +362,9 @@ public class MenuResenia {
     
     // ----------------------------------- MANEJO DE PELICULA -----------------------------------
     /**
-     * @return Metadatos
-     */
-    private Metadatos cargarMetadatos(Scanner scanner) {
+    * @return Metadatos
+    */
+    private Metadatos cargarMetadatos() {
         String titulo;
         String resumen;
         String[] elenco;
@@ -381,62 +375,68 @@ public class MenuResenia {
         
         do {
             System.out.print("Ingrese Título: ");
-            titulo = scanner.nextLine();
+            titulo = scanner.next();
         } while (!verificarCampoRequerido(titulo, "Título"));
+
         System.out.print("Ingrese Resumen (Opcional, presione Enter para omitir): ");
-        resumen = scanner.nextLine();
-        if (resumen.trim().isEmpty()) {
+        resumen = scanner.next();
+        if (resumen.isEmpty()) {
             resumen = "NULL"; // O null, si tu BD lo prefiere
         }
+
         do {
             System.out.print("Ingrese Director: ");
-            director = scanner.nextLine();
+            director = scanner.next();
         } while (!verificarCampoRequerido(director, "Director"));
+
         do {
             System.out.print("Ingrese Idioma: ");
-            idioma = scanner.nextLine();
+            idioma = scanner.next();
         } while (!verificarCampoRequerido(idioma, "Idioma"));
+        
         do {
             System.out.print("Ingrese Duración (formato HH:mm:ss, ej: 01:30:00): ");
-            String duracionStr = scanner.nextLine();
+            String duracionStr = scanner.next();
             duracion = verificarDuracion(duracionStr);
         } while (duracion == null); 
+        
         // Usamos una lista temporal y luego la convertimos a array
         List<String> elencoList = new ArrayList<>();
         String respuestaElenco = "";
         System.out.println("--- Ingresar Elenco (miembros del reparto) ---");
         do {
             System.out.print("Ingrese nombre de un actor/actriz (o 'fin' para no agregar): ");
-            String actor = scanner.nextLine();
+            String actor = scanner.next();
             if (actor.equalsIgnoreCase("fin") || actor.trim().isEmpty()) {
                 if(elencoList.isEmpty()) System.out.println("Elenco omitido.");
                 break;
             } 
             elencoList.add(actor.trim());
             System.out.print("¿Desea agregar otro miembro? (s/n): ");
-            respuestaElenco = scanner.nextLine();
+            respuestaElenco = scanner.next();
         } while (respuestaElenco.equalsIgnoreCase("s"));
+        
         // Convertimos la lista a un array de String
         elenco = elencoList.toArray(new String[0]);
         List<String> subtitulosList = new ArrayList<>();
         String respuestaSub = "";
         do {
             System.out.print("Ingrese un idioma de subtítulo (o 'fin' para no agregar): ");
-            String sub = scanner.nextLine();  
+            String sub = scanner.next();  
             if (sub.equalsIgnoreCase("fin") || sub.trim().isEmpty()) {
                 if(subtitulosList.isEmpty()) System.out.println("Subtítulos omitidos.");
                 break;
             }
             subtitulosList.add(sub.trim());
             System.out.print("¿Desea agregar otro idioma? (s/n): ");
-            respuestaSub = scanner.nextLine();
+            respuestaSub = scanner.next();
         } while (respuestaSub.equalsIgnoreCase("s"));
         // Convertimos la lista a un array de String
         subtitulos = subtitulosList.toArray(new String[0]);
         System.out.println("--- Metadatos cargados exitosamente ---");
         return new Metadatos(titulo, resumen, elenco, director, duracion, idioma, subtitulos);
     }
-
+    
     private boolean verificarCampoRequerido(String input, String nombreCampo) {
         if (input.trim().isEmpty()) {
             System.out.println("Error: El campo '" + nombreCampo + "' no puede estar vacío.");
@@ -444,7 +444,7 @@ public class MenuResenia {
         }
         return true;
     }
-
+    
     private Time verificarDuracion(String input) {
         if (input.trim().isEmpty()) {
             System.out.println("Error: La duración no puede estar vacía.");
@@ -461,21 +461,21 @@ public class MenuResenia {
     /** 
     * @return Pelicula
     */
-    private Pelicula cargarPelicula(Scanner scanner){ 
+    private Pelicula cargarPelicula(){ 
         
         String calidad = null;
         String audio = null;
         String direccionArchivo = null;
         Genero genero = null; 
-
+        
         do {
             System.out.println("Ingrese Calidad: ");
-            calidad = scanner.nextLine();
+            calidad = scanner.next();
         } while (!verificarCalidad(calidad));
         
         do {    
             System.out.println("Ingrese Audio: ");
-            audio = scanner.nextLine();
+            audio = scanner.next();
         } while (!verificarAudio(audio));
         
         // FIXME - Replantear el uso de direccionArchivo
@@ -483,16 +483,16 @@ public class MenuResenia {
         
         do {
             System.out.println("Ingrese Direccion del Archivo: ");
-            direccionArchivo = scanner.nextLine();
+            direccionArchivo = scanner.next();
         } while (!verificarDireccionArchivo(direccionArchivo));
-
+        
         do {
-        System.out.println("Ingrese Género: ");
-            String generoInput = scanner.nextLine();
+            System.out.println("Ingrese Género: ");
+            String generoInput = scanner.next();
             genero = verificarGenero(generoInput); 
         } while (genero == null); //null si el género no es válido
         
-        Metadatos metadatosPelicula= cargarMetadatos(scanner);
+        Metadatos metadatosPelicula= cargarMetadatos();
         Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero, metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
         return nuevaPelicula;
     }
@@ -532,25 +532,23 @@ public class MenuResenia {
         }
         return true;
     }
-
-
-
-
-
+    
+    
+    
+    
+    
     // ----------------------------------- MANEJO DE LISTAS USUARIOS Y PELICULA -----------------------------------
-
+    
     /**
-     * Muestra todos los usuarios y permite ordenarlos por Nombre o Email.
-     */
+    * Muestra todos los usuarios y permite ordenarlos por Nombre o Email.
+    */
     private void listarUsuariosOrdenados() {
-        Scanner scanner= new Scanner(System.in);
         System.out.println("--- Listado de Usuarios Registrados ---");
         
         //Obtener la lista COMPLETA de usuarios desde el DAO
         List<UsuarioFinal> usuarios = Factory.getUsuariosFinalDAO().obtenerUsuarios();
         if (usuarios.isEmpty()) {
             System.out.println("No hay usuarios registrados en el sistema.");
-            scanner.close();
             return;
         }
         //Preguntar al usuario el criterio de ordenación
@@ -560,48 +558,45 @@ public class MenuResenia {
         System.out.println("  Cualquier otra tecla para cancelar.");
         System.out.print("Seleccione una opción: ");
         
-        String opcion = scanner.nextLine();
+        String opcion = scanner.next();
         switch (opcion) {
             case "1":
-                // Aquí usamos la interfaz: le pasamos un *objeto* que sabe cómo comparar por nombre
-                Collections.sort(usuarios, new ComparadorUsuarioPorNombre());
-                System.out.println("\n--- Usuarios ordenados por Nombre ---");
-                break;
+            // Aquí usamos la interfaz: le pasamos un *objeto* que sabe cómo comparar por nombre
+            Collections.sort(usuarios, new ComparadorUsuarioPorNombre());
+            System.out.println("\n--- Usuarios ordenados por Nombre ---");
+            break;
             case "2":
-                // Y aquí le pasamos un *objeto* que sabe cómo comparar por email
-                Collections.sort(usuarios, new ComparadorUsuarioPorEmail());
-                System.out.println("\n--- Usuarios ordenados por Email ---");
-                break;
+            // Y aquí le pasamos un *objeto* que sabe cómo comparar por email
+            Collections.sort(usuarios, new ComparadorUsuarioPorEmail());
+            System.out.println("\n--- Usuarios ordenados por Email ---");
+            break;
             default:
-                System.out.println("\n--- Usuarios sin ordenar ---");
-                // No se ordena, se muestra en el orden de la BD
-                break;
+            System.out.println("\n--- Usuarios sin ordenar ---");
+            // No se ordena, se muestra en el orden de la BD
+            break;
         }
         //Mostrar la lista
         for (UsuarioFinal usuario : usuarios) {
             System.out.println("---------------------------------");
             System.out.println(usuario.toString());
         }
-
-        scanner.close();
     }
-
+    
     /** 
-     * Muestra todas las películas y permite ordenarlas por Título, Género o Duración.
-     *
-     */
+    * Muestra todas las películas y permite ordenarlas por Título, Género o Duración.
+    *
+    */
     private void listarPeliculasOrdenadas() {
-        Scanner scanner= new Scanner(System.in);
         System.out.println("--- Listado de Películas Registradas ---");
         
         //Obtener la lista COMPLETA de películas desde el DAO
         List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerPeliculas();
-
+        
         if (peliculas.isEmpty()) {
             System.out.println("No hay películas registradas en el sistema.");
             return;
         }
-
+        
         //Preguntar el criterio de ordenación
         System.out.println("¿Cómo desea ordenar la lista?");
         System.out.println("  1. Por Título (A-Z)");
@@ -610,37 +605,36 @@ public class MenuResenia {
         System.out.println("  Cualquier otra tecla para mostrar sin ordenar.");
         System.out.print("Seleccione una opción: ");
         
-        String opcion = scanner.nextLine();
-
+        String opcion = scanner.next();
+        
         //Aplicar el Comparador elegido
         switch (opcion) {
             case "1":
-                Collections.sort(peliculas, new ComparadorPeliculaPorTitulo());
-                System.out.println("\n--- Películas ordenadas por Título ---");
-                break;
+            Collections.sort(peliculas, new ComparadorPeliculaPorTitulo());
+            System.out.println("\n--- Películas ordenadas por Título ---");
+            break;
             case "2":
-                Collections.sort(peliculas, new ComparadorPeliculaPorGenero());
-                System.out.println("\n--- Películas ordenadas por Género ---");
-                break;
+            Collections.sort(peliculas, new ComparadorPeliculaPorGenero());
+            System.out.println("\n--- Películas ordenadas por Género ---");
+            break;
             case "3":
-                Collections.sort(peliculas, new ComparadorPeliculaPorDuracion());
-                System.out.println("\n--- Películas ordenadas por Duración ---");
-                break;
+            Collections.sort(peliculas, new ComparadorPeliculaPorDuracion());
+            System.out.println("\n--- Películas ordenadas por Duración ---");
+            break;
             default:
-                System.out.println("\n--- Películas (orden por defecto de BD) ---");
-                break;
+            System.out.println("\n--- Películas (orden por defecto de BD) ---");
+            break;
         }
-
+        
         //Mostrar la lista
         for (Pelicula peli : peliculas) {
             System.out.println("---------------------------------");
             System.out.println(peli.toString()); 
         }
         System.out.println("---------------------------------");
-        scanner.close();
     }
-
-
+    
+    
     // ----------------------------------- MANEJO DE RESENIA -----------------------------------
     
     /** 
@@ -648,7 +642,6 @@ public class MenuResenia {
     */
     private Resena cargarResenia(){
         int id = login();
-        Scanner scanner= new Scanner(System.in);
         
         System.out.println("--- Lista de Películas Disponibles ---");
         //Traemos la lista de películas del DAO
@@ -674,7 +667,6 @@ public class MenuResenia {
                     contenido = peliculas.get(seleccion - 1); // -1 por el índice del array
                 } else if (seleccion == 0) {
                     System.out.println("Operación cancelada.");
-                    scanner.close();
                     return null;
                 } else {
                     System.out.println("Error: Número fuera de rango.");
@@ -699,11 +691,10 @@ public class MenuResenia {
         String comentario  = "PRUEBA GENERAL";
         do {
             System.out.println("Ingrese su comentario: ");
-            comentario = scanner.nextLine();
+            comentario = scanner.next();
             
         } while (!verificarComentario(comentario));
-
-        scanner.close();
+        
         Resena nuevaResenia = new Resena(Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(id), contenido, puntuacion, comentario);
         System.out.println("\n--- Por favor, confirme los datos de la reseña ---");
         System.out.println(nuevaResenia.toString());
@@ -711,9 +702,9 @@ public class MenuResenia {
         String confirmacion = "";
         do {
             System.out.print("¿Desea guardar esta reseña? (s/n): ");
-            confirmacion = scanner.nextLine();
+            confirmacion = scanner.next();
         } while (!confirmacion.equalsIgnoreCase("s") && !confirmacion.equalsIgnoreCase("n")); 
-        scanner.close();
+
         if (confirmacion.equalsIgnoreCase("s")) {
             System.out.println("Reseña guardada");
             return nuevaResenia; 
@@ -769,8 +760,8 @@ public class MenuResenia {
         return true; // Si pasa todo, es válido
     }
     
-
-
+    
+    
     // ----------------------------------- MANEJO DE APROBAR RESEÑA -----------------------------------
     
     private void aprobarReseña(){
@@ -786,7 +777,6 @@ public class MenuResenia {
             i++;
         }
         System.out.println("Que reseña desea aprobar?");
-        Scanner scanner= new Scanner(System.in);
         int select = scanner.nextInt();
         
         if (select >= 0 && select < lista.size()){
@@ -815,7 +805,6 @@ public class MenuResenia {
         }
         else
         System.out.println("Error - La Resenia no existe");
-        scanner.close();
     }
     
     private void imprimirResenia(Resena resenia){
@@ -836,7 +825,6 @@ public class MenuResenia {
     * @return int
     */
     private int login(){
-        Scanner scanner= new Scanner(System.in);
         String actNombre;
         String actContrasenia;
         boolean login = false;
@@ -854,12 +842,11 @@ public class MenuResenia {
             System.out.println("Error, usuario o contrasenia no válido.");
             
         } while (!login);
-        scanner.close();
         
         return Factory.getUsuariosFinalDAO().encontrarIdUsuarioViaLogin(actNombre, actContrasenia);
     }
     
-
+    
     
     private static void imprimirOpciones(){
         System.out.println("Opciones Disponibles:" +
@@ -875,13 +862,4 @@ public class MenuResenia {
         System.out.println("Que operacion desea ejecutar?");
     }
 
-    /** 
-     * @return int
-     */
-    private static int lecturaDeOpcion(){
-        Scanner in = new Scanner(System.in);
-        int entrada = in.nextInt();
-        in.close();
-        return entrada;
-    }
 }

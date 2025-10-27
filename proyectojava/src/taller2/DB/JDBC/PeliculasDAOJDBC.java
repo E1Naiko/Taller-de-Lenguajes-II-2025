@@ -7,7 +7,6 @@ import java.util.List;
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
-import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 
 public class PeliculasDAOJDBC implements PeliculasDAO {
     
@@ -50,11 +49,13 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Intentando insertar elemento.");
             
-            String sql = "INSERT INTO PELICULAS (Direccion_Archivo, Calidad, Audio) VALUES (?,?,?)";
+            String sql = "INSERT INTO PELICULAS (Direccion_Archivo, Calidad, Audio, IdMetadatos) VALUES (?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, pelicula.getDireccionArchivo());
                 pstmt.setString(2, pelicula.getCalidad());
                 pstmt.setString(3, pelicula.getAudio());
+                Factory.getMetadatosDAO().insertarMetadatos(pelicula.getMetadatos());
+                pstmt.setInt(4, Factory.getMetadatosDAO().encontrarIdMetadatos(pelicula.getMetadatos()));
                 pstmt.executeUpdate();
             }
             
@@ -81,7 +82,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             
             System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - Intentando eliminar elemento");
             
-            String sql = "DELETE FROM PELICULAS WHERE ID = ?";
+            String sql = "DELETE FROM PELICULAS WHERE ID=?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idPelicula);
                 if (pstmt.executeUpdate() == 0) {
