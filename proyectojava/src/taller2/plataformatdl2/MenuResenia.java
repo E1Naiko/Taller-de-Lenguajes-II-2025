@@ -547,6 +547,61 @@ public class MenuResenia {
         scanner.close();
     }
 
+    /** 
+     * Muestra todas las películas y permite ordenarlas por Título, Género o Duración.
+     *
+     
+    public void listarPeliculasOrdenadas() {
+        Scanner scanner= new Scanner(System.in);
+        System.out.println("--- Listado de Películas Registradas ---");
+        
+        //Obtener la lista COMPLETA de películas desde el DAO
+        List<Pelicula> peliculas = Factory.getPeliculasDAO().obtenerTodas(); //TODO Implementar metodo obtenerTodas en PeliculasDAO
+
+        if (peliculas.isEmpty()) {
+            System.out.println("No hay películas registradas en el sistema.");
+            return;
+        }
+
+        //Preguntar el criterio de ordenación
+        System.out.println("¿Cómo desea ordenar la lista?");
+        System.out.println("  1. Por Título (A-Z)");
+        System.out.println("  2. Por Género (A-Z)");
+        System.out.println("  3. Por Duración (Más corta a más larga)");
+        System.out.println("  Cualquier otra tecla para mostrar sin ordenar.");
+        System.out.print("Seleccione una opción: ");
+        
+        String opcion = scanner.nextLine();
+
+        //Aplicar el Comparador elegido
+        switch (opcion) {
+            case "1":
+                Collections.sort(peliculas, new ComparadorPeliculaPorTitulo());
+                System.out.println("\n--- Películas ordenadas por Título ---");
+                break;
+            case "2":
+                Collections.sort(peliculas, new ComparadorPeliculaPorGenero());
+                System.out.println("\n--- Películas ordenadas por Género ---");
+                break;
+            case "3":
+                Collections.sort(peliculas, new ComparadorPeliculaPorDuracion());
+                System.out.println("\n--- Películas ordenadas por Duración ---");
+                break;
+            default:
+                System.out.println("\n--- Películas (orden por defecto de BD) ---");
+                break;
+        }
+
+        //Mostrar la lista
+        for (Pelicula peli : peliculas) {
+            System.out.println("---------------------------------");
+            // (Necesitás un buen toString() en Pelicula y Metadatos)
+            System.out.println(peli.toString()); 
+        }
+        System.out.println("---------------------------------");
+    }
+    */
+
 
     // ----------------------------------- MANEJO DE RESENIA -----------------------------------
     
