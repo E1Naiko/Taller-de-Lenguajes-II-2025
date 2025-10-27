@@ -9,4 +9,7 @@ public interface ReseniasDAO {
     public void eliminarResenia(int idResenia);
     public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia, int Aprobado);
     public List<Resena> devolverReseniasNoAprobadas();
+    public boolean reseniaExiste(int idResenia);
+    public Resena devolverReseniaViaId(int id);
+    public void aprobarReseniaViaId(int id);
 }

@@ -7,8 +7,8 @@ public class ComparadorPeliculaPorGenero implements Comparator<Pelicula> {
     @Override
     public int compare(Pelicula p1, Pelicula p2) {
         // El género está en la clase padre 'Contenido'
-        String genero1 = p1.getGenero();
-        String genero2 = p2.getGenero();
+        String genero1 = p1.getGenero().toString();
+        String genero2 = p2.getGenero().toString();
         return genero1.compareToIgnoreCase(genero2);
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.ReseniasDAO;
-import taller2.plataformatdl2.Model.ManejoDeContenido.*;;
+import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 
 public class ReseniasDAOJDBC implements ReseniasDAO {
   @Override
@@ -170,8 +170,8 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       
       while (rs.next()) {
         lista.add(new Resena(
-        Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("idUsuario")),
-        Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("IdContenido")),
+        Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("Id_Usuario")),
+        Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("Id_Pelicula")),
         rs.getInt("Puntuacion"),
         rs.getString("Comentario"))
         );
@@ -185,4 +185,63 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     return lista;
   }
   
+  public Resena devolverReseniaViaId(int id){
+    Connection c = null;
+    Statement stmt = null;
+    Resena ret = null;
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      c.setAutoCommit(false);
+      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+      
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM RESENIAS WHERE ID=" + id);
+      
+      if (rs.next())
+      ret = new Resena(
+      Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("Id_Usuario")),
+      Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("Id_Pelicula")),
+      rs.getInt("Puntuacion"),
+      rs.getString("Comentario"));
+      
+      rs.close();
+      stmt.close();
+      c.close();
+      
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
+    return ret;
+  }
+  
+  public boolean reseniaExiste(int idResenia){
+    return devolverReseniaViaId(idResenia)!=null ? true : false;
+  }
+
+  @Override
+  public void aprobarReseniaViaId(int id) {
+  Connection c = null;
+    Statement stmt = null;
+    Resena ret = null;
+    
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+      c.setAutoCommit(false);
+      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+      
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "UPDATE RESENIAS set Aprobado = 1 where ID=" + id +
+      ";" );
+      
+      rs.close();
+      stmt.close();
+      c.close();
+      
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    }
+  }
 }

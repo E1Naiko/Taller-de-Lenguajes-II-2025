@@ -12,7 +12,8 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
     protected String calidad; // FIXME - Cambiar a enum
     protected String audio;
     protected String direccionArchivo;
-    protected String genero; // FIXME - Cambiar a enum
+    protected Genero genero;
+    protected Metadatos metadatos;
 
     /**
      * Constructor de la clase Contenido.
@@ -22,13 +23,14 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
      * @param direccionArchivo La dirección de archivo.
      */
 
-    public Contenido(String calidad, String audio, String direccionArchivo) {
+    public Contenido(String calidad, String audio, String direccionArchivo, Metadatos metadatos) {
         this.calidad = calidad;
         this.audio = audio;
         this.direccionArchivo = direccionArchivo;
+        this.metadatos = metadatos;
     }
 
-    public Contenido(String direccionArchivo, Metadatos metadatos, String genero) {
+    public Contenido(String direccionArchivo, Metadatos metadatos, Genero genero) {
         this.direccionArchivo = direccionArchivo;
         this.genero = genero;
     }
@@ -57,6 +59,13 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
     }
 
     /** 
+     * @return Metadatos
+     */
+    public Metadatos getMetadatos() {
+        return metadatos;
+    }
+
+    /** 
      * @param audio
      */
     public void setAudio(String audio) {
@@ -80,14 +89,14 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
     /** 
      * @return String
      */
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
     /** 
      * @param genero
      */
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
  }
