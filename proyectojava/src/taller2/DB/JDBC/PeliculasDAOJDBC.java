@@ -37,13 +37,14 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
     }
     
     /** 
-     * @param pelicula
-     */
+    * @param pelicula
+    */
     @Override
     public void insertarPeliculas(Pelicula pelicula) {
         Connection c = null;
         
         try {
+            
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
@@ -54,10 +55,14 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
                 pstmt.setString(1, pelicula.getDireccionArchivo());
                 pstmt.setString(2, pelicula.getCalidad());
                 pstmt.setString(3, pelicula.getAudio());
+                
                 Factory.getMetadatosDAO().insertarMetadatos(pelicula.getMetadatos());
-                pstmt.setInt(4, Factory.getMetadatosDAO().encontrarIdMetadatos(pelicula.getMetadatos()));
-                pstmt.toString();
+                int idMeta = Factory.getMetadatosDAO().encontrarIdMetadatos(pelicula.getMetadatos());
+                pstmt.setInt(4, idMeta);
+                
                 pstmt.executeUpdate();
+                c.commit();
+                
             }
             
             System.out.println("\"PlataformaTDL2 - PeliculasDAOJDBC - insertarPeliculas - Elemento insertado correctamente.");
@@ -70,8 +75,8 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
     }
     
     /** 
-     * @param idPelicula
-     */
+    * @param idPelicula
+    */
     @Override
     public void eliminarPeliculas(int idPelicula) {
         Connection c = null;
@@ -112,7 +117,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDAtos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - Intentando encontrar id del elemento");
             
@@ -140,9 +145,9 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
     
     
     /** 
-     * @param idPelicula
-     * @return Pelicula
-     */
+    * @param idPelicula
+    * @return Pelicula
+    */
     @Override
     public Pelicula devolverPeliculaViaId(int idPelicula) {
         Connection c = null;
@@ -181,28 +186,28 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
         }
         return null;
     }
-
+    
     /** 
-     * @return List<Pelicula>
-     */
+    * @return List<Pelicula>
+    */
     @Override
     public List<Pelicula> obtenerPeliculas() {
         // Aclaración: somos totalmente concientes que hay formas mas optimizadas de devolver todos los usuarios
         //   pero elegimos usar esta ya que reutiliza codigo
         List<Pelicula> lista = new ArrayList<Pelicula>();
         int maxId = this.getMaxId();
-
+        
         for (int i=1; i<=maxId; i++)
-            lista.add(this.devolverPeliculaViaId(i));
-
+        lista.add(this.devolverPeliculaViaId(i));
+        
         return lista;
     }
     
-
-
+    
+    
     /** 
-     * @return int
-     */
+    * @return int
+    */
     public int getMaxId() {
         int maxId = 0;
         Connection c = null;
@@ -216,7 +221,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT MAX(ID) AS last_id FROM Peliculas");
-
+            
             maxId = rs.getInt("last_id");
             
             rs.close();

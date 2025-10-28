@@ -48,7 +48,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
     @Override
     public void insertarMetadatos(Metadatos metadatos) {
         Connection c = null;
-        TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.director);
+        TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.duracion);
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -70,7 +70,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 pstmt.setString(4, metadatos.getDirector());
                 pstmt.setInt(5, convertidorStringSegundos.getFormatoSegundos());
                 pstmt.setString(6, metadatos.getIdioma());
-
+                
                 // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd
                 String subtitulosStr = (metadatos.getSubtitulos() != null) 
                 ? String.join(", ", metadatos.getSubtitulos()) 
@@ -130,7 +130,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         int idEncontrada = 0;
         Connection c = null;
         Statement stmt = null;
-        TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.director);
+        TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.duracion);
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -138,15 +138,31 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - Intentando encontrar id del elemento");
             
+            // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla elenco en la bd
+            String elencoStr = (metadatos.getElenco() != null) 
+            ? String.join(", ", metadatos.getElenco()) 
+            : null;
+            // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd
+            String subtitulosStr = (metadatos.getSubtitulos() != null) 
+            ? String.join(", ", metadatos.getSubtitulos()) 
+            : null;
+            
+            System.out.println("DEBUG - "+ metadatos.toString() + " - " + elencoStr + " - " + subtitulosStr);
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM METADATOS WHERE Titulo=" + metadatos.getTitulo() +
-            " AND Sinopsis=" + metadatos.getSinopsis() +
-            " AND Elenco=" + metadatos.getElenco() +
-            " AND Director=" + metadatos.getDirector() +
-            " AND Duracion=" + convertidorStringSegundos.getFormatoSegundos() +
-            " AND Idioma=" + metadatos.getIdioma() +
-            " AND Subtitulos=" + 
-            ";" );
+            String sql = "SELECT * FROM METADATOS WHERE " +
+            "Titulo=? AND Sinopsis=? AND Elenco=? AND Director=? AND Duracion=? AND Idioma=? AND Subtitulos=?";
+            
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, metadatos.getTitulo());
+            ps.setString(2, metadatos.getSinopsis());
+            ps.setString(3, elencoStr);
+            ps.setString(4, metadatos.getDirector());
+            ps.setInt(5, convertidorStringSegundos.getFormatoSegundos());
+            ps.setString(6, metadatos.getIdioma());
+            ps.setString(7, subtitulosStr);
+            ResultSet rs = ps.executeQuery();
+            
+            System.out.println(stmt.getWarnings());
             
             if (rs.next())
             idEncontrada = rs.getInt("ID");

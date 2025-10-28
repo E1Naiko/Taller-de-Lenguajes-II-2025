@@ -157,12 +157,12 @@ public class MenuResenia {
         
         do {
             System.out.print("Ingrese nombre: ");
-            nombre = scanner.next();
+            nombre = scanner.nextLine();
         } while (!verificarNombre(nombre));
         
         do { 
             System.out.print("Ingrese apellido: ");
-            apellido = scanner.next();
+            apellido = scanner.nextLine();
         } while (!verificarApellido(apellido));
         
         do { 
@@ -191,7 +191,7 @@ public class MenuResenia {
         
         do {
             System.out.println("Ingresar Contraseña: ");
-            contrasena = scanner.next();
+            contrasena = scanner.nextLine();
         } while (!verificarContrasena(contrasena));
         
         do {
@@ -375,23 +375,23 @@ public class MenuResenia {
         
         do {
             System.out.print("Ingrese Título: ");
-            titulo = scanner.next();
+            titulo = scanner.nextLine();
         } while (!verificarCampoRequerido(titulo, "Título"));
 
         System.out.print("Ingrese Resumen (Opcional, presione Enter para omitir): ");
-        resumen = scanner.next();
+        resumen = scanner.nextLine();
         if (resumen.isEmpty()) {
             resumen = "NULL"; // O null, si tu BD lo prefiere
         }
 
         do {
             System.out.print("Ingrese Director: ");
-            director = scanner.next();
+            director = scanner.nextLine();
         } while (!verificarCampoRequerido(director, "Director"));
 
         do {
             System.out.print("Ingrese Idioma: ");
-            idioma = scanner.next();
+            idioma = scanner.nextLine();
         } while (!verificarCampoRequerido(idioma, "Idioma"));
         
         do {
@@ -406,7 +406,7 @@ public class MenuResenia {
         System.out.println("--- Ingresar Elenco (miembros del reparto) ---");
         do {
             System.out.print("Ingrese nombre de un actor/actriz (o 'fin' para no agregar): ");
-            String actor = scanner.next();
+            String actor = scanner.nextLine();
             if (actor.equalsIgnoreCase("fin") || actor.trim().isEmpty()) {
                 if(elencoList.isEmpty()) System.out.println("Elenco omitido.");
                 break;
@@ -472,7 +472,7 @@ public class MenuResenia {
         
         do {
             System.out.println("Ingrese Calidad: ");
-            calidad = scanner.next();
+            calidad = scanner.nextLine();
         } while (!verificarCalidad(calidad));
         
         do {    
@@ -675,7 +675,7 @@ public class MenuResenia {
                 }
             } catch (Exception e) {
                 System.out.println("Error: Debe ser un número.");
-                scanner.next(); //Limpiamos el buffer si puso letras
+                scanner.nextInt(); //Limpiamos el buffer si puso letras
                 seleccion = -1;
             }
         } while (seleccion == -1);
@@ -692,7 +692,7 @@ public class MenuResenia {
         String comentario  = "PRUEBA GENERAL";
         do {
             System.out.println("Ingrese su comentario: ");
-            comentario = scanner.next();
+            comentario = scanner.nextLine();
             
         } while (!verificarComentario(comentario));
         
@@ -819,9 +819,9 @@ public class MenuResenia {
         
         do {
             System.out.println("Ingrese nombre de usuario: ");
-            actNombre = scanner.next();
+            actNombre = scanner.nextLine();
             System.out.println("Ingrese contrasenia: ");
-            actContrasenia = scanner.next();
+            actContrasenia = scanner.nextLine();
             
             login = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(actNombre, actContrasenia);
             if (login)

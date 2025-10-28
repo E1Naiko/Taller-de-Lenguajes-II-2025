@@ -18,7 +18,7 @@ public class TimeStringYSegundos {
             this.formatoString = entrada;
             this.formatoSegundos = convertirStringASegundos(entrada);
         } else {
-            System.err.println("Error - Formato no válido. Use HH:mm:ss (ej: 01:30:45)");
+            System.err.println("Error - TimeStringYSegundos - Constructor(String) - Formato no válido. Use HH:mm:ss (ej: 01:30:45)");
             this.formatoString = "00:00:00";
             this.formatoSegundos = 0;
         }
@@ -29,7 +29,7 @@ public class TimeStringYSegundos {
             this.formatoSegundos = entrada;
             this.formatoString = convertirSegundosAString(entrada);
         } else {
-            System.err.println("Error - Los segundos no pueden ser negativos");
+            System.err.println("Error - TimeStringYSegundos - Constructor(int) - Los segundos no pueden ser negativos");
             this.formatoSegundos = 0;
             this.formatoString = "00:00:00";
         }
@@ -41,7 +41,7 @@ public class TimeStringYSegundos {
             this.formatoString = entrada.toString();
             this.formatoSegundos = convertirStringASegundos(this.formatoString);
         } else {
-            System.err.println("Error - java.sql.Time de entrada es nulo");
+            System.err.println("Error - TimeStringYSegundos - Constructor(Time) - java.sql.Time de entrada es nulo");
             this.formatoString = "00:00:00";
             this.formatoSegundos = 0;
         }
@@ -84,7 +84,7 @@ public class TimeStringYSegundos {
             
             return (horas * 3600) + (minutos * 60) + segundos;
         } catch (Exception e) {
-            System.err.println("Error al convertir String a segundos: " + e.getMessage());
+            System.err.println(" Error - - TimeStringYSegundos - convertirStringASegundos - Error al convertir String a segundos: " + e.getMessage());
             return 0;
         }
     }
@@ -118,7 +118,7 @@ public class TimeStringYSegundos {
             this.formatoString = entrada;
             this.formatoSegundos = convertirStringASegundos(entrada);
         } else {
-            System.err.println("Error - Formato no válido. Use HH:mm:ss");
+            System.err.println("Error - TimeStringYSegundos - setFormatoString -  Formato no válido. Use HH:mm:ss");
         }
     }
     public void setFormatoSegundos(int entrada) {
@@ -126,7 +126,7 @@ public class TimeStringYSegundos {
             this.formatoSegundos = entrada;
             this.formatoString = convertirSegundosAString(entrada);
         } else {
-            System.err.println("Error - Los segundos no pueden ser negativos");
+            System.err.println("Error - TimeStringYSegundos - setFormatoSegundos - Los segundos no pueden ser negativos");
         }
     }
 }
