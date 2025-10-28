@@ -733,7 +733,7 @@ public class MenuResenia {
         String comentario  = "PRUEBA GENERAL";
         do {
             System.out.println("Ingrese su comentario: ");
-            comentario = scanner.nextLine();
+            comentario = scanner.next();
             scanner.nextLine();
             
         } while (!verificarComentario(comentario));
