@@ -118,6 +118,9 @@ public abstract class Usuario {
         return true;
     }
     
+    /** 
+     * @return String
+     */
     @Override
     public String toString() {
         return "Usuario{" +

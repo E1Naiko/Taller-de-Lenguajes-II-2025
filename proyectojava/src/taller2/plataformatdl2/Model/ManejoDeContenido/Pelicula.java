@@ -5,6 +5,9 @@ public class Pelicula extends Contenido{
         super(calidad, audio, direccionArchivo, metadatosPelicula);
     }
 
+    /** 
+     * @return String
+     */
     public String toString(){
         return super.toString();
     }

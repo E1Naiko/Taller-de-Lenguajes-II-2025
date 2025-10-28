@@ -111,37 +111,39 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
     * @return int
     */
     @Override
-    public int encontrarIdPelicula(Contenido pelicula) {
-        int idEncontrada = 0;
-        Connection c = null;
+public int encontrarIdPelicula(Contenido pelicula) {
+    int idEncontrada = 0;
+    Connection c = null;
+    
+    try {
+        Class.forName("org.sqlite.JDBC");
+        c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+        c.setAutoCommit(false);
+        System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - Intentando encontrar id del elemento");
         
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDAtos.db");
-            c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - Intentando encontrar id del elemento");
+        String sql = "SELECT ID FROM PELICULAS WHERE Direccion_Archivo=? AND Calidad=? AND Audio=?";
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+            pstmt.setString(1, pelicula.getDireccionArchivo());
+            pstmt.setString(2, pelicula.getCalidad());
+            pstmt.setString(3, pelicula.getAudio());
             
-            try (Statement stmt = c.createStatement()) {
-                ResultSet rs = stmt.executeQuery( "SELECT * FROM PELICULAS WHERE Direccion_Archivo=" + pelicula.getDireccionArchivo() +
-                " AND Calidad=" + pelicula.getCalidad() +
-                " AND Idioma=" + pelicula.getAudio() + ";" );
-                
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
                 idEncontrada = rs.getInt("ID");
-                
-                if (idEncontrada==0)
-                System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - ERROR no se encontro id del elemento");
-                else
                 System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - id del elemento encontrada correctamente");
-                
-                rs.close();
+            } else {
+                System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - ERROR no se encontro id del elemento");
             }
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            rs.close();
         }
-        return idEncontrada;
+        
+        c.close();
+    } catch (Exception e) {
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
+    return idEncontrada;
+}
+
     
     
     /** 

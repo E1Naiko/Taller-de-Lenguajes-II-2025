@@ -121,7 +121,6 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   public int encontrarIdResenia(int idUsuario, int idPelicula, Resena resenia, int aprobado) {
     int idEncontrada = 0;
     Connection c = null;
-    Statement stmt = null;
     
     try {
       Class.forName("org.sqlite.JDBC");
@@ -129,23 +128,20 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       c.setAutoCommit(false);
       System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
       
-      stmt = c.createStatement();
-      ResultSet rs = stmt.executeQuery( "SELECT * FROM RESENIAS WHERE ID_USUARIO=" + idUsuario +
-      " AND ID_PELICULA=" + idPelicula +
-      " AND Puntuacion=" + resenia.getPuntuacion() + 
-      " AND Comentario=" + resenia.getComentario() + 
-      " AND Aprobado=" + aprobado);
-      
-      if (rs.next())
-      idEncontrada = rs.getInt("ID");
-      
-      if (idEncontrada==0)
-      System.out.println("\"PlataformaTDL2 - ReseniasDAO - ERROR no se encontro id del elemento");
-      else
-      System.out.println("\"PlataformaTDL2 - ReseniasDAO - id del elemento encontrada correctamente");
-      
-      rs.close();
-      stmt.close();
+      String sql = "SELECT ID FROM RESENIAS WHERE ID_USUARIO=? AND ID_PELICULA=? AND Puntuacion=? AND Comentario=? AND Aprobado=?";
+      try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+        pstmt.setInt(1, idUsuario);
+        pstmt.setInt(2, idPelicula);
+        pstmt.setInt(3, resenia.getPuntuacion());
+        pstmt.setString(4, resenia.getComentario());
+        pstmt.setInt(5, aprobado);
+        
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+          idEncontrada = rs.getInt("ID");
+        }
+        rs.close();
+      }
       c.close();
     } catch ( Exception e ) {
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -153,6 +149,9 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     return idEncontrada;
   }
   
+  /** 
+   * @return List<Resena>
+   */
   @Override
   public List<Resena> devolverReseniasNoAprobadas() {
     Connection c = null;
@@ -185,6 +184,10 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     return lista;
   }
   
+  /** 
+   * @param id
+   * @return Resena
+   */
   public Resena devolverReseniaViaId(int id){
     Connection c = null;
     Statement stmt = null;
@@ -216,31 +219,40 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
     return ret;
   }
   
+  /** 
+   * @param idResenia
+   * @return boolean
+   */
   public boolean reseniaExiste(int idResenia){
     return devolverReseniaViaId(idResenia)!=null ? true : false;
   }
-
+ 
+  /** 
+   * @param id
+   */
   @Override
   public void aprobarReseniaViaId(int id) {
-  Connection c = null;
-    Statement stmt = null;
-    
-    try {
+    try (Connection c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db")) {
       Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
       c.setAutoCommit(false);
-      System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - Intentando encontrar id del elemento");
+      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando aprobar reseña con ID: " + id);
       
-      stmt = c.createStatement();
-      ResultSet rs = stmt.executeQuery( "UPDATE RESENIAS set Aprobado = 1 where ID=" + id +
-      ";" );
+      String sql = "UPDATE RESENIAS SET Aprobado = 1 WHERE ID = ?";
+      try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+        pstmt.setInt(1, id);
+        int filasActualizadas = pstmt.executeUpdate();
+        
+        if (filasActualizadas == 0) {
+          System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró reseña con ID " + id);
+        } else {
+          System.out.println("PlataformaTDL2 - ReseniasDAO - Reseña aprobada correctamente");
+        }
+      }
       
-      rs.close();
-      stmt.close();
-      c.close();
-      
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      c.commit();
+    } catch (Exception e) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
     }
   }
+  
 }

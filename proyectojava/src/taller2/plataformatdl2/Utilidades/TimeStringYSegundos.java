@@ -47,6 +47,10 @@ public class TimeStringYSegundos {
         }
     }
     
+    /** 
+     * @param entrada
+     * @return boolean
+     */
     private boolean validarFormatoString(String entrada) {
         // Validar que tenga exactamente 8 caracteres (HH:mm:ss)
         if (entrada == null || entrada.length() != 8) {
@@ -75,6 +79,10 @@ public class TimeStringYSegundos {
         return false;
     }
     
+    /** 
+     * @param entrada
+     * @return int
+     */
     private int convertirStringASegundos(String entrada) {
         try {
             // Tomo cada segmento del HH:MM:SS
@@ -89,6 +97,10 @@ public class TimeStringYSegundos {
         }
     }
     
+    /** 
+     * @param entrada
+     * @return String
+     */
     private String convertirSegundosAString(int entrada) {
         int horas = entrada / 3600;        // Horas: 7200 segundos / 3600 = 2 horas
         int residuo = entrada % 3600;      // Residuo: 7200 % 3600 = 0
@@ -98,21 +110,33 @@ public class TimeStringYSegundos {
         return String.format("%02d:%02d:%02d", horas, minutos, segundos);
     }
     
+    /** 
+     * @return String
+     */
     // ---- Getters ----
     
     public String getFormatoString() {
         return formatoString;
     }
     
+    /** 
+     * @return int
+     */
     public int getFormatoSegundos() {
         return formatoSegundos;
     }
 
+    /** 
+     * @return Time
+     */
     public Time getFormatoTime() {
         // java.sql.Time.valueOf(String) espera el formato HH:mm:ss
         return Time.valueOf(this.formatoString);
     }
 
+    /** 
+     * @param entrada
+     */
     public void setFormatoString(String entrada) {
         if (validarFormatoString(entrada)) {
             this.formatoString = entrada;
@@ -121,6 +145,9 @@ public class TimeStringYSegundos {
             System.err.println("Error - TimeStringYSegundos - setFormatoString -  Formato no válido. Use HH:mm:ss");
         }
     }
+    /** 
+     * @param entrada
+     */
     public void setFormatoSegundos(int entrada) {
         if (entrada >= 0) {
             this.formatoSegundos = entrada;

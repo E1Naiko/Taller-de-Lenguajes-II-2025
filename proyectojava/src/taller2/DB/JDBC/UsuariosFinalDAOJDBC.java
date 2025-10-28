@@ -115,35 +115,36 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     public int devolverIdUsuarioFinal(UsuarioFinal usuario) {
         int idEncontrada = 0;
         Connection c = null;
-        Statement stmt = null;
-        
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - Intentando encontrar id del elemento");
             
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM USUARIOS_FINAL WHERE Nombre=" + usuario.getNombre() +
-            " AND Email=" + usuario.getEmail() +
-            " AND Contrasena=" + usuario.getContrasena()  + 
-            " AND Idioma=" + usuario.getIdioma() + ";" );
+            String sql = "SELECT ID FROM USUARIOS_FINAL WHERE Nombre=? AND Email=? AND Contrasena=? AND Idioma=?";
+            try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setString(1, usuario.getNombre());
+                pstmt.setString(2, usuario.getEmail());
+                pstmt.setString(3, usuario.getContrasena());
+                pstmt.setString(4, usuario.getIdioma());
+                
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    idEncontrada = rs.getInt("ID");
+                    System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - id del elemento encontrada correctamente");
+                } else {
+                    System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - ERROR no se encontro id del elemento");
+                }
+                rs.close();
+            }
             
-            idEncontrada = rs.getInt("ID");
-            
-            if (idEncontrada==0)
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - ERROR no se encontro id del elemento");
-            else
-            System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - devolverIdUsuarioFinal - id del elemento encontrada correctamente");
-            
-            rs.close();
-            stmt.close();
             c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return idEncontrada;
     }
+    
     
     
     

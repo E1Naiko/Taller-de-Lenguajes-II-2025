@@ -10,13 +10,13 @@ import taller2.DB.DAO.Factory;
 * @version 1.1 - 2025-10-15
 */
 
-public class Main {
-    
+public class Main {    
     /** 
     * @param args
     */
     public static void main(String[] args) {
         Factory factory = new Factory();
+
         MenuResenia menu = new MenuResenia();
         
         menu.usarMenuDeConsola();
