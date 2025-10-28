@@ -157,12 +157,12 @@ public class MenuResenia {
         
         do {
             System.out.print("Ingrese nombre: ");
-            nombre = scanner.nextLine();
+            nombre = scanner.next();
         } while (!verificarNombre(nombre));
         
         do { 
             System.out.print("Ingrese apellido: ");
-            apellido = scanner.nextLine();
+            apellido = scanner.next();
         } while (!verificarApellido(apellido));
         
         do { 
@@ -684,7 +684,7 @@ public class MenuResenia {
         
         int puntuacion = 0;
         do {
-            System.out.println("Ingrese Calidad: ");
+            System.out.println("Ingrese la puntuacion: ");
             puntuacion = scanner.nextInt();
             
         } while (!verificarPuntuacion(puntuacion));
@@ -819,9 +819,9 @@ public class MenuResenia {
         
         do {
             System.out.println("Ingrese nombre de usuario: ");
-            actNombre = scanner.nextLine();
+            actNombre = scanner.next();
             System.out.println("Ingrese contrasenia: ");
-            actContrasenia = scanner.nextLine();
+            actContrasenia = scanner.next();
             
             login = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(actNombre, actContrasenia);
             if (login)
