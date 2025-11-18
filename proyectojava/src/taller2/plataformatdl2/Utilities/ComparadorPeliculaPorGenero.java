@@ -1,4 +1,4 @@
-package taller2.plataformatdl2.Utilidades;
+package taller2.plataformatdl2.Utilities;
 
 import java.util.Comparator;
 

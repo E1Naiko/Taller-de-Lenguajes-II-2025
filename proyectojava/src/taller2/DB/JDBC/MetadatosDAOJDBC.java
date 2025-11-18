@@ -9,7 +9,7 @@ import java.sql.Time;
 
 import taller2.DB.DAO.MetadatosDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
-import taller2.plataformatdl2.Utilidades.TimeStringYSegundos;
+import taller2.plataformatdl2.Utilities.TimeStringYSegundos;
 
 public class MetadatosDAOJDBC implements MetadatosDAO {
     

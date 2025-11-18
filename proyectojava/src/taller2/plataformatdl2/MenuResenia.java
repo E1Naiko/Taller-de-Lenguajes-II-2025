@@ -8,7 +8,7 @@ import java.util.Scanner;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
-import taller2.plataformatdl2.Utilidades.*;
+import taller2.plataformatdl2.Utilities.*;
 
 public class MenuResenia {
     private static Scanner scanner = new Scanner(System.in);
