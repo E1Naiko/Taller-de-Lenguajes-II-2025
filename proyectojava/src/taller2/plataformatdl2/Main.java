@@ -15,14 +15,14 @@ public class Main {
     * @param args
     */
     public static void main(String[] args) {
-        Factory factory = new Factory();
+        new Factory();
 
+        /*
         MenuResenia menu = new MenuResenia();
         
         menu.usarMenuDeConsola();
-        
+        */
+
         System.out.println("Cerrando Programa.");
     }
-    
-    
 }
