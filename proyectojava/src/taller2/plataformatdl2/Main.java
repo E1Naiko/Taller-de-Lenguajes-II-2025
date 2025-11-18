@@ -17,12 +17,12 @@ public class Main {
     public static void main(String[] args) {
         new Factory();
 
-        /*
-        MenuResenia menu = new MenuResenia();
+        if (args[1].equals("-InputMode")){
+            MenuResenia menu = new MenuResenia();
+            
+            menu.usarMenuDeConsola();
+        }
         
-        menu.usarMenuDeConsola();
-        */
-
         System.out.println("Cerrando Programa.");
     }
 }
