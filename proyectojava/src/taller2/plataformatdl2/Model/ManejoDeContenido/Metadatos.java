@@ -160,6 +160,7 @@ public class Metadatos {
         : "Sin subtítulos";
         
         // Formatear duración: Time → "HH:MM:SS" (evita formato crudo como "12:30:45.0")
+        @SuppressWarnings("deprecation") // TODO - chequear como reformatear la hora en la nueva actualizacion de time
         String duracionStr = duracion != null
         ? String.format("%02d:%02d:%02d",
         duracion.getHours(),

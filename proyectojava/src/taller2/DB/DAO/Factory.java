@@ -12,6 +12,7 @@ public class Factory {
     private static ReseniasDAO reseniasDAO = null;
     private static UsuariosFinalDAO usuariosFinalDAO = null;
     private static MetadatosDAO metadatosDAO = null;
+    @SuppressWarnings("unused")
     private static ConsultaPeliculasOMDb consultaOmdb = null;
     
     static {
@@ -25,7 +26,7 @@ public class Factory {
             metadatosDAO = new MetadatosDAOJDBC();
             metadatosDAO.crearTablaMetadatos();
             consultaOmdb = new ConsultaPeliculasOMDb();
-            consultaOmdb.consultarPelicula("Guardians of the Galaxy Vol. 2");
+            ConsultaPeliculasOMDb.consultarPelicula("Guardians of the Galaxy Vol. 2");
             
         } catch (Exception e) {
             System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
