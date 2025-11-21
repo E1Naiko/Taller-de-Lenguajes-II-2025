@@ -1,6 +1,7 @@
 {
     "java.project.referencedLibraries": [
-        "proyectojava\\lib\\sqlite-jdbc-3.50.3.0.jar"
+        "proyectojava\\lib\\json-20240303.jar",
+        "c:\\Users\\User\\Documents\\GitHub\\Taller-de-Lenguajes-II-2025\\proyectojava\\lib\\sqlite-jdbc-3.50.3.0.jar"
     ],
     "java.project.sourcePaths": [
         "proyectojava\\src"
