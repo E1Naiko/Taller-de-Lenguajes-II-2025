@@ -1,5 +1,6 @@
 package taller2.plataformatdl2.Model.ManejoDeContenido;
-import java.sql.Time;
+
+import java.time.LocalTime;
 
 /**
 * Clase que representa los metadatos asociados a los contenidos en la plataforma de streaming.
@@ -15,7 +16,7 @@ public class Metadatos {
     public String sinopsis;
     public String[] elenco;
     public String director;
-    public Time duracion;
+    public LocalTime duracion;
     public String idioma;
     public String[] subtitulos;
     
@@ -31,7 +32,7 @@ public class Metadatos {
     * @param subtitulos Los subtítulos disponibles para el contenido.
     */ 
     
-    public Metadatos(String titulo, String sinopsis, String[] elenco, String director, Time duracion, String idioma, String[] subtitulos) {
+    public Metadatos(String titulo, String sinopsis, String[] elenco, String director, LocalTime duracion, String idioma, String[] subtitulos) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.elenco = elenco;
@@ -93,15 +94,15 @@ public class Metadatos {
         this.director = director;
     }
     /** 
-    * @return Time
+    * @return LocalTime
     */
-    public Time getDuracion() {
+    public LocalTime getDuracion() {
         return duracion;
     }
     /** 
     * @param duracion
     */
-    public void setDuracion(Time duracion) {
+    public void setDuracion(LocalTime duracion) {
         this.duracion = duracion;
     }
     /** 
@@ -159,13 +160,9 @@ public class Metadatos {
         ? String.join(", ", subtitulos)
         : "Sin subtítulos";
         
-        // Formatear duración: Time → "HH:MM:SS" (evita formato crudo como "12:30:45.0")
-        @SuppressWarnings("deprecation") // TODO - chequear como reformatear la hora en la nueva actualizacion de time
+        // Formatear duración: LocalTime → "HH:MM:SS"
         String duracionStr = duracion != null
-        ? String.format("%02d:%02d:%02d",
-        duracion.getHours(),
-        duracion.getMinutes(),
-        duracion.getSeconds())
+        ? duracion.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss"))
         : "Duración desconocida";
         
         return "Metadatos{" +

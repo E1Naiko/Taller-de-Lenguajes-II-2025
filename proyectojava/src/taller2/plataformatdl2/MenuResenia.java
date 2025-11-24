@@ -1,6 +1,6 @@
 package taller2.plataformatdl2;
 
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -384,7 +384,7 @@ public class MenuResenia {
         String resumen;
         String[] elenco;
         String director;
-        Time duracion = null;
+        LocalTime duracion = null;
         String idioma;
         String[] subtitulos;
         
@@ -475,37 +475,43 @@ public class MenuResenia {
     }
     
     /** 
+    /** 
      * @param input
      * @return Time
      */
-    private Time verificarDuracion(String input) {
+    private LocalTime verificarDuracion(String input) {
         if (input.trim().isEmpty()) {
             System.out.println("Error: La duración no puede estar vacía.");
             return null;
         }
         try {
-            Time duracion = Time.valueOf(input); // Formato "hh:mm:ss"
+            // Parse using java.time.LocalTime (formato "HH:mm:ss")
+            LocalTime duracion = LocalTime.parse(input);
             System.out.println("DEBUG - tiempo: " + duracion);
             return duracion;
-        } catch (IllegalArgumentException e) {
+        } catch (java.time.format.DateTimeParseException e) {
             System.out.println("Error: Formato de duración incorrecto. Debe ser HH:mm:ss");
             return null;
         }
     }
-    
     /** 
     * @return Pelicula
     */
     private Pelicula cargarPelicula(){ 
         
-        String calidad = null;
+        Calidades calidad = null;
         String audio = null;
         String direccionArchivo = null;
         Genero genero = null; 
         
         do {
             System.out.println("Ingrese Calidad: ");
-            calidad = scanner.next();
+            try{
+                calidad = Calidades.valueOf(scanner.next());
+            }
+            catch (Exception e){
+                System.err.println(e);
+            }
             scanner.nextLine();
         } while (!verificarCalidad(calidad));
         
@@ -539,8 +545,8 @@ public class MenuResenia {
     * @param (!res
     * @return boolean
     */
-    private boolean verificarCalidad(String calidadIN){ 
-        if (calidadIN.trim().isEmpty()) { // Verifica si el idioma no esta vacio
+    private boolean verificarCalidad(Calidades calidadIN){ 
+        if (calidadIN == null) { // Verifica si el idioma no esta vacio
             System.out.println("La calidad no puede estar vacia");
             return false;
         }
@@ -884,19 +890,19 @@ public class MenuResenia {
     * @return int
     */
     private int login(){
-        String actNombre;
+        String actEmail;
         String actContrasenia;
         boolean login = false;
         
         do {
-            System.out.println("Ingrese nombre de usuario: ");
-            actNombre = scanner.next();
+            System.out.println("Ingrese Email de usuario: ");
+            actEmail = scanner.next();
             scanner.nextLine();
             System.out.println("Ingrese contrasenia: ");
             actContrasenia = scanner.next();
             scanner.nextLine();
             
-            login = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(actNombre, actContrasenia);
+            login = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(actEmail, actContrasenia);
             if (login)
             System.out.println("Usuario ingresado con exito.");
             else
@@ -904,7 +910,7 @@ public class MenuResenia {
             
         } while (!login);
         
-        return Factory.getUsuariosFinalDAO().encontrarIdUsuarioViaLogin(actNombre, actContrasenia);
+        return Factory.getUsuariosFinalDAO().encontrarIdUsuarioViaLogin(actEmail, actContrasenia);
     }
     
     

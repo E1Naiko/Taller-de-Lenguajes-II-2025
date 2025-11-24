@@ -9,7 +9,7 @@ package taller2.plataformatdl2.Model.ManejoDeContenido;
 */
 
 public abstract class Contenido {
-    protected String calidad; // FIXME - Cambiar a enum
+    protected Calidades calidad;
     protected String audio;
     protected String direccionArchivo;
     protected Genero genero;
@@ -23,7 +23,7 @@ public abstract class Contenido {
     * @param direccionArchivo La dirección de archivo.
     */
     
-    public Contenido(String calidad, String audio, String direccionArchivo, Metadatos metadatos) {
+    public Contenido(Calidades calidad, String audio, String direccionArchivo, Metadatos metadatos) {
         this.calidad = calidad;
         this.audio = audio;
         this.direccionArchivo = direccionArchivo;
@@ -40,14 +40,14 @@ public abstract class Contenido {
     */
     // --- Getters y Setters ---
     
-    public String getCalidad() {
+    public Calidades getCalidad() {
         return calidad;
     }
     
     /** 
     * @param calidad
     */
-    public void setCalidad(String calidad) {
+    public void setCalidad(Calidades calidad) {
         this.calidad = calidad;
     }
     
@@ -110,7 +110,7 @@ public abstract class Contenido {
     @Override
     public String toString() {
         // Manejo de valores nulos o no proporcionados
-        String calidadStr = (calidad != null) ? calidad : "No especificada";
+        Calidades calidadStr = (calidad != null) ? calidad : Calidades.DEF;
         String audioStr = (audio != null) ? audio : "No especificado";
         String direccionStr = (direccionArchivo != null) ? direccionArchivo : "No disponible";
         String generoStr = (genero != null) ? genero.toString() : "Desconocido";

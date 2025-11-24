@@ -163,7 +163,7 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     * @param contrasenia
     * @return int
     */
-    public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia){
+    public int encontrarIdUsuarioViaLogin(String email, String contrasenia){
         int idEncontrada = 0;
         Connection c = null;
         
@@ -173,9 +173,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - UsuariosFinalDAO - encontrarIdUsuarioViaLogin - Intentando encontrar id del elemento");
             
-            String sql = "SELECT ID FROM USUARIOS_FINAL WHERE Nombre = ? AND Contrasena = ?";
+            String sql = "SELECT ID FROM USUARIOS_FINAL WHERE Email = ? AND Contrasena = ?";
             PreparedStatement pstmt = c.prepareStatement(sql);
-            pstmt.setString(1, nombreUsuario);
+            pstmt.setString(1, email);
             pstmt.setString(2, contrasenia);
             
             // Intenamos comparar como lo veniamos haciendo pero se rompia el codigo
@@ -183,9 +183,9 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 idEncontrada = rs.getInt("ID");
-                System.out.println("PlataformaTDL2 - Login exitoso para usuario: " + nombreUsuario);
+                System.out.println("PlataformaTDL2 - Login exitoso para usuario: " + email);
             } else {
-                System.out.println("PlataformaTDL2 - Credenciales inválidas para: " + nombreUsuario);
+                System.out.println("PlataformaTDL2 - Credenciales inválidas para: " + email);
             }
             
             if (idEncontrada==0)

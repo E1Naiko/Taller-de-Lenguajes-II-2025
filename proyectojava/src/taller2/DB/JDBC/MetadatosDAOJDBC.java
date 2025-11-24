@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Time;
+import java.time.LocalTime;
 
 import taller2.DB.DAO.MetadatosDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
@@ -27,7 +27,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             " Titulo         TEXT          NOT NULL, " +
             " Sinopsis       TEXT          NOT NULL, " +
-            " Elenco         TEXT          NOT NULL, " +  // TODO - crear tabla de Elenco
+            " TablaElenco    INTEGER       NOT NULL, " +
             " Director       TEXT          NOT NULL, " +
             " Duracion       INTEGER       NOT NULL, " +
             " Idioma         TEXT          NOT NULL, " +  // TODO - crear tabla de Idiomas
@@ -61,7 +61,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 pstmt.setString(1, metadatos.getTitulo());
                 pstmt.setString(2, metadatos.getSinopsis());
                 
-                // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla elenco en la bd
+                // 
                 String elencoStr = (metadatos.getElenco() != null) 
                 ? String.join(", ", metadatos.getElenco()) 
                 : null;
@@ -195,7 +195,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         String sinopsis = null;
         String[] elenco = null;
         String director = null;
-        Time duracion = null;
+        LocalTime duracion = null;
         String idioma = null;
         String[] subtitulos = null;
         

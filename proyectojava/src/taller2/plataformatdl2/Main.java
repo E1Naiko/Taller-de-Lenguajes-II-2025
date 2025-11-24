@@ -3,7 +3,6 @@ package taller2.plataformatdl2;
 import taller2.DB.DAO.Factory;
 import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
-import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.view.LoginVista; 
 import taller2.plataformatdl2.controller.LoginController; 
 
@@ -20,16 +19,14 @@ public class Main {
     * @param args
     */
     public static void main(String[] args) {
-        //TODO Comente la parte vieja del main que usa la consola
-        //new Factory();
-
-        /*if (args[1].equals("-InputMode")){
+        new Factory();
+        
+        if (args != null && args.length > 1 && "-AdminMode".equals(args[1])) {
             MenuResenia menu = new MenuResenia();
             
             menu.usarMenuDeConsola();
         }
-        */ 
-       // ACA VIENE LA NUEVA PARTE QUE LLAMA A LA INTERFAZ
+
         try {
             new Factory(); 
             System.out.println("Base de datos conectada joya.");
@@ -38,6 +35,7 @@ public class Main {
             e.printStackTrace();
             return; 
         }
+        
         SwingUtilities.invokeLater(() -> {
             try {
                 // Instanciamos la Vista
@@ -55,6 +53,6 @@ public class Main {
                 e.printStackTrace();
             }
         });
-        //System.out.println("Cerrando Programa.");
+        System.out.println("Cerrando Programa.");
     }
 }

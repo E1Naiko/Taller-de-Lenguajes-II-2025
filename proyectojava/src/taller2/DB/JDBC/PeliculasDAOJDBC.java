@@ -53,7 +53,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             String sql = "INSERT INTO PELICULAS (Direccion_Archivo, Calidad, Audio, IdMetadatos) VALUES (?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, pelicula.getDireccionArchivo());
-                pstmt.setString(2, pelicula.getCalidad());
+                pstmt.setString(2, pelicula.getCalidad().toString());
                 pstmt.setString(3, pelicula.getAudio());
                 
                 Factory.getMetadatosDAO().insertarMetadatos(pelicula.getMetadatos());
@@ -124,7 +124,7 @@ public int encontrarIdPelicula(Contenido pelicula) {
         String sql = "SELECT ID FROM PELICULAS WHERE Direccion_Archivo=? AND Calidad=? AND Audio=?";
         try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             pstmt.setString(1, pelicula.getDireccionArchivo());
-            pstmt.setString(2, pelicula.getCalidad());
+            pstmt.setString(2, pelicula.getCalidad().toString());
             pstmt.setString(3, pelicula.getAudio());
             
             ResultSet rs = pstmt.executeQuery();
@@ -155,7 +155,7 @@ public int encontrarIdPelicula(Contenido pelicula) {
         Connection c = null;
         Statement stmt = null;
         
-        String calidad = null;
+        Calidades calidad = null;
         String audio = null;
         String dirArchivo = null;
         Genero genero = null;
@@ -172,7 +172,7 @@ public int encontrarIdPelicula(Contenido pelicula) {
             ";" );
             
             if (rs.next()){
-                calidad = rs.getString("Calidad");
+                calidad = Calidades.valueOf(rs.getString("Calidad"));
                 audio = rs.getString("Audio");
                 dirArchivo = rs.getString("Direccion_Archivo");
                 idMetadatos = rs.getInt("IdMetadatos");

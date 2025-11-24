@@ -1,6 +1,6 @@
 package taller2.plataformatdl2.Utilities;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
 /**
 * Clase para convertir entre formato de tiempo (HH:mm:ss) y segundos.
@@ -35,7 +35,7 @@ public class TimeStringYSegundos {
         }
     }
 
-     public TimeStringYSegundos(Time entrada) {
+     public TimeStringYSegundos(LocalTime entrada) {
         if (entrada != null) {
             // El formato String de java.sql.Time es compatible con HH:mm:ss
             this.formatoString = entrada.toString();
@@ -129,9 +129,9 @@ public class TimeStringYSegundos {
     /** 
      * @return Time
      */
-    public Time getFormatoTime() {
-        // java.sql.Time.valueOf(String) espera el formato HH:mm:ss
-        return Time.valueOf(this.formatoString);
+    public LocalTime getFormatoTime() {
+        // LocalTime.parse(String) parses HH:mm:ss (ISO_LOCAL_TIME)
+        return LocalTime.parse(this.formatoString);
     }
 
     /** 
