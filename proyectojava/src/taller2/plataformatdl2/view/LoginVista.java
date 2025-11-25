@@ -105,7 +105,7 @@ public class LoginVista extends JFrame {
         gbc.weightx = 0.3;
         gbc.anchor = GridBagConstraints.LINE_END;
         JLabel lblPass = new JLabel("Contraseña:");
-        lblPass.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblPass.setFont(new Font("Times New Roman", Font.BOLD, 18));
         formPanel.add(lblPass, gbc);
 
         // Campo de relleno para la contraseña

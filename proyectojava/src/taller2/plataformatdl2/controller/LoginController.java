@@ -2,6 +2,8 @@ package taller2.plataformatdl2.controller;
 
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.view.LoginVista;
+import taller2.plataformatdl2.view.RegistroVista;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,9 +19,14 @@ public class LoginController {
             public void actionPerformed(ActionEvent e) {
                 loguearUsuario();
             }
-        });
-        
+        });  
         // Acá iría el listener para ir al Registro que todavia falta implementar
+        this.vista.addRegistroListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            abrirVentanaRegistro();
+        }
+    });
     }
 
     private void loguearUsuario() {
@@ -40,5 +47,11 @@ public class LoginController {
         } else {
             vista.mostrarError("Usuario o contraseña incorrectos. Probá de nuevo, pibe.");
         }
+    }
+    
+    private void abrirVentanaRegistro() {
+        RegistroVista vistaReg = new RegistroVista();
+        new RegistroController(vistaReg);
+        vistaReg.setVisible(true);
     }
 }
