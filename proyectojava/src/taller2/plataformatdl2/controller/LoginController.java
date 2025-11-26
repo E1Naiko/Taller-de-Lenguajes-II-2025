@@ -42,8 +42,11 @@ public class LoginController {
         boolean existe = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(user, pass);
 
         if (existe) {
-            System.out.println("Login exitoso. Abriendo Home...");
+            System.out.println("Login exitoso.");
             vista.dispose(); // Cerramos el login
+            CargaController carga = new CargaController(user); // Le pasamos el usuario
+            carga.iniciarCarga();
+            
         } else {
             vista.mostrarError("Usuario o contraseña incorrectos. Probá de nuevo, pibe.");
         }
