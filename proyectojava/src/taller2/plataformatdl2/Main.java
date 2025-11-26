@@ -19,14 +19,6 @@ public class Main {
     * @param args
     */
     public static void main(String[] args) {
-        new Factory();
-        
-        if (args != null && args.length > 1 && "-AdminMode".equals(args[1])) {
-            MenuResenia menu = new MenuResenia();
-            
-            menu.usarMenuDeConsola();
-        }
-
         try {
             new Factory(); 
             System.out.println("Base de datos conectada joya.");
@@ -34,6 +26,12 @@ public class Main {
             JOptionPane.showMessageDialog(null, "Che, reventó la conexión a la base de datos:\n" + e.getMessage(), "Error Fatal", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             return; 
+        }
+        
+        if (args != null && args.length > 1 && "-AdminMode".equals(args[1])) {
+            MenuResenia menu = new MenuResenia();
+            
+            menu.usarMenuDeConsola();
         }
         
         SwingUtilities.invokeLater(() -> {
