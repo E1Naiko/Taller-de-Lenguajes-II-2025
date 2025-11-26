@@ -28,35 +28,35 @@ public class RegistroController {
     private void registrarUsuario() {
         String nombre = vista.getNombre();
         String apellido = vista.getApellido();
-        String dniStr = vista.getDNI();
+        String dni = vista.getDNI();
         String email = vista.getEmail();
-        String pass = vista.getContrasena();
-        String passRepeat = vista.getRepetirContrasena();
+        String contrasena = vista.getContrasena();
+        String contraRepetir = vista.getRepetirContrasena();
 
         // Validaciones básicas (a lo bruto)
-        if (nombre.isEmpty() || apellido.isEmpty() || dniStr.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+        if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || email.isEmpty() || contraRepetir.isEmpty()) {
             vista.mostrarError("¡Completá todos los campos, che!");
             return;
         }
 
-        if (!pass.equals(passRepeat)) {
+        if (!contrasena.equals(contraRepetir)) {
             vista.mostrarError("Las contraseñas no coinciden, máquina.");
             return;
         }
 
         try {
-            int dni = Integer.parseInt(dniStr);
+            int dni2 = Integer.parseInt(dni); //Paso de string a integer
             
             // Creamos el objeto UsuarioFinal
-            // OJO: Los campos extra (Idioma, Géneros, etc.) los mandamos por defecto o nulos por ahora
+            // OJO: Los campos del UML del usuario (Idioma, Géneros, etc.) los mandamos por defecto o nulos por ahora
             UsuarioFinal nuevoUser = new UsuarioFinal(
                 nombre, 
                 apellido, 
-                dni, 
+                dni2, 
                 email, 
-                pass, 
-                "Español", // Idioma default
-                new ArrayList<>(), // Géneros vacíos
+                contrasena, 
+                "Español", // Idioma por defecto
+                new ArrayList<>(), // Géneros lo ponemos vacíos
                 "ListaVacia", 
                 "HistorialVacio"
             );
