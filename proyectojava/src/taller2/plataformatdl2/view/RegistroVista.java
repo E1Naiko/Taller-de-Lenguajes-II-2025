@@ -103,15 +103,6 @@ public class RegistroVista extends JFrame {
         botonVolver.setFocusPainted(false);
         botonVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
         mainPanel.add(botonVolver, gbc);
-
-        /*botonVolver.setPreferredSize(new Dimension(200, 40));
-        botonVolver.setBackground(new Color(30, 144, 255)); 
-        botonVolver.setContentAreaFilled(false);
-        botonVolver.setBorderPainted(false);
-        botonVolver.setForeground(Color.WHITE);
-        botonRegistrarse.setFont(new Font("Times New Roman", Font.BOLD, 14));
-        botonVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        mainPanel.add(botonVolver, gbc); */
         GridBagConstraints gbcPush = new GridBagConstraints();
         gbcPush.gridx = 0;
         gbcPush.gridy = fila + 2;
