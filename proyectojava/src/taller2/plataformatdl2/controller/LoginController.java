@@ -20,7 +20,7 @@ public class LoginController {
                 loguearUsuario();
             }
         });  
-        // Acá iría el listener para ir al Registro que todavia falta implementar
+        // Acá iría el listener para ir al Registro que todavia falta implementar //Ya se implemento xdxd
         this.vista.addRegistroListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -34,7 +34,7 @@ public class LoginController {
         String pass = vista.getContrasena();
 
         if (user.isEmpty() || pass.isEmpty()) {
-            vista.mostrarError("¡Completá los campos, concha!");
+            vista.mostrarError("¡Completá los campos, pibe!");
             return;
         }
 
