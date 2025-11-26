@@ -55,7 +55,7 @@ public class RegistroController {
                 dni2, 
                 email, 
                 contrasena, 
-                "Español", // Idioma por defecto
+                "Español", // Idioma por defecto //TODO Por el momento el idioma por defecto
                 new ArrayList<>(), // Géneros lo ponemos vacíos
                 "ListaVacia", 
                 "HistorialVacio"
