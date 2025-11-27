@@ -26,7 +26,7 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
             String sql = "CREATE TABLE IF NOT EXISTS IDIOMAS " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             " idPelicula     INTEGER     NOT NULL, " +
-            " Idioma         TEXT     NOT NULL)";
+            " Idioma         TEXT        NOT NULL)";
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - Idiomas - Tabla Creada Exitosamente.");
             stmt.close();
@@ -45,7 +45,7 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - Idiomas - crearTablaIdiomas - Intentando insertar elemento.");
+            System.out.println("\"PlataformaTDL2 - Idiomas - insertarIdioma - Intentando insertar elemento.");
             
             String sql = "INSERT INTO IDIOMAS (idPelicula, Idioma) VALUES (?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -57,7 +57,7 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
                 
             }
             
-            System.out.println("\"PlataformaTDL2 - Idiomas - crearTablaIdiomas - Elemento insertado correctamente.");
+            System.out.println("\"PlataformaTDL2 - Idiomas - insertarIdioma - Elemento insertado correctamente.");
             
             c.commit();
             c.close();
@@ -67,9 +67,38 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
     }
     
     @Override
-    public List<Idiomas> devolverIdiomasViaId(int idIdiomas) {
+    public List<Idiomas> devolverIdiomasViaIdAsociado(int idPeliculaAsociado) {
         List<Idiomas> ret = new ArrayList<Idiomas>();
+        Connection c = null;
         
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - Idiomas - encontrarId - Intentando encontrar id del elemento");
+            
+            String sql = "SELECT Idioma FROM IDIOMAS WHERE idPelicula = ?";
+            try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setInt(1, idPeliculaAsociado);
+                
+                ResultSet rs = pstmt.executeQuery();
+                
+                while (rs.next()){
+                    ret.add(Idiomas.valueOf(rs.getString("Idioma")));
+                }
+
+                if (ret.isEmpty())
+                    System.out.println("\"PlataformaTDL2 - Idiomas - encontrarId - ERROR no se encontro id del elemento");
+                else
+                    System.out.println("\"PlataformaTDL2 - Idiomas - encontrarId - id del elemento encontrada correctamente");
+                
+                rs.close();
+            }
+            
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
         return ret;
     }
     
@@ -82,7 +111,7 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - Idiomas - crearTablaIdiomas - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - Idiomas - encontrarId - Intentando encontrar id del elemento");
             
             String sql = "SELECT ID FROM IDIOMAS (idPelicula, Idioma) VALUES (?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -92,9 +121,9 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
                     idEncontrada = rs.getInt("ID");
-                    System.out.println("\"PlataformaTDL2 - Idiomas - crearTablaIdiomas - id del elemento encontrada correctamente");
+                    System.out.println("\"PlataformaTDL2 - Idiomas - encontrarId - id del elemento encontrada correctamente");
                 } else {
-                    System.out.println("\"PlataformaTDL2 - Idiomas - crearTablaIdiomas - ERROR no se encontro id del elemento");
+                    System.out.println("\"PlataformaTDL2 - Idiomas - encontrarId - ERROR no se encontro id del elemento");
                 }
                 rs.close();
             }
