@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import taller2.DB.DAO.ElencoDAO;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Idiomas;
 
 public class ElencoDAOJDBC implements ElencoDAO{
 
@@ -20,15 +19,15 @@ public class ElencoDAOJDBC implements ElencoDAO{
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-            System.out.println("PlataformaTDL2 - IdiomasDAO - crearTablaIdiomas - Creando Tabla.");
+            System.out.println("PlataformaTDL2 - ElencoDAO - crearTablaElenco - Creando Tabla.");
             
             stmt = c.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS IDIOMAS " +
+            String sql = "CREATE TABLE IF NOT EXISTS ELENCO " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
             " idPelicula     INTEGER     NOT NULL, " +
-            " Idioma         TEXT        NOT NULL)";
+            " Actor         TEXT        NOT NULL)";
             stmt.executeUpdate(sql);
-            System.out.println("PlataformaTDL2 - IdiomasDAO - Tabla Creada Exitosamente.");
+            System.out.println("PlataformaTDL2 - ElencoDAO - Tabla Creada Exitosamente.");
             stmt.close();
             c.close();
         } catch (Exception e) {
@@ -45,9 +44,9 @@ public class ElencoDAOJDBC implements ElencoDAO{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - IdiomasDAO - insertarIdioma - Intentando insertar elemento.");
+            System.out.println("\"PlataformaTDL2 - ElencoDAO - insertarElenco - Intentando insertar elemento.");
             
-            String sql = "INSERT INTO IDIOMAS (idPelicula, Idioma) VALUES (?,?)";
+            String sql = "INSERT INTO ELENCO (idPelicula, Actor) VALUES (?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idPeliculaAsociado);
                 pstmt.setString(2, Elenco);
@@ -57,35 +56,7 @@ public class ElencoDAOJDBC implements ElencoDAO{
                 
             }
             
-            System.out.println("\"PlataformaTDL2 - IdiomasDAO - insertarIdioma - Elemento insertado correctamente.");
-            c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-    }
-
-@Override
-    public void insertarElenco(int idPeliculaAsociado, List<String> Elenco) {
-        Connection c = null;
-        
-        try {
-            
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-            c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - IdiomasDAO - insertarIdioma - Intentando insertar elemento.");
-            
-            String sql = "INSERT INTO IDIOMAS (idPelicula, Idioma) VALUES (?,?)";
-            try (PreparedStatement pstmt = c.prepareStatement(sql)) {
-                pstmt.setInt(1, idPeliculaAsociado);
-                pstmt.setString(2, idioma);
-                
-                pstmt.executeUpdate();
-                c.commit();
-                
-            }
-            
-            System.out.println("\"PlataformaTDL2 - IdiomasDAO - insertarIdioma - Elemento insertado correctamente.");
+            System.out.println("\"PlataformaTDL2 - ElencoDAO - insertarElenco - Elemento insertado correctamente.");
             c.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -93,30 +64,37 @@ public class ElencoDAOJDBC implements ElencoDAO{
     }
 
     @Override
+    public void insertarElenco(int idPeliculaAsociado, List<String> Elenco) {
+        for(String actor: Elenco){
+            insertarElenco(idPeliculaAsociado, actor);
+        }
+    }
+
+    @Override
     public List<String> devolverElencoViaIdPelicula(int idPeliculaAsociado) {
-        List<Idiomas> ret = new ArrayList<Idiomas>();
+        List<String> ret = new ArrayList<String>();
         Connection c = null;
         
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - IdiomasDAO - encontrarId - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - ElencoDAO - devolverElencoViaIdPelicula - Intentando encontrar id del elemento");
             
-            String sql = "SELECT Idioma FROM IDIOMAS WHERE idPelicula = ?";
+            String sql = "SELECT Actor FROM ELENCO WHERE idPelicula = ?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idPeliculaAsociado);
                 
                 ResultSet rs = pstmt.executeQuery();
                 
                 while (rs.next()){
-                    ret.add(Idiomas.valueOf(rs.getString("Idioma")));
+                    ret.add(rs.getString("Actor"));
                 }
 
                 if (ret.isEmpty())
-                    System.out.println("\"PlataformaTDL2 - IdiomasDAO - encontrarId - ERROR no se encontro id del elemento");
+                    System.out.println("\"PlataformaTDL2 - ElencoDAO - devolverElencoViaIdPelicula - ERROR no se encontro id del elemento");
                 else
-                    System.out.println("\"PlataformaTDL2 - IdiomasDAO - encontrarId - id del elemento encontrada correctamente");
+                    System.out.println("\"PlataformaTDL2 - ElencoDAO - devolverElencoViaIdPelicula - id del elemento encontrada correctamente");
                 
                 rs.close();
             }
@@ -137,19 +115,19 @@ public class ElencoDAOJDBC implements ElencoDAO{
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - IdiomasDAO - encontrarId - Intentando encontrar id del elemento");
+            System.out.println("\"PlataformaTDL2 - ElencoDAO - encontrarComienzoListaViaIdPelicula - Intentando encontrar id del elemento");
             
-            String sql = "SELECT ID FROM IDIOMAS WHERE idPelicula = ? AND Idioma = ?";
+            String sql = "SELECT ID FROM ELENCO WHERE idPelicula = ?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idPeliculaAsociado);
-                pstmt.setString(2, idioma);
                 
                 ResultSet rs = pstmt.executeQuery();
+                
                 if (rs.next()) {
                     idEncontrada = rs.getInt("ID");
-                    System.out.println("\"PlataformaTDL2 - IdiomasDAO - encontrarId - id del elemento encontrada correctamente");
+                    System.out.println("\"PlataformaTDL2 - ElencoDAO - encontrarComienzoListaViaIdPelicula - id del elemento encontrada correctamente");
                 } else {
-                    System.out.println("\"PlataformaTDL2 - IdiomasDAO - encontrarId - ERROR no se encontro id del elemento");
+                    System.out.println("\"PlataformaTDL2 - ElencoDAO - encontrarComienzoListaViaIdPelicula - ERROR no se encontro id del elemento");
                 }
                 rs.close();
             }

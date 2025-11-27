@@ -537,7 +537,7 @@ public class MenuResenia {
         } while (genero == null); //null si el género no es válido
         
         Metadatos metadatosPelicula= cargarMetadatos();
-        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero, metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
+        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero, metadatosPelicula); // TODO Modifique el constructor de Pelicula verificar en el DAO
         return nuevaPelicula;
     }
     
