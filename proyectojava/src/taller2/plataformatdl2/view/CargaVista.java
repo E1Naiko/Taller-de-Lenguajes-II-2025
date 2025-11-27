@@ -12,9 +12,9 @@ public class CargaVista extends JFrame {
         // Configuración de la ventana
         setTitle("Plataforma TDL2 - Cargando");
         setSize(500, 400);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Para que no se cierre a la fuerza
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 
         setLocationRelativeTo(null); // Para que este centrado
-        setUndecorated(true); // Sin bordes para que este mas piola
+        setUndecorated(false); // Sin bordes para que este mas piola
         
         // Panel principal con borde
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -26,7 +26,7 @@ public class CargaVista extends JFrame {
         lblImagen = new JLabel("", SwingConstants.CENTER);
         try {
             // Buscamos el gif
-            ImageIcon gifCarga = new ImageIcon("src/taller2/proyectojava/img/TL2 Perrito de carga fondo transparente.gif");
+            ImageIcon gifCarga = new ImageIcon("proyectojava/img/TL2 Perrito de carga.gif");
             lblImagen.setIcon(gifCarga);
         } catch (Exception e) {
             lblImagen.setText("<html><div style='text-align: center;'>[GIF Cargando]<br>(Falta imagen)</div></html>");
