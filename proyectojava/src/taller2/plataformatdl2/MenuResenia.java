@@ -458,7 +458,7 @@ public class MenuResenia {
         // Convertimos la lista a un array de String
         subtitulos = subtitulosList.toArray(new String[0]);
         System.out.println("--- Metadatos cargados exitosamente ---");
-        return new Metadatos(titulo, resumen, elenco, director, duracion, idioma, subtitulos);
+        return new Metadatos(titulo, resumen, elenco, director, duracion, idioma, subtitulos, 0, 0,"test");
     }
     
     /** 

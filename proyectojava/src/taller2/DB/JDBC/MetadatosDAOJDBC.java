@@ -31,7 +31,10 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             " Director       TEXT          NOT NULL, " +
             " Duracion       INTEGER       NOT NULL, " +
             " Idioma         TEXT          NOT NULL, " +  // TODO - crear tabla de Idiomas
-            " Subtitulos     TEXT          NOT NULL" +
+            " Subtitulos     TEXT          NOT NULL, " +
+            " RatingPromedio REAL          NOT NULL, " +
+            " Anio           INTEGER       NOT NULL, " +
+            " UrlPoster      TEXT          " +
             ")";
             stmt.executeUpdate(sql);
             System.out.println("PlataformaTDL2 - Metadatos - Tabla Creada Exitosamente.");
@@ -56,7 +59,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             c.setAutoCommit(false);
             System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Intentando insertar elemento.");
             
-            String sql = "INSERT INTO METADATOS (Titulo, Sinopsis, Elenco, Director, Duracion, Idioma, Subtitulos) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO METADATOS (Titulo, Sinopsis, Elenco, Director, Duracion, Idioma, Subtitulos, RatingPromedio, Anio, UrlPoster) VALUES (?,?,?,?,?,?,?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, metadatos.getTitulo());
                 pstmt.setString(2, metadatos.getSinopsis());
@@ -77,6 +80,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 : null;
                 
                 pstmt.setString(7, subtitulosStr); // Ahora es un String
+                pstmt.setFloat(8, metadatos.getRating_promedio());
+                pstmt.setInt(9, metadatos.getAnio());
+                pstmt.setString(10, metadatos.getUrlPoster());
                 pstmt.executeUpdate();
             }
             
@@ -150,7 +156,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             System.out.println("DEBUG - "+ metadatos.toString() + " - " + elencoStr + " - " + subtitulosStr);
             stmt = c.createStatement();
             String sql = "SELECT * FROM METADATOS WHERE " +
-            "Titulo=? AND Sinopsis=? AND Elenco=? AND Director=? AND Duracion=? AND Idioma=? AND Subtitulos=?";
+            "Titulo=? AND Sinopsis=? AND Elenco=? AND Director=? AND Duracion=? AND Idioma=? AND Subtitulos=? AND RatingPromedio=? AND Anio=? AND UrlPoster=?";
             
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, metadatos.getTitulo());
@@ -160,6 +166,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             ps.setInt(5, convertidorStringSegundos.getFormatoSegundos());
             ps.setString(6, metadatos.getIdioma());
             ps.setString(7, subtitulosStr);
+            ps.setFloat(8, metadatos.getRating_promedio());
+            ps.setInt(9, metadatos.getAnio());
+            ps.setString(10, metadatos.getUrlPoster());
             ResultSet rs = ps.executeQuery();
             
             System.out.println(stmt.getWarnings());
@@ -198,6 +207,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         LocalTime duracion = null;
         String idioma = null;
         String[] subtitulos = null;
+        float rating_promedio = 0.0f;
+        int anio = 0;
+        String urlPoster = null;
         
         try {
             Class.forName("org.sqlite.JDBC");
@@ -218,12 +230,15 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 duracion = convertidorStringSegundos.getFormatoTime();
                 idioma = rs.getString("Idioma");
                 // subtitulos = res getString("");
+                rating_promedio = rs.getFloat("RatingPromedio");
+                anio = rs.getInt("Anio");
+                urlPoster = rs.getString("UrlPoster");
             }
             
             rs.close();
             stmt.close();
             c.close();
-            Metadatos ret = new Metadatos(titulo, sinopsis, elenco, director, duracion, idioma, subtitulos);
+            Metadatos ret = new Metadatos(titulo, sinopsis, elenco, director, duracion, idioma, subtitulos, rating_promedio, anio, urlPoster);
             return ret;
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
