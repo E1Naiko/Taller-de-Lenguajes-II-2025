@@ -8,6 +8,6 @@ public interface IdiomasDAO {
     public void crearTablaIdiomas();
     public void insertarIdioma(int idPeliculaAsociado, String Idioma);
     public List<Idiomas> devolverIdiomasViaIdAsociado(int idPeliculaAsociado);
-    public int encontrarId(int idPeliculaAsociado, String idioma);
+    public int encontrarComienzoListaViaIdPelicula(int idPeliculaAsociado, String idioma);
     public boolean existeIdiomaEnTalba(int idPeliculaAsociado, String idioma);
 }

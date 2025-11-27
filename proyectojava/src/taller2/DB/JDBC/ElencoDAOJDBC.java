@@ -7,13 +7,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import taller2.DB.DAO.IdiomasDAO;
+
+import taller2.DB.DAO.ElencoDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Idiomas;
 
-public class IdiomasDAOJDBC implements IdiomasDAO{
-    
+public class ElencoDAOJDBC implements ElencoDAO{
+
     @Override
-    public void crearTablaIdiomas() {
+    public void crearTablaElenco() {
         Connection c = null;
         Statement stmt = null;
         try {
@@ -34,9 +35,37 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
-    
+
     @Override
-    public void insertarIdioma(int idPeliculaAsociado, String idioma) {
+    public void insertarElenco(int idPeliculaAsociado, String Elenco) {
+        Connection c = null;
+        
+        try {
+            
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+            c.setAutoCommit(false);
+            System.out.println("\"PlataformaTDL2 - IdiomasDAO - insertarIdioma - Intentando insertar elemento.");
+            
+            String sql = "INSERT INTO IDIOMAS (idPelicula, Idioma) VALUES (?,?)";
+            try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+                pstmt.setInt(1, idPeliculaAsociado);
+                pstmt.setString(2, Elenco);
+                
+                pstmt.executeUpdate();
+                c.commit();
+                
+            }
+            
+            System.out.println("\"PlataformaTDL2 - IdiomasDAO - insertarIdioma - Elemento insertado correctamente.");
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
+
+@Override
+    public void insertarElenco(int idPeliculaAsociado, List<String> Elenco) {
         Connection c = null;
         
         try {
@@ -62,9 +91,9 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
-    
+
     @Override
-    public List<Idiomas> devolverIdiomasViaIdAsociado(int idPeliculaAsociado) {
+    public List<String> devolverElencoViaIdPelicula(int idPeliculaAsociado) {
         List<Idiomas> ret = new ArrayList<Idiomas>();
         Connection c = null;
         
@@ -98,9 +127,9 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
         }
         return ret;
     }
-    
+
     @Override
-    public int encontrarComienzoListaViaIdPelicula(int idPeliculaAsociado, String idioma) {
+    public int encontrarComienzoListaViaIdPelicula(int idPeliculaAsociado) {
         int idEncontrada = 0;
         Connection c = null;
         
@@ -131,10 +160,10 @@ public class IdiomasDAOJDBC implements IdiomasDAO{
         }
         return idEncontrada;
     }
-    
+
     @Override
-    public boolean existeIdiomaEnTalba(int idPeliculaAsociado, String Idioma) {
-        return encontrarComienzoListaViaIdPelicula(idPeliculaAsociado, Idioma) > 0;
+    public boolean existeElencoViaIdPelicula(int idPeliculaAsociado) {
+        return encontrarComienzoListaViaIdPelicula(idPeliculaAsociado) > 0;
     }
     
 }
