@@ -10,6 +10,7 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 
+import java.io.File;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
@@ -18,8 +19,8 @@ import java.util.List;
 
 public class CargaCSV {
     private int errores = 0;
-    private List<Pelicula> peliculasParseadas = new ArrayList<>();
-    private String direccion = "proyectojava\\src\\taller2\\DB\\movies_database.csv";
+    private List<Pelicula> peliculasParseadas = new ArrayList<Pelicula>();
+    private String direccion = new File("proyectojava/src/taller2/DB/movies_database.csv").getAbsolutePath();
     
     
     public CargaCSV() throws Exception{
