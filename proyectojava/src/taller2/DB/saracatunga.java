@@ -17,13 +17,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CargaCSV {
+public class saracatunga {
     private int errores = 0;
     private List<Pelicula> peliculasParseadas = new ArrayList<Pelicula>();
     private String direccion = new File("proyectojava/src/taller2/DB/movies_database.csv").getAbsolutePath();
     
     
-    public CargaCSV() throws Exception{
+    public saracatunga() throws Exception{
         // Vamos a usar la libreria OpenCSV
         // Configuro para la lib para detectar separadores (,) y elementos compuestos o strings grandes (") para manejar campos con comas dentro de comillas
         CSVParser csvParser = new CSVParserBuilder()
@@ -100,6 +100,6 @@ public class CargaCSV {
     
     
     public List<Pelicula> getPeliculasParseadas() {
-        return peliculasParseadas;
+        return this.peliculasParseadas;
     }
 }
