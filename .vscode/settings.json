@@ -1,7 +1,9 @@
 {
     "java.project.referencedLibraries": [
-        "proyectojava\\lib\\json-20240303.jar",
-        "c:\\Users\\User\\Documents\\GitHub\\Taller-de-Lenguajes-II-2025\\proyectojava\\lib\\sqlite-jdbc-3.50.3.0.jar"
+        "proyectojava\\lib\\commons-lang3-3.12.0.jar",
+        "c:\\Users\\User\\Documents\\GitHub\\Taller-de-Lenguajes-II-2025\\proyectojava\\lib\\sqlite-jdbc-3.50.3.0.jar",
+        "c:\\Users\\User\\Documents\\GitHub\\Taller-de-Lenguajes-II-2025\\proyectojava\\lib\\opencsv-5.12.0.jar",
+        "c:\\Users\\User\\Documents\\GitHub\\Taller-de-Lenguajes-II-2025\\proyectojava\\lib\\json-20240303.jar"
     ],
     "java.project.sourcePaths": [
         "proyectojava\\src"

@@ -1,6 +1,7 @@
 package taller2.DB.DAO;
 
 
+import taller2.DB.CargaCSV;
 import taller2.DB.ConsultaPeliculasOMDb;
 import taller2.DB.JDBC.MetadatosDAOJDBC;
 import taller2.DB.JDBC.PeliculasDAOJDBC;
@@ -14,6 +15,7 @@ public class Factory {
     private static MetadatosDAO metadatosDAO = null;
     @SuppressWarnings("unused")
     private static ConsultaPeliculasOMDb consultaOmdb = null;
+    private static CargaCSV csv = null;
     
     static {
         try {
@@ -26,7 +28,12 @@ public class Factory {
             metadatosDAO = new MetadatosDAOJDBC();
             metadatosDAO.crearTablaMetadatos();
             consultaOmdb = new ConsultaPeliculasOMDb();
+
+            System.out.println("FACTORY - TEST API");
             ConsultaPeliculasOMDb.consultarPelicula("Guardians of the Galaxy Vol. 2");
+            
+            System.out.println("FACTORY - TEST Carga CSV");
+            csv = new CargaCSV();
             
         } catch (Exception e) {
             System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());

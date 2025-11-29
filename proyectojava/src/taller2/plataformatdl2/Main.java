@@ -27,6 +27,8 @@ public class Main {
             e.printStackTrace();
             return; 
         }
+
+        System.exit(0);
         
         if (args != null && args.length > 1 && "-AdminMode".equals(args[1])) {
             MenuResenia menu = new MenuResenia();
