@@ -26,7 +26,7 @@ public class CargaCSV {
         .withIgnoreLeadingWhiteSpace(true)
         .build();
         
-        // Leo el archivo CSV
+        // Leo el archivo CSV con configuracion UTF_8 para evitarnos caracteres "raros"
         try (FileReader lectorArchivo = new FileReader(direccion, StandardCharsets.UTF_8);
         CSVReader lectorCSV = new CSVReaderBuilder(lectorArchivo)
         .withCSVParser(csvParser)
@@ -79,7 +79,7 @@ public class CargaCSV {
                         0,
                         campos[6],
                         null,
-                        campos[],
+                        Integer.getInteger((String) campos[5].strip().subSequence(0, 3)),
                         anio,
                         urlPoster
                     );
