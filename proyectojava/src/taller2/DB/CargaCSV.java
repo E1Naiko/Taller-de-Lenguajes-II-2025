@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CargaCSV {
+    private int total = 0;
+    private int correctas = 0;
     private int errores = 0;
     private List<Pelicula> peliculasParseadas = new ArrayList<Pelicula>();
     private String direccion = new File("proyectojava/src/taller2/DB/movies_database.csv").getAbsolutePath();
@@ -63,15 +65,17 @@ public class CargaCSV {
                 }
                 
                 try {
+                    String[] elenco = {"DEBUG"};
+                    String[] subtitulos = {"DEBUG"};
                     // Crear objeto Pelicula con los campos parseados
                     Metadatos metadatos = new Metadatos(
                         campos[1], // String titulo
                         campos[2], // String sinopsis
-                        null, // String[] elenco
+                        elenco, // String[] elenco
                         "DEBUG", // String director
                         LocalTime.MIN, // LocalTime duracion
                         campos[6], // String idioma
-                        null, // String[] subtitulos
+                        subtitulos, // String[] subtitulos
                         Float.parseFloat(campos[5]), // float rating_promedio
                         // Assumes the year is the first 4 characters, e.g., "2021-12-15"
                         Integer.parseInt(campos[0].strip().substring(0, 4)), // int anio
@@ -79,27 +83,88 @@ public class CargaCSV {
                     );
                     
                     
+                    
                     Pelicula pelicula = new Pelicula(
                         Calidades.DEF,   // Calidades calidad;
                         "DEBUG",   // String audio;
                         "DEBUG",   // String direccionArchivo;
-                        Genero.valueOf(campos[7]),   // Genero genero;
+                        tomarPrimerGenero(campos[7]),   // Genero genero;
                         metadatos   // Metadatos metadatos;
                     );
                     
                     peliculasParseadas.add(pelicula);
-                    
                 } catch (NumberFormatException e) {
                     System.err.println("Error al parsear número en registro: " + e.getMessage());
                 }
             }
             
-            System.out.println("Proceso finalizado: " + peliculasParseadas.size() + " peliculas parseadas correctamente con " + errores + " errores");
+            
+            correctas = peliculasParseadas.size();
+            total = correctas + errores;
+            float tazaError = ((float) errores / ((float) total ))*100;
+            System.out.println("CargaCSV - CSV a memoria con exito: \n - "
+                + peliculasParseadas.size() + " peliculas parseadas correctamente \n - " + errores + " errores");
+            System.out.printf(" - Taza de error del %.4f %c \n", tazaError, '%'); // en este caso uso printf para hacer uso del redondeo de numeros de C
         }
     }
     
     
+    
     public List<Pelicula> getPeliculasParseadas() {
         return this.peliculasParseadas;
+    }
+    
+
+
+    private Genero tomarPrimerGenero(String entrada){
+        Genero genero;
+        String[] generosSeparados = entrada.split(",");
+        
+        switch (generosSeparados[0].toUpperCase()) {
+            case "ACTION":
+            genero = Genero.ACCION;
+            break;
+            case "ADVENTURE":
+            genero = Genero.AVENTURA;
+            break;
+            case "COMEDY":
+            genero = Genero.COMEDIA;
+            break;
+            case "DRAMA":
+            genero = Genero.DRAMA;
+            break;
+            case "SCIENCE FICTION":
+            genero = Genero.CIENCIA_FICCION;
+            break;
+            case "TERROR":
+            genero = Genero.TERROR;
+            break;
+            case "THRILLER":
+            genero = Genero.SUSPENSO;
+            break;
+            case "FANTASY":
+            genero = Genero.FANTASIA;
+            break;
+            case "ROMACE":
+            genero = Genero.ROMANCE;
+            break;
+            case "DOCUMENTAL":
+            genero = Genero.DOCUMENTAL;
+            break;
+            case "ANIMATION":
+            genero = Genero.ANIMACION;
+            break;
+            case "MUSICAL":
+            genero = Genero.MUSICAL;
+            break;
+            case "CRIME":
+            genero = Genero.CRIMEN;
+            break;
+            
+            default:
+            genero = Genero.DEBUG;
+            break;
+        }
+        return genero;
     }
 }

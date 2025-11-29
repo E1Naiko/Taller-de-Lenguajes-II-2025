@@ -8,4 +8,6 @@ public interface MetadatosDAO {
     public void eliminarMetadatos(int idMetadatos);
     public int encontrarIdMetadatos(Metadatos metadatos);
     public Metadatos devolverMetadatosViaId(int idMetadatos);
+    public boolean existeMetadatos(Metadatos metadatos);
+    public void setImprimirDebug(boolean imprimirDebug);
 }

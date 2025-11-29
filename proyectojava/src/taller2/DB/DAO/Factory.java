@@ -1,6 +1,7 @@
 package taller2.DB.DAO;
 
 
+import java.time.LocalTime;
 import java.util.List;
 
 import taller2.DB.CargaCSV;
@@ -12,6 +13,8 @@ import taller2.DB.JDBC.UsuariosFinalDAOJDBC;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 
 public class Factory {
+    private static int DEBUG_LIMITE = 0;
+    private static LocalTime tiempo;
     private static PeliculasDAO peliculasDAO = null;
     private static ReseniasDAO reseniasDAO = null;
     private static UsuariosFinalDAO usuariosFinalDAO = null;
@@ -39,10 +42,33 @@ public class Factory {
             System.out.println("FACTORY - TEST Carga CSV");
             accesoCSV = new CargaCSV();
             listaPeliculas = accesoCSV.getPeliculasParseadas();
+            System.out.println("Factory - Pasando de memoria a db");
+            //peliculasDAO.setImprimirDebug(false);
+            //metadatosDAO.setImprimirDebug(false);
+            pasarListaPeliculas_a_BD();
+            peliculasDAO.setImprimirDebug(true);
+            metadatosDAO.setImprimirDebug(true);
             
         } catch (Exception e) {
             System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
         }
+    }
+
+    private static void pasarListaPeliculas_a_BD(){
+        int ini, fin;
+        ini = tiempo.now().toSecondOfDay();
+        int i = 0;
+        if (!listaPeliculas.isEmpty() && peliculasDAO!=null){
+            for (Pelicula peli: listaPeliculas){
+                i++;
+                if (!peliculasDAO.existePelicula(peli) || !metadatosDAO.existeMetadatos(peli.getMetadatos())){
+                    peliculasDAO.insertarPeliculas(peli);
+                }
+                if (DEBUG_LIMITE!= 0 && i>=DEBUG_LIMITE) break;
+            }
+        }
+        fin = tiempo.now().toSecondOfDay();
+        System.out.println("Factory - pasarListaPeliculas_a_BD - Terminado en " + (fin-ini) + " segundos");
     }
     
     /** 
