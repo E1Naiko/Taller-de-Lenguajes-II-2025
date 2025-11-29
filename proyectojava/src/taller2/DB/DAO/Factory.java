@@ -1,12 +1,15 @@
 package taller2.DB.DAO;
 
 
+import java.util.List;
+
 import taller2.DB.CargaCSV;
 import taller2.DB.ConsultaPeliculasOMDb;
 import taller2.DB.JDBC.MetadatosDAOJDBC;
 import taller2.DB.JDBC.PeliculasDAOJDBC;
 import taller2.DB.JDBC.ReseniasDAOJDBC;
 import taller2.DB.JDBC.UsuariosFinalDAOJDBC;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 
 public class Factory {
     private static PeliculasDAO peliculasDAO = null;
@@ -15,7 +18,8 @@ public class Factory {
     private static MetadatosDAO metadatosDAO = null;
     @SuppressWarnings("unused")
     private static ConsultaPeliculasOMDb consultaOmdb = null;
-    private static CargaCSV csv = null;
+    private static CargaCSV accesoCSV = null;
+    private static List<Pelicula> listaPeliculas = null;
     
     static {
         try {
@@ -33,7 +37,8 @@ public class Factory {
             ConsultaPeliculasOMDb.consultarPelicula("Guardians of the Galaxy Vol. 2");
             
             System.out.println("FACTORY - TEST Carga CSV");
-            csv = new CargaCSV();
+            accesoCSV = new CargaCSV();
+            listaPeliculas = accesoCSV.getPeliculasParseadas();
             
         } catch (Exception e) {
             System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
@@ -48,23 +53,27 @@ public class Factory {
     }
     
     /** 
-    * @return ReseniasDAO
+     * @return ReseniasDAO
     */
-    public static ReseniasDAO getReseniasDAO() {
-        return reseniasDAO;
+   public static ReseniasDAO getReseniasDAO() {
+       return reseniasDAO;
     }
     
     /** 
-    * @return UsuariosFinalDAO
+     * @return UsuariosFinalDAO
     */
     public static UsuariosFinalDAO getUsuariosFinalDAO() {
         return usuariosFinalDAO;
     }
-
+    
     /** 
      * @return MetadatosDAO
-     */
-    public static MetadatosDAO getMetadatosDAO() {
+    */
+   public static MetadatosDAO getMetadatosDAO() {
         return metadatosDAO;
+    }
+    
+    public static List<Pelicula> getListaPeliculasCSV() {
+        return listaPeliculas;
     }
 }
