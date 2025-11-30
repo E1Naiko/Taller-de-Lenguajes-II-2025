@@ -19,6 +19,9 @@ public class Metadatos {
     public LocalTime duracion;
     public String idioma;
     public String[] subtitulos;
+    private float rating_promedio;
+    private int anio;
+    private String urlPoster;
     
     /**
     * Constructor de la clase Metadatos.
@@ -30,9 +33,12 @@ public class Metadatos {
     * @param duracion  La duración del contenido.
     * @param idioma    El idioma del contenido.
     * @param subtitulos Los subtítulos disponibles para el contenido.
+    * @param rating_promedio
+    * @param anio
+    * @param urlPoster
     */ 
     
-    public Metadatos(String titulo, String sinopsis, String[] elenco, String director, LocalTime duracion, String idioma, String[] subtitulos) {
+    public Metadatos(String titulo, String sinopsis, String[] elenco, String director, LocalTime duracion, String idioma, String[] subtitulos, float rating_promedio, int anio, String urlPoster) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.elenco = elenco;
@@ -40,6 +46,9 @@ public class Metadatos {
         this.duracion = duracion;
         this.idioma = idioma;
         this.subtitulos = subtitulos;
+        this.rating_promedio = rating_promedio;
+        this.anio = anio;
+        this.urlPoster = urlPoster;
     }
     
     /**
@@ -140,6 +149,31 @@ public class Metadatos {
         return true;
     }
     
+    public float getRating_promedio() {
+        return rating_promedio;
+    }
+    
+    public void setRating_promedio(float rating_promedio) {
+        this.rating_promedio = rating_promedio;
+    }
+    
+    public int getAnio() {
+        return anio;
+    }
+    
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+    
+    public String getUrlPoster() {
+        return urlPoster;
+    }
+    
+    public void setUrlPoster(String urlPoster) {
+        this.urlPoster = urlPoster;
+    }
+    
+    
     // HECHO CON LMARENA
     /**
     * Devuelve una representación textual amigable de los metadatos del contenido.
@@ -173,6 +207,9 @@ public class Metadatos {
         ", duración=" + duracionStr +
         ", idioma='" + (idioma != null ? idioma : "No especificado") + '\'' +
         ", subtítulos=[" + subtitulosStr + "]" +
+        ", rating=" + rating_promedio +
+        ", año=" + anio +
+        ", poster='" + (urlPoster != null ? urlPoster : "Sin poster") + '\'' +
         '}';
     }
 }

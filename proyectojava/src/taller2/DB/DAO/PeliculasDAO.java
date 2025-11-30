@@ -12,4 +12,6 @@ public interface PeliculasDAO {
     public Pelicula devolverPeliculaViaId(int idPelicula);
     public List<Pelicula> obtenerPeliculas();
     public int getMaxId();
+    public boolean existePelicula(Contenido pelicula);
+    public void setImprimirDebug(boolean imprimirDebug);
 }

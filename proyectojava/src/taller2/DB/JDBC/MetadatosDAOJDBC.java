@@ -12,7 +12,8 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
 import taller2.plataformatdl2.Utilities.TimeStringYSegundos;
 
 public class MetadatosDAOJDBC implements MetadatosDAO {
-    
+    private boolean imprimirDebug = true;
+
     @Override
     public void crearTablaMetadatos() {
         Connection c = null;
@@ -20,21 +21,24 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
-            System.out.println("PlataformaTDL2 - Metadatos - crearTablaMetadatos - Creando Tabla.");
+            if (imprimirDebug) System.out.println("PlataformaTDL2 - Metadatos - crearTablaMetadatos - Creando Tabla.");
             
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS METADATOS " +
             "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " Titulo         TEXT          NOT NULL, " +
-            " Sinopsis       TEXT          NOT NULL, " +
-            " TablaElenco    INTEGER       NOT NULL, " +
-            " Director       TEXT          NOT NULL, " +
-            " Duracion       INTEGER       NOT NULL, " +
-            " Idioma         TEXT          NOT NULL, " +  // TODO - crear tabla de Idiomas
-            " Subtitulos     TEXT          NOT NULL" +
+            " Titulo                TEXT          NOT NULL, " +
+            " Sinopsis              TEXT          NOT NULL, " +
+            " Elenco                TEXT          NOT NULL, " +
+            " Director              TEXT          NOT NULL, " +
+            " Duracion              INTEGER       NOT NULL, " +
+            " Idioma                TEXT          NOT NULL, " +  // TODO - crear tabla de Idiomas
+            " Subtitulos            TEXT          NOT NULL, " +
+            " RatingPromedio        REAL          NOT NULL, " +
+            " Anio                  INTEGER       NOT NULL, " +
+            " UrlPoster             TEXT          NOT NULL" +
             ")";
             stmt.executeUpdate(sql);
-            System.out.println("PlataformaTDL2 - Metadatos - Tabla Creada Exitosamente.");
+            if (imprimirDebug) System.out.println("PlataformaTDL2 - Metadatos - Tabla Creada Exitosamente.");
             stmt.close();
             c.close();
         } catch (Exception e) {
@@ -49,14 +53,13 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
     public void insertarMetadatos(Metadatos metadatos) {
         Connection c = null;
         TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.duracion);
-        
+
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Intentando insertar elemento.");
             
-            String sql = "INSERT INTO METADATOS (Titulo, Sinopsis, Elenco, Director, Duracion, Idioma, Subtitulos) VALUES (?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO METADATOS (Titulo, Sinopsis, Elenco, Director, Duracion, Idioma, Subtitulos, RatingPromedio, Anio, UrlPoster) VALUES (?,?,?,?,?,?,?,?,?,?)";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, metadatos.getTitulo());
                 pstmt.setString(2, metadatos.getSinopsis());
@@ -77,10 +80,13 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 : null;
                 
                 pstmt.setString(7, subtitulosStr); // Ahora es un String
+                pstmt.setFloat(8, metadatos.getRating_promedio());
+                pstmt.setInt(9, metadatos.getAnio());
+                pstmt.setString(10, metadatos.getUrlPoster());
                 pstmt.executeUpdate();
             }
             
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Elemento insertado correctamente.");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Elemento insertado correctamente.");
             
             c.commit();
             c.close();
@@ -101,20 +107,20 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
             
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Intentando eliminar elemento");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Intentando eliminar elemento");
             
             String sql = "DELETE FROM METADATOS WHERE ID = ?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setInt(1, idMetadatos);
                 if (pstmt.executeUpdate() == 0) {
-                    System.out.println("PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - No se encontró metadatos con ID " + idMetadatos);
+                    if (imprimirDebug) System.out.println("PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - No se encontró metadatos con ID " + idMetadatos);
                 }
             }
             
             c.commit();
             c.close();
             
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Elemento eliminado correctamente");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - crearTablaMetadatos - Elemento eliminado correctamente");
             
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -130,13 +136,13 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         int idEncontrada = 0;
         Connection c = null;
         Statement stmt = null;
-        TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.duracion);
+        TimeStringYSegundos convertidorStringSegundos = new TimeStringYSegundos(metadatos.duracion.toString());
         
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - Intentando encontrar id del elemento");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - Intentando encontrar id del elemento");
             
             // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla elenco en la bd
             String elencoStr = (metadatos.getElenco() != null) 
@@ -147,10 +153,9 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             ? String.join(", ", metadatos.getSubtitulos()) 
             : null;
             
-            System.out.println("DEBUG - "+ metadatos.toString() + " - " + elencoStr + " - " + subtitulosStr);
             stmt = c.createStatement();
             String sql = "SELECT * FROM METADATOS WHERE " +
-            "Titulo=? AND Sinopsis=? AND Elenco=? AND Director=? AND Duracion=? AND Idioma=? AND Subtitulos=?";
+            "Titulo=? AND Sinopsis=? AND Elenco=? AND Director=? AND Duracion=? AND Idioma=? AND Subtitulos=? AND RatingPromedio=? AND Anio=? AND UrlPoster=?";
             
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, metadatos.getTitulo());
@@ -160,17 +165,18 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             ps.setInt(5, convertidorStringSegundos.getFormatoSegundos());
             ps.setString(6, metadatos.getIdioma());
             ps.setString(7, subtitulosStr);
+            ps.setFloat(8, metadatos.getRating_promedio());
+            ps.setInt(9, metadatos.getAnio());
+            ps.setString(10, metadatos.getUrlPoster());
             ResultSet rs = ps.executeQuery();
-            
-            System.out.println(stmt.getWarnings());
             
             if (rs.next())
             idEncontrada = rs.getInt("ID");
             
             if (idEncontrada==0)
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - ERROR no se encontro id del elemento");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - ERROR no se encontro id del elemento");
             else
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - id del elemento encontrada correctamente");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - id del elemento encontrada correctamente");
             
             rs.close();
             stmt.close();
@@ -198,12 +204,15 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         LocalTime duracion = null;
         String idioma = null;
         String[] subtitulos = null;
+        float rating_promedio = 0.0f;
+        int anio = 0;
+        String urlPoster = null;
         
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
             c.setAutoCommit(false);
-            System.out.println("\"PlataformaTDL2 - MetadatosDAO - devolverMetadatosViaId - Intentando encontrar id del elemento");
+            if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - devolverMetadatosViaId - Intentando encontrar id del elemento");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM METADATOS WHERE ID=" + idMetadatos +
@@ -218,12 +227,15 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 duracion = convertidorStringSegundos.getFormatoTime();
                 idioma = rs.getString("Idioma");
                 // subtitulos = res getString("");
+                rating_promedio = rs.getFloat("RatingPromedio");
+                anio = rs.getInt("Anio");
+                urlPoster = rs.getString("UrlPoster");
             }
             
             rs.close();
             stmt.close();
             c.close();
-            Metadatos ret = new Metadatos(titulo, sinopsis, elenco, director, duracion, idioma, subtitulos);
+            Metadatos ret = new Metadatos(titulo, sinopsis, elenco, director, duracion, idioma, subtitulos, rating_promedio, anio, urlPoster);
             return ret;
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -231,5 +243,12 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
         return null;
     }
     
+    @Override
+    public boolean existeMetadatos(Metadatos metadatos) {
+        return encontrarIdMetadatos(metadatos) > 0;
+    }
     
+    public void setImprimirDebug(boolean imprimirDebug) {
+        this.imprimirDebug = imprimirDebug;
+    }
 }
