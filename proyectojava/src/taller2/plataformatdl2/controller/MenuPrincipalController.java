@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
 
+import taller2.DB.CargaCSV;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
@@ -19,6 +20,7 @@ import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
+@SuppressWarnings("unused")
 public class MenuPrincipalController implements ActionListener {
     
     private MenuPrincipalVista vista;
@@ -48,7 +50,7 @@ public class MenuPrincipalController implements ActionListener {
             try {
                 Thread.sleep(800);  
                 try {
-                    cachePeliculas = Factory.getListaPeliculas();
+                    cachePeliculas = CargaCSV.getPeliculasParseadas();
                     if (cachePeliculas != null) {
                         peliculasVistas = cachePeliculas.stream()
                         .filter(p -> p!= null)

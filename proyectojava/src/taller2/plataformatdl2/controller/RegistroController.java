@@ -9,7 +9,7 @@ import java.util.ArrayList; // Para listas vacías
 
 public class RegistroController {
     private RegistroVista vista;
-
+    
     public RegistroController(RegistroVista vista) {
         this.vista = vista;
         
@@ -20,11 +20,11 @@ public class RegistroController {
                 registrarUsuario();
             }
         });
-
+        
         // Listener del botón Volver
         this.vista.addVolverListener(e -> vista.dispose());
     }
-
+    
     private void registrarUsuario() {
         String nombre = vista.getNombre();
         String apellido = vista.getApellido();
@@ -32,18 +32,18 @@ public class RegistroController {
         String email = vista.getEmail();
         String contrasena = vista.getContrasena();
         String contraRepetir = vista.getRepetirContrasena();
-
+        
         // Validaciones básicas (a lo bruto)
         if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || email.isEmpty() || contraRepetir.isEmpty()) {
             vista.mostrarError("¡Completá todos los campos, che!");
             return;
         }
-
+        
         if (!contrasena.equals(contraRepetir)) {
             vista.mostrarError("Las contraseñas no coinciden, máquina.");
             return;
         }
-
+        
         try {
             int dni2 = Integer.parseInt(dni); //Paso de string a integer
             
@@ -60,13 +60,17 @@ public class RegistroController {
                 "ListaVacia", 
                 "HistorialVacio"
             );
-
-            // Guardamos en BD
-            Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUser);
             
-            vista.mostrarMensaje("¡Usuario registrado exitosamente! Ahora logueate.");
-            vista.dispose(); // Cerramos la ventana de registro
-
+            if (Factory.getUsuariosFinalDAO().existeUsuario(nuevoUser) || Factory.getUsuariosFinalDAO().checkUsuarioViaDNI(dni2)){
+                vista.mostrarMensaje("ERROR: Usuario ya existe.");
+            }
+            else {
+                // Guardamos en BD
+                Factory.getUsuariosFinalDAO().insertarUsuarioFinal(nuevoUser);
+                vista.mostrarMensaje("¡Usuario registrado exitosamente! Ahora logueate.");
+                vista.dispose(); // Cerramos la ventana de registro
+            }
+            
         } catch (NumberFormatException ex) {
             vista.mostrarError("El DNI tiene que ser un número, no letras.");
         } catch (Exception ex) {

@@ -29,7 +29,7 @@ public class MenuPrincipalVista extends JFrame {
     @SuppressWarnings("unused")
     private final Color COLOR_HOVER_FILA = new Color(245, 245, 255); // Colorcito suave al pasar el mouse (opcional)
     private static final String PATH_LOGO = "proyectojava/img/Logotipo1.png";
-    private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga fondo transparente.gif";
+    private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga.gif";
 
     public MenuPrincipalVista() {
         setTitle("TDL2 - Menu Principal");

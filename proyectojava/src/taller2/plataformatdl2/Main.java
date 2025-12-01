@@ -43,8 +43,6 @@ public class Main {
             }
         }
         
-        if (!skipCSVUpdate) Factory.importarListaACSV();
-        
         SwingUtilities.invokeLater(() -> {
             try {
                 // Instanciamos la Vista

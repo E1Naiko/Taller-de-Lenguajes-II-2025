@@ -11,6 +11,7 @@ import taller2.plataformatdl2.view.MenuPrincipalVista;
 public class CargaController {
     private CargaVista vista;
     private String nombreUsuario; // Es el user/email que viene del Login
+
     public CargaController(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
         this.vista = new CargaVista();
@@ -21,7 +22,6 @@ public class CargaController {
         Thread worker = new Thread(() -> {
             try {
                 System.out.println("CARGA - Inicializando Factory...");
-                Factory.getPeliculasDAO(); // Inicializamos la Factory y sus DAOs
                 System.out.println("CARGA - Buscando datos del usuario: " + nombreUsuario);
                 // Simulamos un cachito extra para que se luzca el GIF del perrito
                 Thread.sleep(3500);
@@ -47,6 +47,9 @@ public class CargaController {
                     usuarioCompleto = new Usuario(nombreUsuario, "Temporal", 0, nombreUsuario + "@temp.com", "1234") {};
                 }
                 final Usuario userFinal = usuarioCompleto;
+
+
+                
                 // --- TRANSICIÓN AL MENÚ ---
                 SwingUtilities.invokeLater(() -> {
                     vista.dispose(); // Chau perrito   

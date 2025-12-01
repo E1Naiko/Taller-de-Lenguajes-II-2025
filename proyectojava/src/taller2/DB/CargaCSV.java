@@ -5,10 +5,12 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
+import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Calidades;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
+import taller2.plataformatdl2.Utilities.Lista_A_Bd;
 
 import java.io.File;
 import java.io.FileReader;
@@ -21,9 +23,19 @@ public class CargaCSV {
     private int total = 0;
     private int correctas = 0;
     private int errores = 0;
-    private List<Pelicula> peliculasParseadas = new ArrayList<Pelicula>();
+    private static List<Pelicula> peliculasParseadas;
     private String direccion = new File("proyectojava/src/taller2/DB/movies_database.csv").getAbsolutePath();
+    private boolean cargaTerminada = false;
+    private static Lista_A_Bd importador = new Lista_A_Bd();
     
+    static{
+        try {
+            peliculasParseadas = new ArrayList<Pelicula>();
+            
+        } catch (Exception e) {
+            System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
     
     public CargaCSV() throws Exception{
         // Vamos a usar la libreria OpenCSV
@@ -105,13 +117,14 @@ public class CargaCSV {
             System.out.println("CargaCSV - CSV a memoria con exito: \n - "
                 + peliculasParseadas.size() + " peliculas parseadas correctamente \n - " + errores + " errores");
             System.out.printf(" - Taza de error del %.4f %c \n", tazaError, '%'); // en este caso uso printf para hacer uso del redondeo de numeros de C
+            cargaTerminada = true;
         }
     }
     
     
     
-    public List<Pelicula> getPeliculasParseadas() {
-        return this.peliculasParseadas;
+    public static List<Pelicula> getPeliculasParseadas() {
+        return peliculasParseadas;
     }
     
 
@@ -166,5 +179,19 @@ public class CargaCSV {
             break;
         }
         return genero;
+    }
+
+    
+    public boolean isCargaTerminada() {
+        return cargaTerminada;
+    }
+
+    public boolean importarListaACSV(){
+        Factory.getPeliculasDAO().setImprimirDebug(false);
+        Factory.getMetadatosDAO().setImprimirDebug(false);
+        importador.pasarListaPeliculas_a_BD(peliculasParseadas);
+        Factory.getPeliculasDAO().setImprimirDebug(true);
+        Factory.getMetadatosDAO().setImprimirDebug(true);
+        return true;    
     }
 }
