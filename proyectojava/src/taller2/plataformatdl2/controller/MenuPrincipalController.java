@@ -11,10 +11,10 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
 
-import taller2.DB.CargaCSV;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
+import taller2.plataformatdl2.Utilities.CargaCSV;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
 import taller2.plataformatdl2.view.LoginVista;

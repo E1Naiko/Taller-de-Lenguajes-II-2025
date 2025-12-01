@@ -2,21 +2,23 @@ package taller2.plataformatdl2.controller;
 
 import java.util.List;
 import javax.swing.SwingUtilities;
+
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
+import taller2.plataformatdl2.Utilities.CargaCSV;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
 public class CargaController {
     private CargaVista vista;
     private String nombreUsuario; // Es el user/email que viene del Login
-
+    
     public CargaController(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
         this.vista = new CargaVista();
     }
-
+    
     public void iniciarCarga() {
         vista.setVisible(true);
         Thread worker = new Thread(() -> {
@@ -47,8 +49,11 @@ public class CargaController {
                     usuarioCompleto = new Usuario(nombreUsuario, "Temporal", 0, nombreUsuario + "@temp.com", "1234") {};
                 }
                 final Usuario userFinal = usuarioCompleto;
-
-
+                
+                
+                CargaCSV carga = new CargaCSV();
+                new Thread(carga).start();
+                
                 
                 // --- TRANSICIÓN AL MENÚ ---
                 SwingUtilities.invokeLater(() -> {

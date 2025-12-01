@@ -1,4 +1,4 @@
-package taller2.DB;
+package taller2.plataformatdl2.Utilities;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -10,7 +10,6 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.Calidades;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Genero;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Metadatos;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
-import taller2.plataformatdl2.Utilities.Lista_A_Bd;
 
 import java.io.File;
 import java.io.FileReader;
@@ -19,25 +18,36 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CargaCSV {
+public class CargaCSV implements Runnable{
     private int total = 0;
     private int correctas = 0;
     private int errores = 0;
-    private static List<Pelicula> peliculasParseadas;
+    private static List<Pelicula> peliculasParseadas = new ArrayList<Pelicula>();
     private String direccion = new File("proyectojava/src/taller2/DB/movies_database.csv").getAbsolutePath();
-    private boolean cargaTerminada = false;
-    private static Lista_A_Bd importador = new Lista_A_Bd();
     
-    static{
+    
+    public void run() {
         try {
-            peliculasParseadas = new ArrayList<Pelicula>();
+            cargarListaPeliculas();
             
-        } catch (Exception e) {
-            System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
+            Lista_A_Bd pasajeDeDatos = new Lista_A_Bd();
+
+            Factory.getPeliculasDAO().setImprimirDebug(false);
+            Factory.getMetadatosDAO().setImprimirDebug(false);
+            pasajeDeDatos.pasarListaPeliculas_a_BD(peliculasParseadas);
+            Factory.getPeliculasDAO().setImprimirDebug(true);
+            Factory.getMetadatosDAO().setImprimirDebug(true);
+
+            System.out.println("CargaCSV - Carga terminada");
+        }
+        catch (Exception e) {
+            System.err.println("Error procesando lista");
+            System.err.println(e);
         }
     }
     
-    public CargaCSV() throws Exception{
+    
+    private void cargarListaPeliculas() throws Exception{
         // Vamos a usar la libreria OpenCSV
         // Configuro para la lib para detectar separadores (,) y elementos compuestos o strings grandes (") para manejar campos con comas dentro de comillas
         CSVParser csvParser = new CSVParserBuilder()
@@ -115,9 +125,8 @@ public class CargaCSV {
             total = correctas + errores;
             float tazaError = ((float) errores / ((float) total ))*100;
             System.out.println("CargaCSV - CSV a memoria con exito: \n - "
-                + peliculasParseadas.size() + " peliculas parseadas correctamente \n - " + errores + " errores");
+            + peliculasParseadas.size() + " peliculas parseadas correctamente \n - " + errores + " errores");
             System.out.printf(" - Taza de error del %.4f %c \n", tazaError, '%'); // en este caso uso printf para hacer uso del redondeo de numeros de C
-            cargaTerminada = true;
         }
     }
     
@@ -127,8 +136,8 @@ public class CargaCSV {
         return peliculasParseadas;
     }
     
-
-
+    
+    
     private Genero tomarPrimerGenero(String entrada){
         Genero genero;
         String[] generosSeparados = entrada.split(",");
@@ -180,18 +189,5 @@ public class CargaCSV {
         }
         return genero;
     }
-
     
-    public boolean isCargaTerminada() {
-        return cargaTerminada;
-    }
-
-    public boolean importarListaACSV(){
-        Factory.getPeliculasDAO().setImprimirDebug(false);
-        Factory.getMetadatosDAO().setImprimirDebug(false);
-        importador.pasarListaPeliculas_a_BD(peliculasParseadas);
-        Factory.getPeliculasDAO().setImprimirDebug(true);
-        Factory.getMetadatosDAO().setImprimirDebug(true);
-        return true;    
-    }
 }
