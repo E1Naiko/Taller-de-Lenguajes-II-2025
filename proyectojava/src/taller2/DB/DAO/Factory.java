@@ -77,7 +77,7 @@ public class Factory {
         return metadatosDAO;
     }
     
-    public static List<Pelicula> getListaPeliculasCSV() {
+    public static List<Pelicula> getListaPeliculas() {
         return listaPeliculas;
     }
 
