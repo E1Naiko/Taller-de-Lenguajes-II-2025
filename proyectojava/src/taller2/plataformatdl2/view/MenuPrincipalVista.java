@@ -26,9 +26,8 @@ public class MenuPrincipalVista extends JFrame {
     private final Color COLOR_FONDO = Color.WHITE;
     private final Color COLOR_TEXTO = new Color(50, 50, 50);
     private final Color COLOR_AZUL_PRINCIPAL = new Color(0, 102, 204); 
-    private final Color COLOR_HOVER_FILA = new Color(245, 245, 255); // Colorcito suave al pasar el mouse (opcional)
     private static final String PATH_LOGO = "proyectojava/img/Logotipo1.png";
-    private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga.gif";
+    private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga fondo transparente.gif";
 
     public MenuPrincipalVista() {
         setTitle("TDL2 - Menu Principal");
@@ -41,7 +40,7 @@ public class MenuPrincipalVista extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
 
-        // --- HEADER (ARRIBA) - BLANCO ---
+        // --- HEADER (ARRIBA) ---
         JPanel panelHeader = new JPanel();
         panelHeader.setBackground(COLOR_FONDO);
         // Borde gris abajo para separar
@@ -192,7 +191,7 @@ public class MenuPrincipalVista extends JFrame {
         lblImg.setHorizontalAlignment(SwingConstants.CENTER);
         lblImg.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         // Acá iría la lógica para cargar el poster real si tuvieras la URL en Metadatos
-        lblImg.setText(p.getMetadatos().getUrlPoster());      
+        lblImg.setText("IMG");      
         gbc.gridx = 0; 
         gbc.weightx = 0.1;
         fila.add(lblImg, gbc);
@@ -204,7 +203,6 @@ public class MenuPrincipalVista extends JFrame {
         if (p.getMetadatos() != null) {
             titulo = (p.getMetadatos().getTitulo() != null) ? p.getMetadatos().getTitulo() : titulo;
             if(p.getGenero() != null) genero = p.getGenero().toString();
-            // Asumo que tenés sinopsis en metadatos, si no, dejalo así
             if(p.getMetadatos().getSinopsis() != null) resumen = p.getMetadatos().getSinopsis();
         }
         // 2. TÍTULO
@@ -218,7 +216,7 @@ public class MenuPrincipalVista extends JFrame {
         gbc.gridx = 2;
         gbc.weightx = 0.15;
         fila.add(lblGenero, gbc);
-        // 4. RESUMEN (Texto multilínea truncado)
+        // 4. RESUMEN (Texto multilínea)
         if (resumen.length() > 100) resumen = resumen.substring(0, 100) + "...";
         JTextArea txtResumen = new JTextArea(resumen);
         txtResumen.setWrapStyleWord(true);
@@ -243,7 +241,6 @@ public class MenuPrincipalVista extends JFrame {
         gbc.gridx = 4;
         gbc.weightx = 0.15;
         fila.add(panelAcciones, gbc);
-
         return fila;
     }
 

@@ -8,6 +8,9 @@ import java.util.List; // Necesario para ordenar
 import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
+
+import org.apache.commons.lang3.ObjectUtils.Null;
+
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
@@ -21,13 +24,12 @@ public class MenuPrincipalController implements ActionListener {
 
     private MenuPrincipalVista vista;
     private Usuario usuario;
-    private PeliculasDAO peliculasDAO;
-    private List<Pelicula> cachePeliculas;    
+    private List<Pelicula> cachePeliculas;  
+    private List<Pelicula> peliculasVistas;  
 
     public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista) { 
         this.usuario = usuario;
-        this.vista = vista;
-        this.peliculasDAO = Factory.getPeliculasDAO();     
+        this.vista = vista; 
         inicializar(); 
     }
 
@@ -47,11 +49,24 @@ public class MenuPrincipalController implements ActionListener {
                 Thread.sleep(800);  
                 try {
                     cachePeliculas = Factory.getListaPeliculas();
+                    if (cachePeliculas != null) {
+                        peliculasVistas = cachePeliculas.stream()
+                            .filter(p -> p!= null)
+                            .limit(10)
+                            .collect(Collectors.toList());
+                    } else {
+                        peliculasVistas = new ArrayList<>();
+                    }
                     SwingUtilities.invokeLater(() -> {
-                    vista.cargarPeliculas(cachePeliculas, this);
+                    vista.cargarPeliculas(peliculasVistas, this);
                     vista.setCargando(false);
+                    // Por si tira null tiramos un mensaje
+                    if (cachePeliculas == null) {
+                            System.err.println("Warning: Factory.getListaPeliculas() devolvió NULL.");
+                        }
                 });
                 } catch (Exception e) {
+                    System.err.println("Error procesando lista");
                     System.err.println(e);
                 }
                 
