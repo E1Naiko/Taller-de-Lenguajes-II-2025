@@ -1,7 +1,5 @@
 package taller2.DB.DAO;
 
-
-import java.time.LocalTime;
 import java.util.List;
 
 import taller2.DB.CargaCSV;

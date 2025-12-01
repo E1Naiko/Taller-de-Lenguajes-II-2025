@@ -45,22 +45,16 @@ public class MenuPrincipalController implements ActionListener {
         Thread worker = new Thread(() -> { // Para que Cargue las peliculas en segundo plano
             try {
                 Thread.sleep(800);  
-                List<Pelicula> listaLimpia = new ArrayList<>(); 
-                if (peliculasDAO != null) {
-                    List<Pelicula> listaCruda = peliculasDAO.obtenerPeliculas();
-                    if (listaCruda != null) {
-                        for (Pelicula p : listaCruda) {
-                            if (p != null) {
-                                listaLimpia.add(p);
-                            }
-                        }
-                    }
-                }
-                cachePeliculas = listaLimpia;
-                SwingUtilities.invokeLater(() -> {
+                try {
+                    cachePeliculas = Factory.getListaPeliculas();
+                    SwingUtilities.invokeLater(() -> {
                     vista.cargarPeliculas(cachePeliculas, this);
                     vista.setCargando(false);
                 });
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+                
             } catch (Exception e) {
                 e.printStackTrace();
                 SwingUtilities.invokeLater(() -> vista.setCargando(false));
