@@ -19,6 +19,7 @@ public class Main {
     * @param args
     */
     public static void main(String[] args) {
+        boolean skipCSVUpdate = false;
         try {
             new Factory(); 
             System.out.println("Base de datos conectada joya.");
@@ -28,11 +29,21 @@ public class Main {
             return; 
         }
         
-        if (args != null && args.length > 1 && "-AdminMode".equals(args[1])) {
-            MenuResenia menu = new MenuResenia();
-            
-            menu.usarMenuDeConsola();
+        if (args != null) {
+            for (String arg : args) {
+                
+                if ("-AdminMode".equals(arg)) {
+                    MenuResenia menu = new MenuResenia();
+                    menu.usarMenuDeConsola();
+                }
+                
+                if ("-SkipCSVUpdate".equals(arg)) {
+                    skipCSVUpdate = true;
+                }
+            }
         }
+        
+        if (!skipCSVUpdate) Factory.importarListaACSV();
         
         SwingUtilities.invokeLater(() -> {
             try {

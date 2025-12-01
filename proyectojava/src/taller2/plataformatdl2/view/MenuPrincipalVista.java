@@ -28,7 +28,7 @@ public class MenuPrincipalVista extends JFrame {
     private final Color COLOR_AZUL_PRINCIPAL = new Color(0, 102, 204); 
     private final Color COLOR_HOVER_FILA = new Color(245, 245, 255); // Colorcito suave al pasar el mouse (opcional)
     private static final String PATH_LOGO = "proyectojava/img/Logotipo1.png";
-    private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga fondo transparente.gif";
+    private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga.gif";
 
     public MenuPrincipalVista() {
         setTitle("TDL2 - Menu Principal");
@@ -192,7 +192,7 @@ public class MenuPrincipalVista extends JFrame {
         lblImg.setHorizontalAlignment(SwingConstants.CENTER);
         lblImg.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         // Acá iría la lógica para cargar el poster real si tuvieras la URL en Metadatos
-        lblImg.setText("IMG");      
+        lblImg.setText(p.getMetadatos().getUrlPoster());      
         gbc.gridx = 0; 
         gbc.weightx = 0.1;
         fila.add(lblImg, gbc);

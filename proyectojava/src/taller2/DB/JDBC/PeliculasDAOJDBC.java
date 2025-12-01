@@ -173,7 +173,7 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             ";" );
             
             if (rs.next()){
-                calidad = Calidades.valueOf(rs.getString("Calidad"));
+                calidad = Calidades.fromCalidad(rs.getString("Calidad"));
                 audio = rs.getString("Audio");
                 dirArchivo = rs.getString("Direccion_Archivo");
                 idMetadatos = rs.getInt("IdMetadatos");

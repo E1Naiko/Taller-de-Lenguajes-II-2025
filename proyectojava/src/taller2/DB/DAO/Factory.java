@@ -43,11 +43,6 @@ public class Factory {
             accesoCSV = new CargaCSV();
             listaPeliculas = accesoCSV.getPeliculasParseadas();
             System.out.println("Factory - Pasando de memoria a db");
-            peliculasDAO.setImprimirDebug(false);
-            metadatosDAO.setImprimirDebug(false);
-            importador.pasarListaPeliculas_a_BD(listaPeliculas);
-            peliculasDAO.setImprimirDebug(true);
-            metadatosDAO.setImprimirDebug(true);
             
         } catch (Exception e) {
             System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
@@ -84,5 +79,14 @@ public class Factory {
     
     public static List<Pelicula> getListaPeliculasCSV() {
         return listaPeliculas;
+    }
+
+    public static boolean importarListaACSV(){
+        peliculasDAO.setImprimirDebug(false);
+        metadatosDAO.setImprimirDebug(false);
+        importador.pasarListaPeliculas_a_BD(listaPeliculas);
+        peliculasDAO.setImprimirDebug(true);
+        metadatosDAO.setImprimirDebug(true);
+        return true;    
     }
 }

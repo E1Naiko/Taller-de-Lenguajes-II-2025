@@ -17,6 +17,15 @@ public enum Calidades {
     public String getCalidad() {
         return calidad;
     }
+
+    public static Calidades fromCalidad(String calidad) {
+        for (Calidades c : Calidades.values()) {
+            if (c.calidad.equals(calidad)) {
+                return c;
+            }
+        }
+        return DEF;
+    }
     
     @Override
     public String toString() {
