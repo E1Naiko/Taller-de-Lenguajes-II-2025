@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
 
+import taller2.DB.ConsultaPeliculasOMDb;
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
@@ -19,6 +20,7 @@ import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
+import taller2.plataformatdl2.view.DetallesPeliculaVista;
 
 public class MenuPrincipalController implements ActionListener {
 
@@ -68,8 +70,7 @@ public class MenuPrincipalController implements ActionListener {
                 } catch (Exception e) {
                     System.err.println("Error procesando lista");
                     System.err.println(e);
-                }
-                
+                }                
             } catch (Exception e) {
                 e.printStackTrace();
                 SwingUtilities.invokeLater(() -> vista.setCargando(false));
@@ -78,32 +79,73 @@ public class MenuPrincipalController implements ActionListener {
         worker.start();
     }
 
+    // Metodo para randomizar las peliculas la hacer click en continuar
+    private void randomizarCatalogo() {
+        vista.setCargando(true);
+        Thread worker = new Thread(() -> {
+            try {
+                List<Pelicula> listaEntera = Factory.getListaPeliculas(); // Agarramos todas
+                if (listaEntera != null) {
+                    List<Pelicula> copia = new ArrayList<>(listaEntera);
+                    Collections.shuffle(copia); // Se mezcla                 
+                    // Agarramos 10 randoms
+                    cachePeliculas = copia.stream().filter(p->p!=null).limit(10).collect(Collectors.toList());                 
+                    SwingUtilities.invokeLater(() -> {
+                        vista.cargarPeliculas(cachePeliculas, this); // Actualizamos la tabla
+                        vista.setCargando(false);
+                        vista.mostrarMensaje("¡Catálogo randomizado!");
+                    });
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        });
+        worker.start();
+    }
+
+    // Metodo de la busqueda de peliculas
     private void filtrarCatalogo() {
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
-        if (cachePeliculas == null) return;
-        List<Pelicula> filtradas;
-        if (termino.isEmpty()) {
-            filtradas = new ArrayList<>(cachePeliculas); // Copia para no romper el original
-        } else {
-            filtradas = cachePeliculas.stream()
-                .filter(p -> {
-                    if (p == null) return false;
-                    boolean coincideTitulo = false;
-                    boolean coincideGenero = false;     
-                    if (p.getMetadatos() != null) {
-                        if (p.getMetadatos().getTitulo() != null) {
-                            coincideTitulo = p.getMetadatos().getTitulo().toLowerCase().contains(termino);
-                        }
-                        if (p.getGenero() != null) {
-                            coincideGenero = p.getGenero().toString().toLowerCase().contains(termino);
-                        }
+        if (termino.isEmpty()){
+            vista.mostrarMensaje("Escribir algo para buscar...");
+        }
+        vista.setCargando(true); // Aca ponemos el perrito mientra busca la pelicula
+        Thread apiWorker = new Thread(() -> {
+            try {
+                // Buscamos en la API
+                Pelicula peliApi = ConsultaPeliculasOMDb.buscarPeliculaApi(termino); //TODO - Implementar metodo para que me devuelva el objeto pelicula en la API
+                
+                SwingUtilities.invokeLater(() -> {
+                    vista.setCargando(false); // Apagamos el perrito
+                    
+                    if (peliApi != null) {
+                        // ABRIMOS LA VENTANA NUEVA (JDialog)
+                        mostrarVentanaDetalle(peliApi);
+                    } else {
+                        vista.mostrarMensaje("No encontré esa peli ni abajo de las piedras.");
                     }
-                    return coincideTitulo || coincideGenero;
-                })
-                .collect(Collectors.toList());
-        }     
-        // Al filtrar también recargamos la tabla
-        vista.cargarPeliculas(filtradas, this);
+                });
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                SwingUtilities.invokeLater(() -> {
+                    vista.setCargando(false);
+                    vista.mostrarMensaje("Error de conexión con la API.");
+                });
+            }
+        });
+        apiWorker.start();
+    }
+
+    // --- Para mostrar pantalla del resultado de la busqueda ---
+    private void mostrarVentanaDetalle(Pelicula p) {
+        // Creamos el dialog pasándole la vista principal como padre
+        DetallesPeliculaVista dialog = new DetallesPeliculaVista(vista, p);
+        // Le damos acción al botón CONTINUAR
+        dialog.addContinuarListener(e -> {
+            dialog.dispose(); // Cerramos el popup
+            randomizarCatalogo(); // MEZCLAMOS LA TABLA al hacer click en continuar
+        });
+        
+        dialog.setVisible(true); // Mostramos el popup
     }
     
     // --- LÓGICA DE ORDENAMIENTO ---
