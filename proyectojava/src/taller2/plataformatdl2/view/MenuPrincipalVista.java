@@ -31,7 +31,7 @@ public class MenuPrincipalVista extends JFrame {
     private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga fondo transparente.gif";
 
     public MenuPrincipalVista() {
-        setTitle("TDL2 Movies - Gestión");
+        setTitle("TDL2 - Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1366, 768); // Pantalla ancha
         setLocationRelativeTo(null);
@@ -54,7 +54,7 @@ public class MenuPrincipalVista extends JFrame {
         JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         panelLogo.setBackground(COLOR_FONDO);      
         JLabel lblLogo = new JLabel();
-        cargarImagenEnLabel(lblLogo, PATH_LOGO, 120, 50);
+        cargarImagenEnLabel(lblLogo, PATH_LOGO, 170, 50);
         panelLogo.add(lblLogo);       
         JLabel lblBienvenida = new JLabel("Bienvenido a la plataforma");
         lblBienvenida.setFont(new Font("Segoe UI", Font.BOLD, 18));
