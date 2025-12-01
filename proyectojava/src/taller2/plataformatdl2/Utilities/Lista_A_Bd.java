@@ -1,9 +1,8 @@
 package taller2.plataformatdl2.Utilities;
 
-import taller2.DB.DAO.Factory;
 import java.time.LocalTime;
 import java.util.List;
-
+import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 
 public class Lista_A_Bd extends Thread{
@@ -26,7 +25,7 @@ public class Lista_A_Bd extends Thread{
                             Factory.getPeliculasDAO().insertarPeliculas(peli);
                         }
                         if (DEBUG_LIMITE!= 0 && i>=DEBUG_LIMITE) break;
-                        yield();
+                        Thread.yield();
                     } catch(InterruptedException e) {
                         System.out.println(getName() + "join interrupido");                        
                     }

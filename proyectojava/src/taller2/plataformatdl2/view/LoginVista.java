@@ -1,8 +1,8 @@
 package taller2.plataformatdl2.view;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class LoginVista extends JFrame {
     // Variables de la vista

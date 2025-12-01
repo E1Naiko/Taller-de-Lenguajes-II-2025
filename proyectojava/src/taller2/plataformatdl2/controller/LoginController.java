@@ -3,9 +3,11 @@ package taller2.plataformatdl2.controller;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.RegistroVista;
+import taller2.plataformatdl2.controller.CargaController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 public class LoginController {
     private LoginVista vista;
@@ -13,7 +15,7 @@ public class LoginController {
     public LoginController(LoginVista vista) {
         this.vista = vista;
         
-        // Le decimos al botón qué hacer
+        // Le decimos al botón de login qué hacer
         this.vista.addLoginListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -27,6 +29,7 @@ public class LoginController {
             abrirVentanaRegistro();
         }
     });
+        this.vista.setVisible(true);
     }
 
     private void loguearUsuario() {
@@ -38,10 +41,25 @@ public class LoginController {
             return;
         }
 
-        // Usamos el método checkUsuarioViaLogin del factory que tenemos
-        boolean existe = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(user, pass);
+        boolean existe = false;
+        try {
+            if (Factory.getUsuariosFinalDAO() != null) {
+                existe = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(user, pass);
+            } else {
+                // Mensajito por si la DB no levantó 
+                System.err.println("WARN: DAO nulo, simulando login para pruebas...");
+                existe = true; 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            vista.mostrarError("Error conectando a la base: " + e.getMessage());
+            return;
+        }
 
-        if (existe) {
+        // Usamos el método checkUsuarioViaLogin del factory que tenemos
+        boolean existeUsuario = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(user, pass);
+
+        if (existeUsuario) {
             System.out.println("Login exitoso.");
             vista.dispose(); // Cerramos el login
             CargaController carga = new CargaController(user); // Le pasamos el usuario
