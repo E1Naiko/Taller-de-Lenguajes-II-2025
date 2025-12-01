@@ -10,8 +10,8 @@ public interface UsuariosFinalDAO {
     public void eliminarUsuarioFinal(int idUsuario);
     public int devolverIdUsuarioFinal(UsuarioFinal usuario);
     public boolean existeUsuario(UsuarioFinal usuario);
-    public boolean checkUsuarioViaLogin(String nombreUsuario, String contrasenia);
-    public int encontrarIdUsuarioViaLogin(String nombreUsuario, String contrasenia);
+    public boolean checkUsuarioViaLogin(String mail, String contrasenia);
+    public int encontrarIdUsuarioViaLogin(String mail, String contrasenia);
     public UsuarioFinal devolverUsuarioFinalViaId(int id);
     public int encontrarIdUsuarioViaDNI(int dni);
     public boolean checkUsuarioViaDNI(int dni);

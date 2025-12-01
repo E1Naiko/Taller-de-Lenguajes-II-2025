@@ -206,12 +206,12 @@ public class UsuariosFinalDAOJDBC implements UsuariosFinalDAO {
     
     
     /** 
-    * @param nombreUsuario
+    * @param mail
     * @param contrasenia
     * @return boolean
     */
-    public boolean checkUsuarioViaLogin(String nombreUsuario, String contrasenia){
-        return encontrarIdUsuarioViaLogin(nombreUsuario, contrasenia)!=0 ? true : false;
+    public boolean checkUsuarioViaLogin(String mail, String contrasenia){
+        return encontrarIdUsuarioViaLogin(mail, contrasenia)!=0 ? true : false;
     }
     
     

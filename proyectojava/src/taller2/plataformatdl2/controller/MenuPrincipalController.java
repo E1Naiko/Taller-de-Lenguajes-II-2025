@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.ObjectUtils.Null;
 
 import taller2.DB.DAO.Factory;
-import taller2.DB.DAO.PeliculasDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
@@ -21,18 +20,19 @@ import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
 public class MenuPrincipalController implements ActionListener {
-
+    
     private MenuPrincipalVista vista;
     private Usuario usuario;
     private List<Pelicula> cachePeliculas;  
     private List<Pelicula> peliculasVistas;  
-
+    
+    
     public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista) { 
         this.usuario = usuario;
-        this.vista = vista; 
+        this.vista = vista;
         inicializar(); 
     }
-
+    
     private void inicializar() {
         if (usuario != null) { // Para mostrar el nombre en la vista
             vista.setNombreUsuario(usuario.getNombre());
@@ -41,7 +41,7 @@ public class MenuPrincipalController implements ActionListener {
         actualizarCatalogo();
         vista.setVisible(true);
     }
-
+    
     private void actualizarCatalogo() {
         vista.setCargando(true);
         Thread worker = new Thread(() -> { // Para que Cargue las peliculas en segundo plano
@@ -51,20 +51,20 @@ public class MenuPrincipalController implements ActionListener {
                     cachePeliculas = Factory.getListaPeliculas();
                     if (cachePeliculas != null) {
                         peliculasVistas = cachePeliculas.stream()
-                            .filter(p -> p!= null)
-                            .limit(10)
-                            .collect(Collectors.toList());
+                        .filter(p -> p!= null)
+                        .limit(10)
+                        .collect(Collectors.toList());
                     } else {
                         peliculasVistas = new ArrayList<>();
                     }
                     SwingUtilities.invokeLater(() -> {
-                    vista.cargarPeliculas(peliculasVistas, this);
-                    vista.setCargando(false);
-                    // Por si tira null tiramos un mensaje
-                    if (cachePeliculas == null) {
+                        vista.cargarPeliculas(peliculasVistas, this);
+                        vista.setCargando(false);
+                        // Por si tira null tiramos un mensaje
+                        if (cachePeliculas == null) {
                             System.err.println("Warning: Factory.getListaPeliculas() devolvió NULL.");
                         }
-                });
+                    });
                 } catch (Exception e) {
                     System.err.println("Error procesando lista");
                     System.err.println(e);
@@ -77,7 +77,7 @@ public class MenuPrincipalController implements ActionListener {
         });      
         worker.start();
     }
-
+    
     private void filtrarCatalogo() {
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
         if (cachePeliculas == null) return;
@@ -86,21 +86,21 @@ public class MenuPrincipalController implements ActionListener {
             filtradas = new ArrayList<>(cachePeliculas); // Copia para no romper el original
         } else {
             filtradas = cachePeliculas.stream()
-                .filter(p -> {
-                    if (p == null) return false;
-                    boolean coincideTitulo = false;
-                    boolean coincideGenero = false;     
-                    if (p.getMetadatos() != null) {
-                        if (p.getMetadatos().getTitulo() != null) {
-                            coincideTitulo = p.getMetadatos().getTitulo().toLowerCase().contains(termino);
-                        }
-                        if (p.getGenero() != null) {
-                            coincideGenero = p.getGenero().toString().toLowerCase().contains(termino);
-                        }
+            .filter(p -> {
+                if (p == null) return false;
+                boolean coincideTitulo = false;
+                boolean coincideGenero = false;     
+                if (p.getMetadatos() != null) {
+                    if (p.getMetadatos().getTitulo() != null) {
+                        coincideTitulo = p.getMetadatos().getTitulo().toLowerCase().contains(termino);
                     }
-                    return coincideTitulo || coincideGenero;
-                })
-                .collect(Collectors.toList());
+                    if (p.getGenero() != null) {
+                        coincideGenero = p.getGenero().toString().toLowerCase().contains(termino);
+                    }
+                }
+                return coincideTitulo || coincideGenero;
+            })
+            .collect(Collectors.toList());
         }     
         // Al filtrar también recargamos la tabla
         vista.cargarPeliculas(filtradas, this);
@@ -122,7 +122,7 @@ public class MenuPrincipalController implements ActionListener {
         vista.cargarPeliculas(cachePeliculas, this);
         vista.mostrarMensaje("Ordenado por Género.");
     }
-
+    
     // --- ACCIONES DE FILA ---
     private void calificarPelicula(Pelicula p) {
         if (p == null) return;
@@ -130,38 +130,38 @@ public class MenuPrincipalController implements ActionListener {
         // Por ahora mantenemos el mensaje de prueba ya que todavia no implementamos eso de calificar
         vista.mostrarMensaje("Abrir ventana de CALIFICAR para: " + titulo);
     }
-
+    
     private void cerrarSesion() {
         vista.dispose();
         LoginVista loginVista = new LoginVista();
         new LoginController(loginVista);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) { // Manejo de eventos
         String comando = e.getActionCommand(); 
         switch (comando) {
             case "LOGOUT":
-                cerrarSesion();
-                break;
+            cerrarSesion();
+            break;
             case "BUSCAR":
-                filtrarCatalogo();
-                break;
+            filtrarCatalogo();
+            break;
             case "ORDENAR_TITULO":
-                ordenarPorTitulo();
-                break;
+            ordenarPorTitulo();
+            break;
             case "ORDENAR_GENERO":
-                ordenarPorGenero();
-                break;
+            ordenarPorGenero();
+            break;
             case "CALIFICAR":
-                if (e.getSource() instanceof JButton) {
-                    JButton btn = (JButton) e.getSource();
-                    Object obj = btn.getClientProperty("PELICULA_DATA");
-                    if (obj instanceof Pelicula) {
-                        calificarPelicula((Pelicula) obj);
-                    }
+            if (e.getSource() instanceof JButton) {
+                JButton btn = (JButton) e.getSource();
+                Object obj = btn.getClientProperty("PELICULA_DATA");
+                if (obj instanceof Pelicula) {
+                    calificarPelicula((Pelicula) obj);
                 }
-                break;
+            }
+            break;
         }
     }
 }

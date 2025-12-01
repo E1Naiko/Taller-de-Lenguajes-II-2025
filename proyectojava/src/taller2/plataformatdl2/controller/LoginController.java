@@ -3,11 +3,9 @@ package taller2.plataformatdl2.controller;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.RegistroVista;
-import taller2.plataformatdl2.controller.CargaController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
 
 public class LoginController {
     private LoginVista vista;
@@ -41,9 +39,11 @@ public class LoginController {
             return;
         }
 
+        @SuppressWarnings("unused")
         boolean existe = false;
         try {
             if (Factory.getUsuariosFinalDAO() != null) {
+                System.out.println(user);
                 existe = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(user, pass);
             } else {
                 // Mensajito por si la DB no levantó 

@@ -160,6 +160,7 @@ public class LoginVista extends JFrame {
 
     // --- Getters y Listeners ---
     public String getUsuario() { 
+        System.out.println(campoUsuario.getText());
         return campoUsuario.getText(); 
     }
 

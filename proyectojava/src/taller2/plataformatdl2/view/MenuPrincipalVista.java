@@ -26,6 +26,8 @@ public class MenuPrincipalVista extends JFrame {
     private final Color COLOR_FONDO = Color.WHITE;
     private final Color COLOR_TEXTO = new Color(50, 50, 50);
     private final Color COLOR_AZUL_PRINCIPAL = new Color(0, 102, 204); 
+    @SuppressWarnings("unused")
+    private final Color COLOR_HOVER_FILA = new Color(245, 245, 255); // Colorcito suave al pasar el mouse (opcional)
     private static final String PATH_LOGO = "proyectojava/img/Logotipo1.png";
     private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga fondo transparente.gif";
 
