@@ -3,17 +3,26 @@ package taller2.plataformatdl2.Utilities;
 import java.time.LocalTime;
 
 /**
- * Clase para convertir entre formato de tiempo (HH:mm:ss o mm:ss) y segundos.
- * Proporciona conversiones bidireccionales y validación de formatos.
- * 
- * @author Nicolas Peñalba
- * @version 1.1
- */
+* Clase para convertir entre formato de tiempo (HH:mm:ss o mm:ss) y segundos.
+* Proporciona conversiones bidireccionales y validación de formatos.
+* 
+* @author Nicolas Peñalba
+* @version 1.1
+*/
 public class TimeStringYSegundos {
     private String formatoString;    // Formato: "HH:mm:ss" o "mm:ss"
     private int formatoSegundos;     // Formato: segundos totales
     
     public TimeStringYSegundos(String entrada) {
+        if (entrada.endsWith(" min")) {
+            String numero = entrada.replace(" min", "").trim();
+            int minutos = Integer.parseInt(numero);
+            
+            this.formatoSegundos = minutos * 60;
+            this.formatoString = convertirSegundosAString(this.formatoSegundos); 
+            return;
+        }
+        
         if (validarFormatoString(entrada)) {
             this.formatoString = entrada;
             this.formatoSegundos = convertirStringASegundos(entrada);
@@ -23,6 +32,7 @@ public class TimeStringYSegundos {
             this.formatoSegundos = 0;
         }
     }
+    
     
     public TimeStringYSegundos(int entrada) {
         if (entrada >= 0) {
@@ -34,8 +44,8 @@ public class TimeStringYSegundos {
             this.formatoString = "00:00:00";
         }
     }
-
-     public TimeStringYSegundos(LocalTime entrada) {
+    
+    public TimeStringYSegundos(LocalTime entrada) {
         if (entrada != null) {
             this.formatoString = entrada.toString();
             this.formatoSegundos = convertirStringASegundos(this.formatoString);
@@ -47,58 +57,70 @@ public class TimeStringYSegundos {
     }
     
     /** 
-     * @param entrada
-     * @return boolean
-     */
-    private boolean validarFormatoString(String entrada) {
+    * @param entrada
+    * @return boolean
+    */private boolean validarFormatoString(String entrada) {
         if (entrada == null) {
             return false;
         }
         
+        // Permite formato "178 min"
+        if (entrada.endsWith(" min")) {
+            String numero = entrada.replace(" min", "").trim();
+            try {
+                int minutos = Integer.parseInt(numero);
+                return minutos >= 0;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        
         int longitud = entrada.length();
-        // Permite "HH:mm:ss" (8 caracteres) o "mm:ss" (5 caracteres)
-        if ((longitud != 5 && longitud != 8)) {
+        if (longitud != 5 && longitud != 8) {
             return false;
         }
         
         try {
             if (longitud == 8) {
-                // Validar estructura HH:mm:ss
                 if (entrada.charAt(2) != ':' || entrada.charAt(5) != ':') {
                     return false;
                 }
                 int horas = Integer.parseInt(entrada.substring(0, 2));
                 int minutos = Integer.parseInt(entrada.substring(3, 5));
                 int segundos = Integer.parseInt(entrada.substring(6, 8));
+                return horas >= 0 && minutos >= 0 && minutos < 60 && segundos >= 0 && segundos < 60;
                 
-                // Validar rangos
-                if (horas >= 0 && minutos >= 0 && minutos < 60 && segundos >= 0 && segundos < 60) {
-                    return true;
-                }
-            } else { // longitud == 5
-                // Validar estructura mm:ss
+            } else { // mm:ss
                 if (entrada.charAt(2) != ':') {
                     return false;
                 }
                 int minutos = Integer.parseInt(entrada.substring(0, 2));
                 int segundos = Integer.parseInt(entrada.substring(3, 5));
-                
-                if (minutos >= 0 && minutos < 60 && segundos >= 0 && segundos < 60) {
-                    return true;
-                }
+                return minutos >= 0 && minutos < 60 && segundos >= 0 && segundos < 60;
             }
-        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             return false;
         }
-        
-        return false;
     }
     
+    
     /** 
-     * @param entrada
-     * @return int
-     */
-    private int convertirStringASegundos(String entrada) {
+    * @param entrada
+    * @return int
+    */private int convertirStringASegundos(String entrada) {
+        
+        // Nuevo: "178 min"
+        if (entrada.endsWith(" min")) {
+            String numero = entrada.replace(" min", "").trim();
+            try {
+                int minutos = Integer.parseInt(numero);
+                return minutos * 60;
+            } catch (Exception e) {
+                System.err.println("Error - TimeStringYSegundos - convertirStringASegundos - Formato 'min' inválido");
+                return 0;
+            }
+        }
+        
         try {
             int longitud = entrada.length();
             int horas, minutos, segundos;
@@ -107,8 +129,8 @@ public class TimeStringYSegundos {
                 horas = Integer.parseInt(entrada.substring(0, 2));
                 minutos = Integer.parseInt(entrada.substring(3, 5));
                 segundos = Integer.parseInt(entrada.substring(6, 8));
-            } else { // longitud == 5
-                horas = 0; // Asumimos 0 horas
+            } else {
+                horas = 0;
                 minutos = Integer.parseInt(entrada.substring(0, 2));
                 segundos = Integer.parseInt(entrada.substring(3, 5));
             }
@@ -120,10 +142,11 @@ public class TimeStringYSegundos {
         }
     }
     
+    
     /** 
-     * @param entrada
-     * @return String
-     */
+    * @param entrada
+    * @return String
+    */
     private String convertirSegundosAString(int entrada) {
         int horas = entrada / 3600;
         int residuo = entrada % 3600;
@@ -134,29 +157,29 @@ public class TimeStringYSegundos {
     }
     
     /** 
-     * @return String
-     */
+    * @return String
+    */
     public String getFormatoString() {
         return formatoString;
     }
     
     /** 
-     * @return int
-     */
+    * @return int
+    */
     public int getFormatoSegundos() {
         return formatoSegundos;
     }
-
+    
     /** 
-     * @return LocalTime
-     */
+    * @return LocalTime
+    */
     public LocalTime getFormatoTime() {
         return LocalTime.parse(this.formatoString);
     }
     
     /** 
-     * @param entrada
-     */
+    * @param entrada
+    */
     public void setFormatoString(String entrada) {
         if (validarFormatoString(entrada)) {
             this.formatoString = entrada;
@@ -167,8 +190,8 @@ public class TimeStringYSegundos {
     }
     
     /** 
-     * @param entrada
-     */
+    * @param entrada
+    */
     public void setFormatoSegundos(int entrada) {
         if (entrada >= 0) {
             this.formatoSegundos = entrada;
