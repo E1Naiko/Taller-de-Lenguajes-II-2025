@@ -2,8 +2,13 @@ package taller2.plataformatdl2.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -192,8 +197,14 @@ public class MenuPrincipalVista extends JFrame {
         lblImg.setPreferredSize(new Dimension(60, 90));
         lblImg.setHorizontalAlignment(SwingConstants.CENTER);
         lblImg.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        // Acá iría la lógica para cargar el poster real si tuvieras la URL en Metadatos
-        lblImg.setText("IMG");      
+        lblImg.setText("...");
+        // aca trae el URL de la imagen de los poster desde la APi
+        String urlImagen = p.getDireccionArchivo();
+        if (urlImagen != null && urlImagen.startsWith("http")) {
+            cargarPosterDesdeUrl(lblImg, urlImagen);
+        } else {
+            lblImg.setText ("Sin imagen");
+        }      
         gbc.gridx = 0; 
         gbc.weightx = 0.1;
         fila.add(lblImg, gbc);
@@ -244,6 +255,32 @@ public class MenuPrincipalVista extends JFrame {
         gbc.weightx = 0.15;
         fila.add(panelAcciones, gbc);
         return fila;
+    }
+
+    // --- MÉTODO NUEVO PARA CARGAR POSTERS SIN TRABAR TODO ---
+    private void cargarPosterDesdeUrl(JLabel label, String urlString) {
+        // Lanzamos un mini hilo solo para esta imagen
+        new Thread(() -> {
+            try {
+                URL url = new URI(urlString).toURL();
+                BufferedImage image = ImageIO.read(url);
+                
+                if (image != null) {
+                    // Redimensionamos al tamaño del label (65x95)
+                    Image scaled = image.getScaledInstance(65, 95, Image.SCALE_SMOOTH);
+                    ImageIcon icon = new ImageIcon(scaled);
+                    
+                    // Actualizamos la UI en el hilo correcto
+                    SwingUtilities.invokeLater(() -> {
+                        label.setText("");
+                        label.setIcon(icon);
+                    });
+                }
+            } catch (Exception e) {
+                // Si falla (ej: sin internet o url rota), dejamos texto
+                SwingUtilities.invokeLater(() -> label.setText("Error"));
+            }
+        }).start();
     }
 
     // --- UTILS LAYOUT ---
