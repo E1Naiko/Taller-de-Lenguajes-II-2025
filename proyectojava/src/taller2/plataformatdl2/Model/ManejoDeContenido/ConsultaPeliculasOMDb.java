@@ -50,9 +50,9 @@ public class ConsultaPeliculasOMDb {
                         elenco, // String[] elenco
                         json.getString("Director"), // String director
                         duracion, // LocalTime duracion
-                        json.getString("Languaje"), // String idioma
+                        json.getString("Language"), // String idioma
                         subtitulos, // String[] subtitulos
-                        obtenerPromedio(json.getString("Ratings")), // float rating_promedio
+                        obtenerPromedio(json.getJSONArray("Ratings")), // float rating_promedio
                         // Assumes the year is the first 4 characters, e.g., "2021-12-15"
                         Integer.parseInt(json.getString("Year")), // int anio
                         json.getString("Poster") // String urlPoster
@@ -128,7 +128,7 @@ public class ConsultaPeliculasOMDb {
             return genero;
         }
         
-        private float obtenerPromedio(String ratings){
+        private float obtenerPromedio(String[] partes){
             float suma = 0;
             int cantidad = 0;
             
@@ -151,7 +151,6 @@ public class ConsultaPeliculasOMDb {
             */
             
             // Cortamos por la palabra "Value"
-            String[] partes = ratings.split("\"Value\"");
             
             for (int i = 1; i < partes.length; i++) {
                 String fragmento = partes[i];
