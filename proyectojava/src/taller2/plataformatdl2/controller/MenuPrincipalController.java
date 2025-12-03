@@ -11,8 +11,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
 
-import taller2.DB.ConsultaPeliculasOMDb;
 import taller2.DB.DAO.Factory;
+import taller2.plataformatdl2.Model.ManejoDeContenido.ConsultaPeliculasOMDb;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Utilities.ImportarCSV;
@@ -113,7 +113,8 @@ public class MenuPrincipalController implements ActionListener {
         Thread apiWorker = new Thread(() -> {
             try {
                 // Buscamos en la API
-                Pelicula peliApi = ConsultaPeliculasOMDb.buscarPeliculaApi(termino); //TODO - Implementar metodo para que me devuelva el objeto pelicula en la API
+                ConsultaPeliculasOMDb coneccionApi = new ConsultaPeliculasOMDb();
+                Pelicula peliApi = coneccionApi.buscarPeliculaApi(termino);
                 
                 SwingUtilities.invokeLater(() -> {
                     vista.setCargando(false); // Apagamos el perrito

@@ -1,6 +1,5 @@
 package taller2.DB.DAO;
 
-import taller2.DB.ConsultaPeliculasOMDb;
 import taller2.DB.JDBC.MetadatosDAOJDBC;
 import taller2.DB.JDBC.PeliculasDAOJDBC;
 import taller2.DB.JDBC.ReseniasDAOJDBC;
@@ -11,8 +10,6 @@ public class Factory {
     private static ReseniasDAO reseniasDAO = null;
     private static UsuariosFinalDAO usuariosFinalDAO = null;
     private static MetadatosDAO metadatosDAO = null;
-    @SuppressWarnings("unused")
-    private static ConsultaPeliculasOMDb consultaOmdb = null;
     
     static {
         try {
@@ -24,10 +21,6 @@ public class Factory {
             usuariosFinalDAO.crearTablaUsuarioFinal();
             metadatosDAO = new MetadatosDAOJDBC();
             metadatosDAO.crearTablaMetadatos();
-            consultaOmdb = new ConsultaPeliculasOMDb();
-
-            System.out.println("FACTORY - TEST API");
-            ConsultaPeliculasOMDb.consultarPelicula("Guardians of the Galaxy Vol. 2");
             
         } catch (Exception e) {
             System.err.println("FactoryDAO static init error: " + e.getClass().getName() + ": " + e.getMessage());
