@@ -129,8 +129,7 @@ public class ConsultaPeliculasOMDb {
         }
         
         private float obtenerPromedio(String ratings){
-            float res = 0;
-            @SuppressWarnings("unused")
+            float suma = 0;
             int cantidad = 0;
             
             /*
@@ -170,12 +169,12 @@ public class ConsultaPeliculasOMDb {
                 float floatConvertido = convertirRating(valor); 
                 
                 if (floatConvertido >= 0) {
-                    res += floatConvertido;
+                    suma += floatConvertido;
                     cantidad++;
                 }
             }
             
-            return res;
+            return (float) suma / cantidad;
         }
         
         private float convertirRating(String valor) {
