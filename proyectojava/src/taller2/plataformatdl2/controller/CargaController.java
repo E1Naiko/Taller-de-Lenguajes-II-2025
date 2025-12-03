@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
-import taller2.plataformatdl2.Utilities.CargaCSV;
+import taller2.plataformatdl2.Utilities.ImportarCSV;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
@@ -51,7 +51,7 @@ public class CargaController {
                 final Usuario userFinal = usuarioCompleto;
                 
                 
-                CargaCSV carga = new CargaCSV();
+                ImportarCSV carga = new ImportarCSV();
                 new Thread(carga).start();
                 
                 
