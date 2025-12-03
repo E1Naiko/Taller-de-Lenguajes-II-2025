@@ -104,7 +104,7 @@ public class MenuPrincipalController implements ActionListener {
     }
 
     // Metodo de la busqueda de peliculas
-   /* private void filtrarCatalogo() {
+   private void filtrarCatalogo() {
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
         if (termino.isEmpty()){
             vista.mostrarMensaje("Escribir algo para buscar...");
@@ -136,7 +136,7 @@ public class MenuPrincipalController implements ActionListener {
             }
         });
         apiWorker.start();
-    } */
+    }
 
     // --- Para mostrar pantalla del resultado de la busqueda ---
     private void mostrarVentanaDetalle(Pelicula p) {
