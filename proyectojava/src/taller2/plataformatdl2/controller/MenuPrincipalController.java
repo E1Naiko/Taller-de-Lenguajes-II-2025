@@ -86,7 +86,7 @@ public class MenuPrincipalController implements ActionListener {
         vista.setCargando(true);
         Thread worker = new Thread(() -> {
             try {
-                List<Pelicula> listaEntera = Factory.getListaPeliculas(); // Agarramos todas
+                List<Pelicula> listaEntera = ImportarCSV.getPeliculasParseadas(); // Agarramos todas
                 if (listaEntera != null) {
                     List<Pelicula> copia = new ArrayList<>(listaEntera);
                     Collections.shuffle(copia); // Se mezcla                 
@@ -104,7 +104,7 @@ public class MenuPrincipalController implements ActionListener {
     }
 
     // Metodo de la busqueda de peliculas
-    private void filtrarCatalogo() {
+   /* private void filtrarCatalogo() {
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
         if (termino.isEmpty()){
             vista.mostrarMensaje("Escribir algo para buscar...");
@@ -135,7 +135,7 @@ public class MenuPrincipalController implements ActionListener {
             }
         });
         apiWorker.start();
-    }
+    } */
 
     // --- Para mostrar pantalla del resultado de la busqueda ---
     private void mostrarVentanaDetalle(Pelicula p) {
@@ -188,9 +188,9 @@ public class MenuPrincipalController implements ActionListener {
             case "LOGOUT":
             cerrarSesion();
             break;
-            case "BUSCAR":
-            filtrarCatalogo();
-            break;
+           // case "BUSCAR":
+            //filtrarCatalogo();
+            //break;
             case "ORDENAR_TITULO":
             ordenarPorTitulo();
             break;
