@@ -22,7 +22,6 @@ public class MenuPrincipalVista extends JFrame {
     private JButton btnBuscar;
     private JLabel lblCargando;
     private JLabel lblUsuarioNombre; 
-    private boolean yaCalifico;
     
     // Botones para ordenar (headers de la tabla)
     private JButton btnOrderTitulo;
@@ -170,8 +169,8 @@ public class MenuPrincipalVista extends JFrame {
             for (Pelicula p : peliculas) {
                 if (p != null) {
                     // Para check de que ya califico
-                    yaCalifico = checkYaCalifico.apply(p);
-                    panelListaPeliculas.add(crearFilaPelicula(p, listener));
+                    boolean yaCalifico = checkYaCalifico.apply(p);
+                    panelListaPeliculas.add(crearFilaPelicula(p, listener,yaCalifico));
                     // Separador
                     JSeparator sep = new JSeparator();
                     sep.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
@@ -185,7 +184,7 @@ public class MenuPrincipalVista extends JFrame {
     }
 
     // Crea una FILA de la tabla para una película
-    private JPanel crearFilaPelicula(Pelicula p, ActionListener listener) {
+    private JPanel crearFilaPelicula(Pelicula p, ActionListener listener, boolean yaCalifico) {
         JPanel fila = new JPanel();
         fila.setLayout(new GridBagLayout());
         fila.setBackground(Color.WHITE);
