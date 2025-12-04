@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List; 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -15,6 +17,7 @@ import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ConsultaPeliculasOMDb;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSV;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
@@ -31,6 +34,8 @@ public class MenuPrincipalController implements ActionListener {
     private Usuario usuario;
     private List<Pelicula> cachePeliculas;  
     private List<Pelicula> peliculasVistas;  
+
+    private Set<Integer> peliculasCalificadasEnEstaSesion = new HashSet<>();
     
     
     public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista) { 
@@ -172,48 +177,61 @@ public class MenuPrincipalController implements ActionListener {
     
     // --- ACCIONES DE FILA ---
     private void calificarPelicula(Pelicula p) {
-        if (p == null) return;
-        
-        // Creamos la ventana de calificar
-        CalificarPeliculaVista dialog = new CalificarPeliculaVista(vista, p.getMetadatos().getTitulo());
-        
-        // Listener del botón CONFIRMAR de la ventanita
+        if (p == null) return;     
+        CalificarPeliculaVista dialog = new CalificarPeliculaVista(vista, p.getMetadatos().getTitulo());     
         dialog.addConfirmarListener(e -> {
             try {
-                /* // 1. Obtener datos
+                // Obtener datos
                 int puntaje = dialog.getPuntajeSeleccionado();
-                String comentario = dialog.getTextoResenia();              
-                // 2. Crear objeto Resena (Usuario, Pelicula, Texto, Puntaje)
-                // Ajustá el constructor de Resena a lo que tengas en tu modelo
-                Resena nuevaResena = new Resena(usuario, p, comentario, puntaje);               
-                // 3. Guardar en Base de Datos
+                String comentario = dialog.getTextoResenia();           
+                // Crear Reseña
+                Resena nuevaResena = new Resena(usuario, p, puntaje, comentario);           
+                // Obtener IDs
+                int idUsuario = 0;
+                int idPelicula = -1;             
+                if (usuario instanceof UsuarioFinal) {
+                    idUsuario = Factory.getUsuariosFinalDAO().devolverIdUsuarioFinal((UsuarioFinal) usuario);
+                }            
+                if (Factory.getPeliculasDAO() != null) {
+                    idPelicula = Factory.getPeliculasDAO().encontrarIdPelicula(p);
+                }             
+                if (idPelicula == -1) {
+                    vista.mostrarMensaje("Esta peli no tiene ID. No se puede guardar en BD local.");
+                    return;
+                }
+                // Insertar en BD
                 if (Factory.getReseniasDAO() != null) {
-                    Factory.getReseniasDAO().insertarResenia(nuevaResena);                  
-                    dialog.dispose(); // Cerrar ventana                  
-                    vista.mostrarMensaje("¡Calificación registrada con éxito!");               
-                    // 4. Refrescar la tabla para que se deshabilite el botón
-                    actualizarVistaConListaVisible();               
-                } else { */
-                    vista.mostrarMensaje("Error: No se pudo conectar con la base de reseñas.");            
+                    Factory.getReseniasDAO().insertarResenia(idUsuario, idPelicula, nuevaResena, 1);                 
+                    // Agregar al set temporal para bloquear el botón YA
+                    peliculasCalificadasEnEstaSesion.add(idPelicula);                  
+                    dialog.dispose();
+                    vista.mostrarMensaje("¡Calificación registrada correctamente!");                   
+                    actualizarVistaConListaVisible(); // Refrescar tabla                    
+                } else {
+                    vista.mostrarMensaje("Error: DAO Reseñas nulo.");
+                }               
             } catch (Exception ex) {
                 ex.printStackTrace();
-                vista.mostrarMensaje("Error al guardar calificación: " + ex.getMessage());
+                vista.mostrarMensaje("Error al guardar: " + ex.getMessage());
             }
-        });
+        });      
         dialog.setVisible(true);
     }
 
-     private void actualizarVistaConListaVisible() {
+    private void actualizarVistaConListaVisible() {
         SwingUtilities.invokeLater(() -> {
+            // Le pasamos a la vista una función lambda para decidir si bloquea el botón
             vista.cargarPeliculas(peliculasVistas, this, p -> {
-                // LÓGICA DE CHECKEO EN DB
-                // Devuelve true si el usuario ya calificó esta película
-                if (Factory.getReseniasDAO() != null) {
-                    // Ojo: Asegurate que tu ReseniasDAO tenga este método o similar: existeResenia(Usuario, Contenido)
-                    
-                    return Factory.getReseniasDAO().reseniaExiste(0);
+                // 1. Checkeo Temporal en memoria (lo que acabás de votar)
+                int idPeli = -1;
+                if (Factory.getPeliculasDAO() != null) {
+                    idPeli = Factory.getPeliculasDAO().encontrarIdPelicula(p);
                 }
-                return false;
+                if (peliculasCalificadasEnEstaSesion.contains(idPeli)) {
+                    return true; 
+                }
+                // 2. Checkeo en BD (Cuando tu compañero lo implemente)
+                return Factory.getReseniasDAO().existeResenia(usuario.(), idPeli);     
             });
             vista.setCargando(false);
         });
