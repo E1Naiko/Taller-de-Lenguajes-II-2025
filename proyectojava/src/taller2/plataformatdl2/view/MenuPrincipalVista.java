@@ -84,6 +84,7 @@ public class MenuPrincipalVista extends JFrame {
         estilarBotonAzul(btnBuscar);
         panelBuscador.add(btnBuscar);     
         panelHeader.add(panelBuscador, BorderLayout.CENTER);
+        btnBuscar.setEnabled(false);
         
         // 3. DERECHA: USUARIO + CERRAR SESIÓN
         JPanel panelUser = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
@@ -149,10 +150,6 @@ public class MenuPrincipalVista extends JFrame {
         lblCargando.setVisible(false);      
         panelBottom.add(lblCargando);
         contentPane.add(panelBottom, BorderLayout.SOUTH);
-        
-        
-        // Nos aseguramos que todos los botones arranquen desactivados hasta que termine la carga
-        setEstadoBotones(false);
     }
     
     // --- MÉTODOS PÚBLICOS ---
@@ -268,6 +265,7 @@ public class MenuPrincipalVista extends JFrame {
             btnCalificar.putClientProperty("PELICULA_DATA", p);
             btnCalificar.setActionCommand("CALIFICAR");
             btnCalificar.addActionListener(listener);
+            btnCalificar.setEnabled(false);
             botonesCalificar.add(btnCalificar);
         }      
         panelAcciones.add(btnCalificar); 
