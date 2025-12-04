@@ -46,14 +46,21 @@ public class DetallesPeliculaVista extends JDialog {
         JPanel infoPanel = new JPanel();
         infoPanel.setBackground(Color.WHITE);
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        String titulo = peli.getMetadatos().getTitulo();
-        String genero = peli.getGenero().toString();
-        String sinopsis = peli.getMetadatos().getSinopsis();
-        
+        String titulo = "Sin Título";
+        if (peli.getMetadatos() != null && peli.getMetadatos().getTitulo() != null) {
+            titulo = peli.getMetadatos().getTitulo();
+        }
+        String genero = "Desconocido";
+        if (peli.getGenero() != null) {
+            genero = peli.getGenero().toString();
+        }
+        String sinopsis = "Sin descripción disponible.";
+        if (peli.getMetadatos() != null && peli.getMetadatos().getSinopsis() != null) {
+            sinopsis = peli.getMetadatos().getSinopsis();
+        }
         JLabel lblTitulo = new JLabel("<html><h2>" + titulo + "</h2></html>");
         lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infoPanel.add(lblTitulo);
-        
+        infoPanel.add(lblTitulo); 
         JLabel lblGenero = new JLabel("<html><b>Género:</b> " + genero + "</html>");
         lblGenero.setForeground(Color.GRAY);
         lblGenero.setAlignmentX(Component.LEFT_ALIGNMENT);
