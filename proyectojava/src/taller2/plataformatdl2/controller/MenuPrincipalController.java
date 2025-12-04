@@ -131,7 +131,7 @@ public class MenuPrincipalController implements ActionListener {
                     actualizarCargando(false); // Apagamos el perrito
                     
                     
-                    vista.mostrarMensaje("No encontré esa peli ni abajo de las piedras.");
+                    vista.mostrarMensaje("Contenido no encontrado.");
                 }
                 
             } catch (Exception e) {

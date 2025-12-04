@@ -38,7 +38,7 @@ public class LoginController {
             String user = vista.getUsuario();
             String pass = vista.getContrasena();
             if (user.isEmpty() || pass.isEmpty()) {
-                throw new ExcepcionPropiaCamposVacios("Completa los campos, che");
+                throw new ExcepcionPropiaCamposVacios("Hay campos en blanco, completar");
             }
             @SuppressWarnings("unused")
             boolean existe = false;
@@ -63,7 +63,7 @@ public class LoginController {
                 CargaController carga = new CargaController(user); // Le pasamos el usuario
                 carga.iniciarCarga(); 
             } else {
-                throw new ExcepcionPropiaDB("Usuario o contraseña incorrectos. Probá de nuevo, pibe.");
+                throw new ExcepcionPropiaDB("Usuario o contraseña incorrectos. Intentar de nuevo.");
             }
         } catch (ExcepcionPropiaDB e) {
             // Aca "atrapamos" los Errores del exepcion de DB

@@ -73,7 +73,7 @@ public class RegistroVista extends JFrame {
         // Contraseña
         agregarCampo(mainPanel, "Contraseña:", campoContrasena = new JPasswordField(), gbc, fila++);
         // Repetir Contraseña
-        agregarCampo(mainPanel, "Repetir Pass:", campoRepetirContrasena = new JPasswordField(), gbc, fila++);
+        agregarCampo(mainPanel, "Repetir Contraseña:", campoRepetirContrasena = new JPasswordField(), gbc, fila++);
 
         // --- BOTONES ---
         gbc.gridx = 0; 

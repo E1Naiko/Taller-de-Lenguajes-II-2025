@@ -41,7 +41,7 @@ public class MenuPrincipalVista extends JFrame {
     public MenuPrincipalVista() {
         setTitle("TDL2 - Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1366, 768); // Pantalla ancha
+        setBounds(100, 100, 1366, 768); 
         setLocationRelativeTo(null);
         contentPane = new JPanel();
         contentPane.setBackground(COLOR_FONDO); 
@@ -77,7 +77,7 @@ public class MenuPrincipalVista extends JFrame {
         txtBusqueda = new JTextField();
         txtBusqueda.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         txtBusqueda.setToolTipText("Filtrar...");
-        txtBusqueda.setPreferredSize(new Dimension(250, 35)); // Hice más corto el buscador
+        txtBusqueda.setPreferredSize(new Dimension(250, 35)); 
         txtBusqueda.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         panelBuscador.add(txtBusqueda);
         btnBuscar = new JButton("Buscar");
@@ -277,7 +277,7 @@ public class MenuPrincipalVista extends JFrame {
         return fila;
     }
     
-    // --- MÉTODO NUEVO PARA CARGAR POSTERS SIN TRABAR TODO ---
+    // --- MÉTODO PARA CARGAR POSTERS SIN Que se Trabe todo ---
     private void cargarPosterDesdeUrl(JLabel label, String urlString) {
         // Lanzamos un mini hilo solo para esta imagen
         new Thread(() -> {

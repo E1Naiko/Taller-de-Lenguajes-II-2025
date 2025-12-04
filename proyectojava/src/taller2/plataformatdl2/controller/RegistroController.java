@@ -39,7 +39,7 @@ public class RegistroController {
             // --- Validaciones básicas ---
             // Validar campos no null
             if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || email.isEmpty() || contraRepetir.isEmpty()) {
-                throw new ExcepcionPropiaCamposVacios("¡Completá todos los campos, che!");
+                throw new ExcepcionPropiaCamposVacios("¡Hay campos en blanco, completar!");
             }
             // Validar contraseña
             if (!contrasena.equals(contraRepetir)) {
@@ -47,7 +47,7 @@ public class RegistroController {
             }
             // Validar formato del correo
             if (!email.contains("@gmail.com") && !email.contains("@hotmail.com") && !email.contains("@yahoo.com") && !email.contains("@outlook.com")){
-                throw new ExcepcionPropiaValidacion("Error Mail no valido");
+                throw new ExcepcionPropiaValidacion("Error: email no valido");
             }
             // Validar DNI
             int dni2;
