@@ -85,7 +85,7 @@ public class DetallesPeliculaVista extends JDialog {
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-        btnContinuar = new JButton("Continuar (Randomizar)");
+        btnContinuar = new JButton("Continuar");
         estilarBotonAzul(btnContinuar);
         buttonPane.add(btnContinuar);
         
