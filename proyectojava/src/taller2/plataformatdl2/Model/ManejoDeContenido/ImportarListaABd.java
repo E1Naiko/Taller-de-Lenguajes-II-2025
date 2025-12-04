@@ -1,12 +1,32 @@
-package taller2.plataformatdl2.Utilities;
+package taller2.plataformatdl2.Model.ManejoDeContenido;
 
 import java.time.LocalTime;
 import java.util.List;
 import taller2.DB.DAO.Factory;
-import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
+import taller2.plataformatdl2.controller.MenuPrincipalController;
 
-public class Lista_A_Bd{
+public class ImportarListaABd implements Runnable{
     private int DEBUG_LIMITE = 0;
+    private MenuPrincipalController menuPrincipal;
+    private List<Pelicula> peliculasParseadas;
+    
+    public ImportarListaABd(MenuPrincipalController menuPrincipal, List<Pelicula> peliculasParseadas){
+        this.menuPrincipal = menuPrincipal;
+        this.peliculasParseadas = peliculasParseadas;
+    }
+    
+    public void run(){
+        System.out.println("ImportarListaABd - Pasando lista a BD");
+        //menuPrincipal.setCargando(true);
+        Factory.getPeliculasDAO().setImprimirDebug(false);
+        Factory.getMetadatosDAO().setImprimirDebug(false);
+        pasarListaPeliculas_a_BD(peliculasParseadas);
+        Factory.getPeliculasDAO().setImprimirDebug(true);
+        Factory.getMetadatosDAO().setImprimirDebug(true);
+        //menuPrincipal.setCargando(false);
+        
+        System.out.println("ImportarListaABd - Carga terminada");
+    }
     
     public void pasarListaPeliculas_a_BD(List<Pelicula> listaPeliculas){
         int ini, fin;

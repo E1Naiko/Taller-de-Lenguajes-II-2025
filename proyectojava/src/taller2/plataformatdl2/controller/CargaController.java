@@ -6,13 +6,14 @@ import javax.swing.SwingUtilities;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
-import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSV;
+import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
 public class CargaController {
     private CargaVista vista;
     private String nombreUsuario; // Es el user/email que viene del Login
+    Usuario userFinal;
     
     public CargaController(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
@@ -48,19 +49,17 @@ public class CargaController {
                     // Creamos una instancia anónima o concreta básica para proseguir
                     usuarioCompleto = new Usuario(nombreUsuario, "Temporal", 0, nombreUsuario + "@temp.com", "1234") {};
                 }
-                final Usuario userFinal = usuarioCompleto;
+                userFinal = usuarioCompleto;
                 
                 
                 
                 
                 // --- TRANSICIÓN AL MENÚ ---
                 SwingUtilities.invokeLater(() -> {
-                    vista.dispose(); // Chau perrito   
-                    MenuPrincipalVista menuVista = new MenuPrincipalVista();
-                    ImportarCSV carga = new ImportarCSV(menuVista, this);
-                    new Thread(carga).start();
-                    new MenuPrincipalController(userFinal, menuVista);
+                    ImportarCSVaLista carga = new ImportarCSVaLista(this);
+                    new Thread(carga).start(); // Cuando termine, llamará a onCSVTerminado()
                 });
+                
             } catch (Exception e) {
                 e.printStackTrace();
                 // Si explota, cerramos la vista para no dejar al user colgado
@@ -68,5 +67,17 @@ public class CargaController {
             }
         });
         worker.start();
+    }
+    
+    
+    public void cargaCSVTerminada() {
+        System.out.println("CargaController - Importación CSV terminada.");
+        vista.dispose();
+        
+        SwingUtilities.invokeLater(() -> {
+            // Aquí poné lo que querías ejecutar luego de la línea 57
+            MenuPrincipalVista menuVista = new MenuPrincipalVista();
+            new MenuPrincipalController(userFinal, menuVista);
+        });
     }
 }

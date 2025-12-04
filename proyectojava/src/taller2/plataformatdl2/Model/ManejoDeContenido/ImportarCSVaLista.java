@@ -5,10 +5,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
-import taller2.DB.DAO.Factory;
-import taller2.plataformatdl2.Utilities.Lista_A_Bd;
 import taller2.plataformatdl2.controller.CargaController;
-import taller2.plataformatdl2.view.MenuPrincipalVista;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,36 +14,28 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImportarCSV implements Runnable{
+public class ImportarCSVaLista implements Runnable{
     private int total = 0;
     private int correctas = 0;
     private int errores = 0;
     private static List<Pelicula> peliculasParseadas = new ArrayList<Pelicula>();
     private String direccion = new File("proyectojava/src/taller2/DB/movies_database.csv").getAbsolutePath();
-    private MenuPrincipalVista menuPrincipal;
     private CargaController menuCarga;
 
     
-    public ImportarCSV(MenuPrincipalVista menuPrincipal, CargaController menuCarga){
-        this.menuPrincipal = menuPrincipal;
+    public ImportarCSVaLista(CargaController menuCarga){
         this.menuCarga = menuCarga;
     }
     
     public void run() {
         try {
+            // Uso del Importar
+            System.out.println("ImportarCSVaLista - Cargando peliculas en memoria");
             cargarListaPeliculas();
+            System.out.println("ImportarCSVaLista - Carga peliculas en memoria completa");
+
+            menuCarga.cargaCSVTerminada();
             
-            Lista_A_Bd pasajeDeDatos = new Lista_A_Bd();
-
-            menuPrincipal.setCargando(true);
-            Factory.getPeliculasDAO().setImprimirDebug(false);
-            Factory.getMetadatosDAO().setImprimirDebug(false);
-            pasajeDeDatos.pasarListaPeliculas_a_BD(peliculasParseadas);
-            Factory.getPeliculasDAO().setImprimirDebug(true);
-            Factory.getMetadatosDAO().setImprimirDebug(true);
-            menuPrincipal.setCargando(false);
-
-            System.out.println("CargaCSV - Carga terminada");
         }
         catch (Exception e) {
             System.err.println("Error procesando lista");

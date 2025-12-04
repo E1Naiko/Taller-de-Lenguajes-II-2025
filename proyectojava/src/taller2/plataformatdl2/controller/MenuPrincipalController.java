@@ -16,7 +16,7 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.ConsultaPeliculasOMDb;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
-import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSV;
+import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
 import taller2.plataformatdl2.view.LoginVista;
@@ -54,7 +54,7 @@ public class MenuPrincipalController implements ActionListener {
             try {
                 Thread.sleep(800);  
                 try {
-                    cachePeliculas = ImportarCSV.getPeliculasParseadas();
+                    cachePeliculas = ImportarCSVaLista.getPeliculasParseadas();
                     if (cachePeliculas != null) {
                         peliculasVistas = cachePeliculas.stream()
                         .filter(p -> p!= null)
@@ -88,7 +88,7 @@ public class MenuPrincipalController implements ActionListener {
         vista.setCargando(true);
         Thread worker = new Thread(() -> {
             try {
-                List<Pelicula> listaEntera = ImportarCSV.getPeliculasParseadas(); // Agarramos todas
+                List<Pelicula> listaEntera = ImportarCSVaLista.getPeliculasParseadas(); // Agarramos todas
                 if (listaEntera != null) {
                     List<Pelicula> copia = new ArrayList<>(listaEntera);
                     Collections.shuffle(copia); // Se mezcla                 
