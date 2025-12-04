@@ -50,7 +50,7 @@ public class ConsultaPeliculasOMDb {
                         elenco, // String[] elenco
                         json.getString("Director"), // String director
                         duracion, // LocalTime duracion
-                        json.getString("Languaje"), // String idioma
+                        json.getString("Language"), // String idioma
                         subtitulos, // String[] subtitulos
                         obtenerPromedio(json.getString("Ratings")), // float rating_promedio
                         // Assumes the year is the first 4 characters, e.g., "2021-12-15"

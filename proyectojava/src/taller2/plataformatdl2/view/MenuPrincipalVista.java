@@ -7,7 +7,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
-
+import java.util.function.Function;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,6 +22,7 @@ public class MenuPrincipalVista extends JFrame {
     private JButton btnBuscar;
     private JLabel lblCargando;
     private JLabel lblUsuarioNombre; 
+    private boolean yaCalifico;
     
     // Botones para ordenar (headers de la tabla)
     private JButton btnOrderTitulo;
@@ -158,7 +159,7 @@ public class MenuPrincipalVista extends JFrame {
         lblCargando.setVisible(cargando);
     }
 
-    public void cargarPeliculas(List<Pelicula> peliculas, ActionListener listener) {
+    public void cargarPeliculas(List<Pelicula> peliculas, ActionListener listener, Function<Pelicula, Boolean> checkYaCalifico) {
         panelListaPeliculas.removeAll();
         if (peliculas == null || peliculas.isEmpty()) {
             JLabel lblVacio = new JLabel("No se encontraron resultados.");
@@ -168,6 +169,8 @@ public class MenuPrincipalVista extends JFrame {
         } else {
             for (Pelicula p : peliculas) {
                 if (p != null) {
+                    // Para check de que ya califico
+                    yaCalifico = checkYaCalifico.apply(p);
                     panelListaPeliculas.add(crearFilaPelicula(p, listener));
                     // Separador
                     JSeparator sep = new JSeparator();
@@ -246,10 +249,18 @@ public class MenuPrincipalVista extends JFrame {
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelAcciones.setOpaque(false);    
         JButton btnCalificar = new JButton("Calificar");
-        estilarBotonAzul(btnCalificar);
-        btnCalificar.putClientProperty("PELICULA_DATA", p);
-        btnCalificar.setActionCommand("CALIFICAR"); // Cambié el comando como pediste
-        btnCalificar.addActionListener(listener);       
+        if (yaCalifico) {
+            btnCalificar.setText("✓ Calificada");
+            btnCalificar.setEnabled(false);
+            btnCalificar.setBackground(new Color(230,230,230));
+            btnCalificar.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        } else {
+            btnCalificar.setText("Calificar");
+            estilarBotonAzul(btnCalificar);
+            btnCalificar.putClientProperty("PELICULA_DATA", p);
+            btnCalificar.setActionCommand("CALIFICAR");
+            btnCalificar.addActionListener(listener);
+        }      
         panelAcciones.add(btnCalificar); 
         gbc.gridx = 4;
         gbc.weightx = 0.15;

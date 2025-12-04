@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
-import taller2.plataformatdl2.Utilities.ImportarCSV;
+import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSV;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
@@ -51,14 +51,14 @@ public class CargaController {
                 final Usuario userFinal = usuarioCompleto;
                 
                 
-                ImportarCSV carga = new ImportarCSV();
-                new Thread(carga).start();
                 
                 
                 // --- TRANSICIÓN AL MENÚ ---
                 SwingUtilities.invokeLater(() -> {
                     vista.dispose(); // Chau perrito   
                     MenuPrincipalVista menuVista = new MenuPrincipalVista();
+                    ImportarCSV carga = new ImportarCSV(menuVista, this);
+                    new Thread(carga).start();
                     new MenuPrincipalController(userFinal, menuVista);
                 });
             } catch (Exception e) {
