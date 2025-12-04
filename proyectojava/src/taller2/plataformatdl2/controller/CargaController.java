@@ -1,11 +1,13 @@
 package taller2.plataformatdl2.controller;
 
+import java.util.Collections;
 import java.util.List;
 import javax.swing.SwingUtilities;
 
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
+import taller2.plataformatdl2.Utilities.ComparadorTopRating;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.view.CargaVista;
@@ -79,10 +81,10 @@ public class CargaController {
     
     public void cargaCSVTerminada() {
         System.out.println("CargaController - Importación CSV terminada.");
+        Collections.sort(lista, new ComparadorTopRating()); // la consigna nos pide mostrar la primer carga ordenada por top 10 en rating, asi que lo pasamos ordenado
         vista.dispose();
         
         SwingUtilities.invokeLater(() -> {
-            // Aquí poné lo que querías ejecutar luego de la línea 57
             MenuPrincipalVista menuVista = new MenuPrincipalVista();
             
             new MenuPrincipalController(userFinal, menuVista, lista);
