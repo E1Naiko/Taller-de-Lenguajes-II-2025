@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List; // Necesario para ordenar
+import java.util.List; 
 import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -15,12 +15,14 @@ import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ConsultaPeliculasOMDb;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSV;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 import taller2.plataformatdl2.view.DetallesPeliculaVista;
+import taller2.plataformatdl2.view.CalificarPeliculaVista;
 
 @SuppressWarnings("unused")
 public class MenuPrincipalController implements ActionListener {
@@ -86,7 +88,7 @@ public class MenuPrincipalController implements ActionListener {
         vista.setCargando(true);
         Thread worker = new Thread(() -> {
             try {
-                List<Pelicula> listaEntera = ImportarCSV.getPeliculasParseadas();
+                List<Pelicula> listaEntera = ImportarCSV.getPeliculasParseadas(); // Agarramos todas
                 if (listaEntera != null) {
                     List<Pelicula> copia = new ArrayList<>(listaEntera);
                     Collections.shuffle(copia); // Se mezcla                 
@@ -104,7 +106,7 @@ public class MenuPrincipalController implements ActionListener {
     }
 
     // Metodo de la busqueda de peliculas
-    private void filtrarCatalogo() {
+   private void filtrarCatalogo() {
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
         if (termino.isEmpty()){
             vista.mostrarMensaje("Escribir algo para buscar...");
@@ -153,27 +155,68 @@ public class MenuPrincipalController implements ActionListener {
     
     // --- LÓGICA DE ORDENAMIENTO ---
     private void ordenarPorTitulo() {
-        if (cachePeliculas == null || cachePeliculas.isEmpty()) return;
+        if (peliculasVistas == null || peliculasVistas.isEmpty()) return;
         // Usamos el Comparator que tenemos para título del proyecto
-        Collections.sort(cachePeliculas, new ComparadorPeliculaPorTitulo());
-        vista.cargarPeliculas(cachePeliculas, this);
+        Collections.sort(peliculasVistas, new ComparadorPeliculaPorTitulo());
+        vista.cargarPeliculas(peliculasVistas, this);
         vista.mostrarMensaje("Ordenado por Título alfabéticamente.");
     }
     
     private void ordenarPorGenero() {
-        if (cachePeliculas == null || cachePeliculas.isEmpty()) return;
+        if (peliculasVistas == null || peliculasVistas.isEmpty()) return;
         // Usamos el Comparator que tenemos para género del proyecto
-        Collections.sort(cachePeliculas, new ComparadorPeliculaPorGenero());
-        vista.cargarPeliculas(cachePeliculas, this);
+        Collections.sort(peliculasVistas, new ComparadorPeliculaPorGenero());
+        vista.cargarPeliculas(peliculasVistas, this);
         vista.mostrarMensaje("Ordenado por Género.");
     }
     
     // --- ACCIONES DE FILA ---
     private void calificarPelicula(Pelicula p) {
         if (p == null) return;
-        String titulo = (p.getMetadatos() != null) ? p.getMetadatos().getTitulo() : "Peli";
-        // Por ahora mantenemos el mensaje de prueba ya que todavia no implementamos eso de calificar
-        vista.mostrarMensaje("Abrir ventana de CALIFICAR para: " + titulo);
+        
+        // Creamos la ventana de calificar
+        CalificarPeliculaVista dialog = new CalificarPeliculaVista(vista, p.getMetadatos().getTitulo());
+        
+        // Listener del botón CONFIRMAR de la ventanita
+        dialog.addConfirmarListener(e -> {
+            try {
+                /* // 1. Obtener datos
+                int puntaje = dialog.getPuntajeSeleccionado();
+                String comentario = dialog.getTextoResenia();              
+                // 2. Crear objeto Resena (Usuario, Pelicula, Texto, Puntaje)
+                // Ajustá el constructor de Resena a lo que tengas en tu modelo
+                Resena nuevaResena = new Resena(usuario, p, comentario, puntaje);               
+                // 3. Guardar en Base de Datos
+                if (Factory.getReseniasDAO() != null) {
+                    Factory.getReseniasDAO().insertarResenia(nuevaResena);                  
+                    dialog.dispose(); // Cerrar ventana                  
+                    vista.mostrarMensaje("¡Calificación registrada con éxito!");               
+                    // 4. Refrescar la tabla para que se deshabilite el botón
+                    actualizarVistaConListaVisible();               
+                } else { */
+                    vista.mostrarMensaje("Error: No se pudo conectar con la base de reseñas.");            
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                vista.mostrarMensaje("Error al guardar calificación: " + ex.getMessage());
+            }
+        });
+        dialog.setVisible(true);
+    }
+
+     private void actualizarVistaConListaVisible() {
+        SwingUtilities.invokeLater(() -> {
+            vista.cargarPeliculas(peliculasVistas, this, p -> {
+                // LÓGICA DE CHECKEO EN DB
+                // Devuelve true si el usuario ya calificó esta película
+                if (Factory.getReseniasDAO() != null) {
+                    // Ojo: Asegurate que tu ReseniasDAO tenga este método o similar: existeResenia(Usuario, Contenido)
+                    
+                    return Factory.getReseniasDAO().reseniaExiste(0);
+                }
+                return false;
+            });
+            vista.setCargando(false);
+        });
     }
     
     private void cerrarSesion() {
