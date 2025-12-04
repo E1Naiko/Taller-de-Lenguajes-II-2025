@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List; 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -15,6 +17,7 @@ import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ConsultaPeliculasOMDb;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
@@ -31,8 +34,7 @@ public class MenuPrincipalController implements ActionListener {
     private Usuario usuario;
     private List<Pelicula> cachePeliculas;  
     private List<Pelicula> peliculasVistas;  
-    
-    
+
     public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista) { 
         this.usuario = usuario;
         this.vista = vista;
@@ -64,7 +66,7 @@ public class MenuPrincipalController implements ActionListener {
                         peliculasVistas = new ArrayList<>();
                     }
                     SwingUtilities.invokeLater(() -> {
-                        vista.cargarPeliculas(peliculasVistas, this);
+                        actualizarVistaConListaVisible();
                         vista.setCargando(false);
                         // Por si tira null tiramos un mensaje
                         if (cachePeliculas == null) {
@@ -95,7 +97,7 @@ public class MenuPrincipalController implements ActionListener {
                     // Agarramos 10 randoms
                     cachePeliculas = copia.stream().filter(p->p!=null).limit(10).collect(Collectors.toList());                 
                     SwingUtilities.invokeLater(() -> {
-                        vista.cargarPeliculas(cachePeliculas, this); // Actualizamos la tabla
+                        actualizarVistaConListaVisible();
                         vista.setCargando(false);
                         vista.mostrarMensaje("¡Catálogo randomizado!");
                     });
@@ -156,67 +158,77 @@ public class MenuPrincipalController implements ActionListener {
     // --- LÓGICA DE ORDENAMIENTO ---
     private void ordenarPorTitulo() {
         if (peliculasVistas == null || peliculasVistas.isEmpty()) return;
-        // Usamos el Comparator que tenemos para título del proyecto
         Collections.sort(peliculasVistas, new ComparadorPeliculaPorTitulo());
-        vista.cargarPeliculas(peliculasVistas, this);
-        vista.mostrarMensaje("Ordenado por Título alfabéticamente.");
+        actualizarVistaConListaVisible();
     }
     
     private void ordenarPorGenero() {
         if (peliculasVistas == null || peliculasVistas.isEmpty()) return;
-        // Usamos el Comparator que tenemos para género del proyecto
         Collections.sort(peliculasVistas, new ComparadorPeliculaPorGenero());
-        vista.cargarPeliculas(peliculasVistas, this);
-        vista.mostrarMensaje("Ordenado por Género.");
+        actualizarVistaConListaVisible();
+    }
+
+    private void actualizarVistaConListaVisible() {
+        SwingUtilities.invokeLater(() -> {
+            vista.cargarPeliculas(peliculasVistas, this, p -> {          
+                // LÓGICA DE CHECKEO EN BD
+                if (Factory.getReseniasDAO() != null && usuario instanceof UsuarioFinal) {
+                    try {
+                        
+                        return Factory.getReseniasDAO().reseniaExiste((UsuarioFinal) usuario, p);
+                    } catch (Exception e) {
+                        System.err.println("Error verificando reseña: " + e.getMessage());
+                        return false;
+                    }
+                }
+                return false; 
+            });
+            vista.setCargando(false);
+        });
     }
     
     // --- ACCIONES DE FILA ---
     private void calificarPelicula(Pelicula p) {
         if (p == null) return;
         
-        // Creamos la ventana de calificar
         CalificarPeliculaVista dialog = new CalificarPeliculaVista(vista, p.getMetadatos().getTitulo());
         
-        // Listener del botón CONFIRMAR de la ventanita
         dialog.addConfirmarListener(e -> {
             try {
-                /* // 1. Obtener datos
+                // 1. Obtener datos
                 int puntaje = dialog.getPuntajeSeleccionado();
-                String comentario = dialog.getTextoResenia();              
-                // 2. Crear objeto Resena (Usuario, Pelicula, Texto, Puntaje)
-                // Ajustá el constructor de Resena a lo que tengas en tu modelo
-                Resena nuevaResena = new Resena(usuario, p, comentario, puntaje);               
-                // 3. Guardar en Base de Datos
+                String comentario = dialog.getTextoResenia();           
+                // 2. Crear Reseña
+                Resena nuevaResena = new Resena(usuario, p, puntaje, comentario);              
+                // 3. Obtener IDs para insertar
+                int idUsuario = 0;
+                int idPelicula = -1;               
+                if (usuario instanceof UsuarioFinal) {
+                    idUsuario = Factory.getUsuariosFinalDAO().devolverIdUsuarioFinal((UsuarioFinal) usuario);
+                }
+                if (Factory.getPeliculasDAO() != null) {
+                    idPelicula = Factory.getPeliculasDAO().encontrarIdPelicula(p);
+                }               
+                if (idPelicula == -1) {
+                    vista.mostrarMensaje("Esta peli no tiene ID (capaz vino de la API). No se puede guardar en BD local.");
+                    return;
+                }
+                // 4. Insertar en BD
                 if (Factory.getReseniasDAO() != null) {
-                    Factory.getReseniasDAO().insertarResenia(nuevaResena);                  
-                    dialog.dispose(); // Cerrar ventana                  
-                    vista.mostrarMensaje("¡Calificación registrada con éxito!");               
-                    // 4. Refrescar la tabla para que se deshabilite el botón
-                    actualizarVistaConListaVisible();               
-                } else { */
-                    vista.mostrarMensaje("Error: No se pudo conectar con la base de reseñas.");            
+                    // insertarResenia(idUsuario, idPelicula, resena, aprobado)
+                    Factory.getReseniasDAO().insertarResenia(idUsuario, idPelicula, nuevaResena, 1);                 
+                    dialog.dispose();
+                    vista.mostrarMensaje("¡Calificación registrada correctamente!");                    
+                    actualizarVistaConListaVisible(); // Refrescar tabla para bloquear el botón                  
+                } else {
+                    vista.mostrarMensaje("Error: DAO Reseñas nulo.");
+                }               
             } catch (Exception ex) {
                 ex.printStackTrace();
-                vista.mostrarMensaje("Error al guardar calificación: " + ex.getMessage());
+                vista.mostrarMensaje("Error al guardar: " + ex.getMessage());
             }
-        });
+        });    
         dialog.setVisible(true);
-    }
-
-     private void actualizarVistaConListaVisible() {
-        SwingUtilities.invokeLater(() -> {
-            vista.cargarPeliculas(peliculasVistas, this, p -> {
-                // LÓGICA DE CHECKEO EN DB
-                // Devuelve true si el usuario ya calificó esta película
-                if (Factory.getReseniasDAO() != null) {
-                    // Ojo: Asegurate que tu ReseniasDAO tenga este método o similar: existeResenia(Usuario, Contenido)
-                    
-                    return Factory.getReseniasDAO().reseniaExiste(0);
-                }
-                return false;
-            });
-            vista.setCargando(false);
-        });
     }
     
     private void cerrarSesion() {
