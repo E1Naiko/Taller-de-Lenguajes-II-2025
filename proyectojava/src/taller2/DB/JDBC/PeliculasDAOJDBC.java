@@ -114,6 +114,10 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
     @Override
     public int encontrarIdPelicula(Contenido pelicula) {
         int idEncontrada = 0;
+        int idMetadatos = 0;
+        if (Factory.getMetadatosDAO().existeMetadatos(pelicula.getMetadatos())){
+            idMetadatos = Factory.getMetadatosDAO().encontrarIdMetadatos(pelicula.getMetadatos());
+        }
         Connection c = null;
         
         try {
@@ -122,11 +126,12 @@ public class PeliculasDAOJDBC implements PeliculasDAO {
             c.setAutoCommit(false);
             if (imprimirDebug) System.out.println("\"PlataformaTDL2 - PeliculasDAO - encontrarIdPelicula - Intentando encontrar id del elemento");
             
-            String sql = "SELECT ID FROM PELICULAS WHERE Direccion_Archivo=? AND Calidad=? AND Audio=?";
+            String sql = "SELECT ID FROM PELICULAS WHERE Direccion_Archivo=? AND Calidad=? AND Audio=? AND IdMetadatos=?";
             try (PreparedStatement pstmt = c.prepareStatement(sql)) {
                 pstmt.setString(1, pelicula.getDireccionArchivo());
                 pstmt.setString(2, pelicula.getCalidad().toString());
                 pstmt.setString(3, pelicula.getAudio());
+                pstmt.setInt(4, idMetadatos);
                 
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {

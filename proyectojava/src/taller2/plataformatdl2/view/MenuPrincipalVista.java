@@ -159,6 +159,7 @@ public class MenuPrincipalVista extends JFrame {
     }
 
     public void cargarPeliculas(List<Pelicula> peliculas, ActionListener listener, Function<Pelicula, Boolean> checkYaCalifico) {
+        System.err.println("Menu PrincipalVista - cargarPeliculas - " + peliculas.toString());
         panelListaPeliculas.removeAll();
         if (peliculas == null || peliculas.isEmpty()) {
             JLabel lblVacio = new JLabel("No se encontraron resultados.");

@@ -43,6 +43,11 @@ public class RegistroController {
             vista.mostrarError("Las contraseñas no coinciden, máquina.");
             return;
         }
+
+        if (!email.contains("@gmail.com") && !email.contains("@hotmail.com") && !email.contains("@yahoo.com") && !email.contains("@outlook.com")){
+            vista.mostrarError("Error Mail no valido");
+            return;
+        }
         
         try {
             int dni2 = Integer.parseInt(dni); //Paso de string a integer

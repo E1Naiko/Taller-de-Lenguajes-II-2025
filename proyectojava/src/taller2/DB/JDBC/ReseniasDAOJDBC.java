@@ -274,7 +274,7 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
         Class.forName("org.sqlite.JDBC");
         c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
         c.setAutoCommit(false);
-        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
+        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento " + usuario.getEmail() + " " + pelicula.getMetadatos().getTitulo());
         
         String sql = "SELECT ID FROM RESENIAS WHERE ID_USUARIO=? AND ID_PELICULA=?";
         try (PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -291,6 +291,8 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       } catch ( Exception e ) {
         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
       }
+      if (idEncontrada>0) System.out.println("\"PlataformaTDL2 - ReseniasDAO - id del elemento: " + idEncontrada);
+      else System.out.println("\"PlataformaTDL2 - ReseniasDAO - Id del elemento no encontrada");
       return idEncontrada;
     }
     
