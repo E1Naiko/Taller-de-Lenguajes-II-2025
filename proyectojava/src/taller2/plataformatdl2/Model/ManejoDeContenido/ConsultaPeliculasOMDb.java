@@ -5,6 +5,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalTime;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import taller2.plataformatdl2.Utilities.TimeStringYSegundos;
@@ -41,8 +42,15 @@ public class ConsultaPeliculasOMDb {
                     String[] elenco = {json.getString("Actors")};
                     String[] subtitulos = {"DEBUG"};
                     
-                    TimeStringYSegundos conversorDuracion = new TimeStringYSegundos(json.getString("Runtime"));
+                    String runtimeStr = json.optString("Runtime", "0 min");
+                    if (runtimeStr == null || runtimeStr.equals("N/A") || runtimeStr.isBlank()) {
+                        runtimeStr = "0 min";
+                    }
+                    
+                    TimeStringYSegundos conversorDuracion = new TimeStringYSegundos(runtimeStr);
                     LocalTime duracion = conversorDuracion.getFormatoTime();
+                    
+                    
                     // Crear objeto Pelicula con los campos parseados
                     Metadatos metadatos = new Metadatos(
                         json.getString("Title"), // String titulo
@@ -52,7 +60,7 @@ public class ConsultaPeliculasOMDb {
                         duracion, // LocalTime duracion
                         json.getString("Language"), // String idioma
                         subtitulos, // String[] subtitulos
-                        obtenerPromedio(json.getString("Ratings")), // float rating_promedio
+                        obtenerPromedio(json.getJSONArray("Ratings")), // float rating_promedio
                         // Assumes the year is the first 4 characters, e.g., "2021-12-15"
                         Integer.parseInt(json.getString("Year")), // int anio
                         json.getString("Poster") // String urlPoster
@@ -65,6 +73,8 @@ public class ConsultaPeliculasOMDb {
                         tomarPrimerGenero(json.getString("Genre")),   // Genero genero;
                         metadatos   // Metadatos metadatos;
                     );
+
+                    System.out.println(pelicula.toString());
                     
                 } else {
                     System.out.println("❌ Película no encontrada o error en la consulta.");
@@ -76,10 +86,12 @@ public class ConsultaPeliculasOMDb {
             return pelicula;
         }
         
-        private Genero tomarPrimerGenero(String entrada){
+        private Genero tomarPrimerGenero(String entrada){ // TODO - Por alguna razon no carga correctamente en el objeto peliculas, pero como es un detalle relativamente menor lo dejamos en lista de espera
             Genero genero;
             String[] generosSeparados = entrada.split(",");
             
+            System.out.println(entrada);
+            System.out.println(generosSeparados[0]);
             switch (generosSeparados[0].toUpperCase()) {
                 case "ACTION":
                 genero = Genero.ACCION;
@@ -128,10 +140,7 @@ public class ConsultaPeliculasOMDb {
             return genero;
         }
         
-        private float obtenerPromedio(String ratings){
-            float suma = 0;
-            int cantidad = 0;
-            
+        private float obtenerPromedio(JSONArray ratings) { 
             /*
             Encontramos que en general la api devuelve de la siguiente forma:
             "Ratings": [
@@ -150,31 +159,22 @@ public class ConsultaPeliculasOMDb {
             ]
             */
             
-            // Cortamos por la palabra "Value"
-            String[] partes = ratings.split("\"Value\"");
+            float suma = 0;
+            int cantidad = 0;
             
-            for (int i = 1; i < partes.length; i++) {
-                String fragmento = partes[i];
+            for (int i = 0; i < ratings.length(); i++) {
+                JSONObject r = ratings.getJSONObject(i);
+                String valor = r.getString("Value");
                 
-                // Buscamos la primera comilla doble " que aparece luego de :
-                int comilla1 = fragmento.indexOf('"');
-                int comilla2 = fragmento.indexOf('"', comilla1 + 1);
+                double normalizado = convertirRating(valor);
                 
-                if (comilla1 == -1 || comilla2 == -1) continue;
-                
-                // Extraemos el valor
-                String valor = fragmento.substring(comilla1 + 1, comilla2);
-                
-                // Las 3 paginas que devuelve tienen 3 formatos distintos asi que los convertimos
-                float floatConvertido = convertirRating(valor); 
-                
-                if (floatConvertido >= 0) {
-                    suma += floatConvertido;
+                if (normalizado >= 0) {
+                    suma += normalizado;
                     cantidad++;
                 }
             }
             
-            return (float) suma / cantidad;
+            return cantidad > 0 ? suma / cantidad : 0;
         }
         
         private float convertirRating(String valor) {

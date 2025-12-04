@@ -6,7 +6,9 @@ import java.util.List;
 
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.ReseniasDAO;
+import taller2.DB.DAO.UsuariosFinalDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
+import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 
 public class ReseniasDAOJDBC implements ReseniasDAO {
   @Override
@@ -150,8 +152,8 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   }
   
   /** 
-   * @return List<Resena>
-   */
+  * @return List<Resena>
+  */
   @Override
   public List<Resena> devolverReseniasNoAprobadas() {
     Connection c = null;
@@ -169,10 +171,10 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       
       while (rs.next()) {
         lista.add(new Resena(
-        Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("Id_Usuario")),
-        Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("Id_Pelicula")),
-        rs.getInt("Puntuacion"),
-        rs.getString("Comentario"))
+          Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("Id_Usuario")),
+          Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("Id_Pelicula")),
+          rs.getInt("Puntuacion"),
+          rs.getString("Comentario"))
         );
       }
       
@@ -185,9 +187,9 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
   }
   
   /** 
-   * @param id
-   * @return Resena
-   */
+  * @param id
+  * @return Resena
+  */
   public Resena devolverReseniaViaId(int id){
     Connection c = null;
     Statement stmt = null;
@@ -203,56 +205,98 @@ public class ReseniasDAOJDBC implements ReseniasDAO {
       ResultSet rs = stmt.executeQuery( "SELECT * FROM RESENIAS WHERE ID=" + id);
       
       if (rs.next())
-      ret = new Resena(
-      Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("Id_Usuario")),
-      Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("Id_Pelicula")),
-      rs.getInt("Puntuacion"),
-      rs.getString("Comentario"));
-      
-      rs.close();
-      stmt.close();
-      c.close();
-      
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-    }
-    return ret;
-  }
-  
-  /** 
-   * @param idResenia
-   * @return boolean
-   */
-  public boolean reseniaExiste(int idResenia){
-    return devolverReseniaViaId(idResenia)!=null ? true : false;
-  }
- 
-  /** 
-   * @param id
-   */
-  @Override
-  public void aprobarReseniaViaId(int id) {
-    try (Connection c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db")) {
-      Class.forName("org.sqlite.JDBC");
-      c.setAutoCommit(false);
-      System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando aprobar reseña con ID: " + id);
-      
-      String sql = "UPDATE RESENIAS SET Aprobado = 1 WHERE ID = ?";
-      try (PreparedStatement pstmt = c.prepareStatement(sql)) {
-        pstmt.setInt(1, id);
-        int filasActualizadas = pstmt.executeUpdate();
+        ret = new Resena(
+        Factory.getUsuariosFinalDAO().devolverUsuarioFinalViaId(rs.getInt("Id_Usuario")),
+        Factory.getPeliculasDAO().devolverPeliculaViaId(rs.getInt("Id_Pelicula")),
+        rs.getInt("Puntuacion"),
+        rs.getString("Comentario"));
         
-        if (filasActualizadas == 0) {
-          System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró reseña con ID " + id);
-        } else {
-          System.out.println("PlataformaTDL2 - ReseniasDAO - Reseña aprobada correctamente");
-        }
+        rs.close();
+        stmt.close();
+        c.close();
+        
+      } catch ( Exception e ) {
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
       }
-      
-      c.commit();
-    } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      return ret;
     }
+    
+    /** 
+    * @param idResenia
+    * @return boolean
+    */
+    public boolean reseniaExiste(int idResenia){
+      return devolverReseniaViaId(idResenia)!=null ? true : false;
+    }
+    
+    /** 
+    * @param id
+    */
+    @Override
+    public void aprobarReseniaViaId(int id) {
+      try (Connection c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db")) {
+        Class.forName("org.sqlite.JDBC");
+        c.setAutoCommit(false);
+        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando aprobar reseña con ID: " + id);
+        
+        String sql = "UPDATE RESENIAS SET Aprobado = 1 WHERE ID = ?";
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+          pstmt.setInt(1, id);
+          int filasActualizadas = pstmt.executeUpdate();
+          
+          if (filasActualizadas == 0) {
+            System.out.println("PlataformaTDL2 - ReseniasDAO - No se encontró reseña con ID " + id);
+          } else {
+            System.out.println("PlataformaTDL2 - ReseniasDAO - Reseña aprobada correctamente");
+          }
+        }
+        
+        c.commit();
+      } catch (Exception e) {
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      }
+    }
+    
+    @Override
+    public int devolverIdViaUsuarioYPelicula(UsuarioFinal usuario, Pelicula pelicula) {
+      int idEncontrada = 0;
+      int idUsuario = 0;
+      int idPelicula = 0;
+      Connection c = null;
+      if (Factory.getUsuariosFinalDAO().existeUsuario(usuario) && Factory.getPeliculasDAO().existePelicula(pelicula)){
+        idUsuario = Factory.getUsuariosFinalDAO().devolverIdUsuarioFinal(usuario);
+        idPelicula = Factory.getPeliculasDAO().encontrarIdPelicula(pelicula);
+      }
+      else
+        return 0;
+      
+      try {
+        Class.forName("org.sqlite.JDBC");
+        c = DriverManager.getConnection("jdbc:sqlite:BaseDeDatos.db");
+        c.setAutoCommit(false);
+        System.out.println("\"PlataformaTDL2 - ReseniasDAO - Intentando encontrar id del elemento");
+        
+        String sql = "SELECT ID FROM RESENIAS WHERE ID_USUARIO=? AND ID_PELICULA=?";
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
+          pstmt.setInt(1, idUsuario);
+          pstmt.setInt(2, idPelicula);
+          
+          ResultSet rs = pstmt.executeQuery();
+          if (rs.next()) {
+            idEncontrada = rs.getInt("ID");
+          }
+          rs.close();
+        }
+        c.close();
+      } catch ( Exception e ) {
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      }
+      return idEncontrada;
+    }
+    
+    @Override
+    public boolean reseniaExiste(UsuarioFinal usuario, Pelicula pelicula) {
+      return devolverIdViaUsuarioYPelicula(usuario, pelicula)>0;
+    }
+    
   }
-  
-}
