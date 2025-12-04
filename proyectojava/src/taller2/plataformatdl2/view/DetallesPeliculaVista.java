@@ -35,8 +35,8 @@ public class DetallesPeliculaVista extends JDialog {
         lblPoster.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 
         // Cargamos la imagen desde la URL de la API
-        if (peli.getDireccionArchivo() != null && peli.getDireccionArchivo().startsWith("http")) {
-            cargarImagenDesdeUrl(lblPoster, peli.getDireccionArchivo());
+        if (peli.getMetadatos().getUrlPoster() != null && peli.getMetadatos().getUrlPoster().startsWith("http")) {
+            cargarImagenDesdeUrl(lblPoster, peli.getMetadatos().getUrlPoster());
         } else {
             lblPoster.setText("Sin imagen");
         }
