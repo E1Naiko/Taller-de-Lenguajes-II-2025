@@ -23,6 +23,8 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarListaABd;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
+import taller2.plataformatdl2.Utilities.ComparadorTopRating;
+import taller2.plataformatdl2.Utilities.ComparadorUsuarioPorNombre;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 import taller2.plataformatdl2.view.DetallesPeliculaVista;
@@ -37,10 +39,10 @@ public class MenuPrincipalController implements ActionListener {
     private List<Pelicula> peliculasVistas;  
     private int cargasActuales = 0;
     
-    public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista, List<Pelicula> cachPeliculas) { 
+    public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista, List<Pelicula> cachePeliculas) { 
         this.usuario = usuario;
         this.vista = vista;
-        this.cachePeliculas = cachPeliculas;
+        this.cachePeliculas = cachePeliculas;
         inicializar(); 
     }
     
