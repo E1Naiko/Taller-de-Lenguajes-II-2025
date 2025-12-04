@@ -10,6 +10,9 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
+import taller2.plataformatdl2.excepciones.ExcepcionPropiaDB;
+import taller2.plataformatdl2.excepciones.ExcepcionPropiaCamposVacios;
+import taller2.plataformatdl2.excepciones.ExcepcionPropiaValidacion;
 
 public class CargaController {
     private CargaVista vista;
@@ -49,22 +52,25 @@ public class CargaController {
                 // Fallback por si no lo encontramos (para que no explote la app)
                 if (usuarioCompleto == null) {
                     System.err.println("CARGA - No se encontró el usuario real. Usando temporal.");
-                    // Creamos una instancia anónima o concreta básica para proseguir
+                    // Creamos una instancia anónima para proseguir
                     usuarioCompleto = new Usuario(nombreUsuario, "Temporal", 0, nombreUsuario + "@temp.com", "1234") {};
                 }
                 userFinal = usuarioCompleto;
-                
                 // Espera a que se termine la carga de peliculas en memoria para pasar a siguiente pantalla
                 SwingUtilities.invokeLater(() -> {
                     cargaLista = new ImportarCSVaLista(this);
                     lista = cargaLista.getPeliculasParseadas();
                     new Thread(cargaLista).start(); // Cuando termine, llamará a onCSVTerminado()
-                });
-                
+                });             
             } catch (Exception e) {
                 e.printStackTrace();
-                // Si explota, cerramos la vista para no dejar al user colgado
-                SwingUtilities.invokeLater(() -> vista.dispose());
+             // Si explota, cerramos la vista para no dejar al user colgado
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        vista.dispose();
+                    }
+                });
             }
         });
         worker.start();
@@ -75,10 +81,12 @@ public class CargaController {
         System.out.println("CargaController - Importación CSV terminada.");
         vista.dispose();
         
-        SwingUtilities.invokeLater(() -> {
-            // Aquí poné lo que querías ejecutar luego de la línea 57
-            MenuPrincipalVista menuVista = new MenuPrincipalVista();
-            new MenuPrincipalController(userFinal, menuVista, lista);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                MenuPrincipalVista menuVista = new MenuPrincipalVista();
+                new MenuPrincipalController(userFinal, menuVista, lista);
+            }
         });
     }
 }
