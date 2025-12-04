@@ -96,10 +96,9 @@ public class MenuPrincipalController implements ActionListener {
         Thread worker = new Thread(() -> {
             try {
                 if (cachePeliculas != null) {
-                    List<Pelicula> copia = new ArrayList<Pelicula>(cachePeliculas);
-                    Collections.shuffle(copia); // Se mezcla                 
+                    Collections.shuffle(cachePeliculas); // Se mezcla                 
                     // Agarramos 10 randoms
-                    cachePeliculas = copia.stream().filter(p->p!=null).limit(10).collect(Collectors.toList());                 
+                    peliculasVistas = cachePeliculas.stream().filter(p->p!=null).limit(10).collect(Collectors.toList());                 
                     SwingUtilities.invokeLater(() -> {
                         actualizarVistaConListaVisible();
                         actualizarCargando(false);
