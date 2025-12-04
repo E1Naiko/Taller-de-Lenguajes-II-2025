@@ -95,9 +95,8 @@ public class MenuPrincipalController implements ActionListener {
         actualizarCargando(true);
         Thread worker = new Thread(() -> {
             try {
-                List<Pelicula> listaEntera = ImportarCSVaLista.getPeliculasParseadas(); // Agarramos todas
-                if (listaEntera != null) {
-                    List<Pelicula> copia = new ArrayList<>(listaEntera);
+                if (cachePeliculas != null) {
+                    List<Pelicula> copia = new ArrayList<Pelicula>(cachePeliculas);
                     Collections.shuffle(copia); // Se mezcla                 
                     // Agarramos 10 randoms
                     cachePeliculas = copia.stream().filter(p->p!=null).limit(10).collect(Collectors.toList());                 
@@ -278,13 +277,16 @@ public class MenuPrincipalController implements ActionListener {
         if (in && cargasActuales==0){
             cargasActuales++;
             vista.setCargando(true);
+            vista.setEstadoBotones(false);
         }
         else{
             if (cargasActuales>0){
                 cargasActuales--;
             }
-            else
+            else{
                 vista.setCargando(false);
+                vista.setEstadoBotones(true);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import javax.imageio.ImageIO;
@@ -22,11 +23,12 @@ public class MenuPrincipalVista extends JFrame {
     private JButton btnBuscar;
     private JLabel lblCargando;
     private JLabel lblUsuarioNombre; 
+    private List<JButton> botonesCalificar = new ArrayList<JButton>(); // Para trackear todos los botones
     
     // Botones para ordenar (headers de la tabla)
     private JButton btnOrderTitulo;
     private JButton btnOrderGenero;
-
+    
     // COLORES TEMA (Todo clarito ahora)
     private final Color COLOR_FONDO = Color.WHITE;
     private final Color COLOR_TEXTO = new Color(50, 50, 50);
@@ -35,7 +37,7 @@ public class MenuPrincipalVista extends JFrame {
     private final Color COLOR_HOVER_FILA = new Color(245, 245, 255); // Colorcito suave al pasar el mouse (opcional)
     private static final String PATH_LOGO = "proyectojava/img/Logotipo1.png";
     private static final String PATH_LOADING = "proyectojava/img/TL2 Perrito de carga.gif";
-
+    
     public MenuPrincipalVista() {
         setTitle("TDL2 - Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +48,7 @@ public class MenuPrincipalVista extends JFrame {
         contentPane.setBorder(null);
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
-
+        
         // --- HEADER (ARRIBA) ---
         JPanel panelHeader = new JPanel();
         panelHeader.setBackground(COLOR_FONDO);
@@ -55,7 +57,7 @@ public class MenuPrincipalVista extends JFrame {
         panelHeader.setPreferredSize(new Dimension(getWidth(), 70));
         contentPane.add(panelHeader, BorderLayout.NORTH);
         panelHeader.setLayout(new BorderLayout(20, 0));
-
+        
         // 1. IZQUIERDA: LOGO + BIENVENIDA
         JPanel panelLogo = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         panelLogo.setBackground(COLOR_FONDO);      
@@ -67,7 +69,7 @@ public class MenuPrincipalVista extends JFrame {
         lblBienvenida.setForeground(COLOR_TEXTO);
         panelLogo.add(lblBienvenida);    
         panelHeader.add(panelLogo, BorderLayout.WEST);
-
+        
         // 2. CENTRO: BUSCADOR
         JPanel panelBuscador = new JPanel();
         panelBuscador.setBackground(COLOR_FONDO);
@@ -82,7 +84,7 @@ public class MenuPrincipalVista extends JFrame {
         estilarBotonAzul(btnBuscar);
         panelBuscador.add(btnBuscar);     
         panelHeader.add(panelBuscador, BorderLayout.CENTER);
-
+        
         // 3. DERECHA: USUARIO + CERRAR SESIÓN
         JPanel panelUser = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
         panelUser.setBackground(COLOR_FONDO);      
@@ -94,7 +96,7 @@ public class MenuPrincipalVista extends JFrame {
         estilarBotonAzul(btnCerrarSesion);
         panelUser.add(btnCerrarSesion);    
         panelHeader.add(panelUser, BorderLayout.EAST);
-
+        
         // --- CENTRO: TABLA DE PELÍCULAS ---
         // Usaremos un panel principal que contenga los Headers y el Scroll
         JPanel panelCentro = new JPanel(new BorderLayout());
@@ -105,7 +107,7 @@ public class MenuPrincipalVista extends JFrame {
         panelHeaders.setBackground(new Color(240, 240, 240));
         panelHeaders.setBorder(new MatteBorder(0, 0, 2, 0, COLOR_AZUL_PRINCIPAL));
         panelHeaders.setPreferredSize(new Dimension(getWidth(), 40));
-
+        
         // Usamos GridBagLayout para controlar anchos de columnas
         panelHeaders.setLayout(new GridBagLayout());
         
@@ -124,7 +126,7 @@ public class MenuPrincipalVista extends JFrame {
         agregarHeaderColumna(panelHeaders, "Resumen", 3, 0.4);
         agregarHeaderColumna(panelHeaders, "Acciones", 4, 0.15);
         panelCentro.add(panelHeaders, BorderLayout.NORTH);
-
+        
         // B. LISTA (SCROLL)
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBorder(null);
@@ -137,7 +139,7 @@ public class MenuPrincipalVista extends JFrame {
         scrollPane.setViewportView(panelListaPeliculas);
         panelCentro.add(scrollPane, BorderLayout.CENTER);      
         contentPane.add(panelCentro, BorderLayout.CENTER);
-
+        
         // --- BOTTOM (ABAJO): LOADING ---
         JPanel panelBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelBottom.setBackground(COLOR_FONDO);      
@@ -147,20 +149,26 @@ public class MenuPrincipalVista extends JFrame {
         lblCargando.setVisible(false);      
         panelBottom.add(lblCargando);
         contentPane.add(panelBottom, BorderLayout.SOUTH);
+        
+        
+        // Nos aseguramos que todos los botones arranquen desactivados hasta que termine la carga
+        setEstadoBotones(false);
     }
-
+    
     // --- MÉTODOS PÚBLICOS ---
     public void setNombreUsuario(String nombre) {
         lblUsuarioNombre.setText("Hola, " + nombre);
     }
-
+    
     public void setCargando(boolean cargando) {
         lblCargando.setVisible(cargando);
     }
-
+    
     public void cargarPeliculas(List<Pelicula> peliculas, ActionListener listener, Function<Pelicula, Boolean> checkYaCalifico) {
         System.err.println("Menu PrincipalVista - cargarPeliculas - " + peliculas.toString());
         panelListaPeliculas.removeAll();
+        botonesCalificar.clear();
+        
         if (peliculas == null || peliculas.isEmpty()) {
             JLabel lblVacio = new JLabel("No se encontraron resultados.");
             lblVacio.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -183,7 +191,7 @@ public class MenuPrincipalVista extends JFrame {
         panelListaPeliculas.revalidate();
         panelListaPeliculas.repaint();
     }
-
+    
     // Crea una FILA de la tabla para una película
     private JPanel crearFilaPelicula(Pelicula p, ActionListener listener, boolean yaCalifico) {
         JPanel fila = new JPanel();
@@ -194,7 +202,7 @@ public class MenuPrincipalVista extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(0, 5, 0, 5); // Margen entre columnas
-
+        
         // 1. POSTER (Imagen chica)
         JLabel lblImg = new JLabel();
         lblImg.setPreferredSize(new Dimension(60, 90));
@@ -211,7 +219,7 @@ public class MenuPrincipalVista extends JFrame {
         gbc.gridx = 0; 
         gbc.weightx = 0.1;
         fila.add(lblImg, gbc);
-
+        
         // Datos seguros
         String titulo = "Desconocido";
         String genero = "Varios";
@@ -244,7 +252,7 @@ public class MenuPrincipalVista extends JFrame {
         gbc.gridx = 3;
         gbc.weightx = 0.4;
         fila.add(txtResumen, gbc);
-
+        
         // 5. ACCIONES (Botón Calificar)
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelAcciones.setOpaque(false);    
@@ -260,6 +268,7 @@ public class MenuPrincipalVista extends JFrame {
             btnCalificar.putClientProperty("PELICULA_DATA", p);
             btnCalificar.setActionCommand("CALIFICAR");
             btnCalificar.addActionListener(listener);
+            botonesCalificar.add(btnCalificar);
         }      
         panelAcciones.add(btnCalificar); 
         gbc.gridx = 4;
@@ -267,7 +276,7 @@ public class MenuPrincipalVista extends JFrame {
         fila.add(panelAcciones, gbc);
         return fila;
     }
-
+    
     // --- MÉTODO NUEVO PARA CARGAR POSTERS SIN TRABAR TODO ---
     private void cargarPosterDesdeUrl(JLabel label, String urlString) {
         // Lanzamos un mini hilo solo para esta imagen
@@ -293,7 +302,7 @@ public class MenuPrincipalVista extends JFrame {
             }
         }).start();
     }
-
+    
     // --- UTILS LAYOUT ---
     
     private void agregarHeaderColumna(JPanel panel, String texto, int gridx, double weightx) {
@@ -312,7 +321,7 @@ public class MenuPrincipalVista extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         panel.add(comp, gbc);
     }
-
+    
     private void estilarBotonAzul(JButton btn) {
         btn.setBackground(COLOR_AZUL_PRINCIPAL);
         btn.setForeground(Color.WHITE);
@@ -330,7 +339,7 @@ public class MenuPrincipalVista extends JFrame {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         // Icono o texto para indicar que se puede clickear
     }
-
+    
     private void cargarImagenEnLabel(JLabel label, String path, int w, int h) {
         try {
             File imgFile = new File(path);
@@ -338,14 +347,14 @@ public class MenuPrincipalVista extends JFrame {
                 ImageIcon icon = new ImageIcon(path);
                 Image img = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
                 if (path.endsWith(".gif")) {
-                     img = icon.getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT);
+                    img = icon.getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT);
                 }
                 label.setIcon(new ImageIcon(img));
                 label.setText("");
             }
         } catch (Exception e) {}
     }
-
+    
     public void addListeners(ActionListener listener) {
         btnCerrarSesion.setActionCommand("LOGOUT");
         btnCerrarSesion.addActionListener(listener);
@@ -363,8 +372,40 @@ public class MenuPrincipalVista extends JFrame {
     public String getTextoBusqueda() {
         return txtBusqueda.getText();
     }
-
+    
     public void mostrarMensaje(String msg) {
         JOptionPane.showMessageDialog(this, msg);
+    }
+    
+    
+    public void setEstadoBotones(boolean estado){
+        btnBuscar.setEnabled(estado);
+        for (JButton btn : botonesCalificar) {
+            btn.setEnabled(estado);
+        }
+        if (estado){
+            // boton buscar
+            btnBuscar.setBackground(COLOR_AZUL_PRINCIPAL);
+            btnBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            // botones calificar
+            for (JButton btn : botonesCalificar) {
+                if (!btn.getText().contains("✓")) { // No activar si ya fue calificada
+                    btn.setBackground(COLOR_AZUL_PRINCIPAL);
+                    btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                }
+            }
+            
+        } else {
+            // boton buscar
+            btnBuscar.setBackground(new Color(200, 200, 200));
+            btnBuscar.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            
+            // botones calificar
+            for (JButton btn : botonesCalificar) {
+                btn.setBackground(new Color(230, 230, 230));
+                btn.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        }
     }
 }
