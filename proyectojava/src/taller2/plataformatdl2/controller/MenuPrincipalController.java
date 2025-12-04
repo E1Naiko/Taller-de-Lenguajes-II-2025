@@ -114,6 +114,7 @@ public class MenuPrincipalController implements ActionListener {
     
     // Metodo de la busqueda de peliculas
     private void filtrarCatalogo() {
+        boolean auxPerrito = true;
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
         if (termino.isEmpty()){
             vista.mostrarMensaje("Escribir algo para buscar...");
@@ -125,16 +126,15 @@ public class MenuPrincipalController implements ActionListener {
                 ConsultaPeliculasOMDb coneccionApi = new ConsultaPeliculasOMDb();
                 Pelicula peliApi = coneccionApi.buscarPeliculaApi(termino);
                 
-                SwingUtilities.invokeLater(() -> {
+                if (peliApi != null) {
+                    // ABRIMOS LA VENTANA NUEVA (JDialog)
+                    mostrarVentanaDetalle(peliApi);
+                } else {
                     actualizarCargando(false); // Apagamos el perrito
                     
-                    if (peliApi != null) {
-                        // ABRIMOS LA VENTANA NUEVA (JDialog)
-                        mostrarVentanaDetalle(peliApi);
-                    } else {
-                        vista.mostrarMensaje("No encontré esa peli ni abajo de las piedras.");
-                    }
-                });
+                    
+                    vista.mostrarMensaje("No encontré esa peli ni abajo de las piedras.");
+                }
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,10 +145,14 @@ public class MenuPrincipalController implements ActionListener {
             }
         });
         apiWorker.start();
+        if (auxPerrito) actualizarCargando(false); // Apagamos el perrito
+        
     }
     
     // --- Para mostrar pantalla del resultado de la busqueda ---
     private void mostrarVentanaDetalle(Pelicula p) {
+        actualizarCargando(false); // Apagamos el perrito
+        
         // Creamos el dialog pasándole la vista principal como padre
         DetallesPeliculaVista dialog = new DetallesPeliculaVista(vista, p);
         // Le damos acción al botón CONTINUAR

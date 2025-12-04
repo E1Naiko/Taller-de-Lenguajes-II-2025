@@ -6,7 +6,7 @@ import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.controller.MenuPrincipalController;
 
 public class ImportarListaABd implements Runnable{
-    private int DEBUG_LIMITE = 0;
+    private int DEBUG_LIMITE = 100;
     private MenuPrincipalController menuPrincipal;
     private List<Pelicula> peliculasParseadas;
     
