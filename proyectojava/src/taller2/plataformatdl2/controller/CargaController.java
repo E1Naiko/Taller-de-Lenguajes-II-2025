@@ -81,12 +81,11 @@ public class CargaController {
         System.out.println("CargaController - Importación CSV terminada.");
         vista.dispose();
         
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                MenuPrincipalVista menuVista = new MenuPrincipalVista();
-                new MenuPrincipalController(userFinal, menuVista, lista);
-            }
+        SwingUtilities.invokeLater(() -> {
+            // Aquí poné lo que querías ejecutar luego de la línea 57
+            MenuPrincipalVista menuVista = new MenuPrincipalVista();
+            
+            new MenuPrincipalController(userFinal, menuVista, lista);
         });
     }
 }
