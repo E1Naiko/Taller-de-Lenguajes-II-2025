@@ -20,6 +20,7 @@ import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Resena;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
+import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarListaABd;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorGenero;
 import taller2.plataformatdl2.Utilities.ComparadorPeliculaPorTitulo;
 import taller2.plataformatdl2.view.LoginVista;
@@ -34,10 +35,12 @@ public class MenuPrincipalController implements ActionListener {
     private Usuario usuario;
     private List<Pelicula> cachePeliculas;  
     private List<Pelicula> peliculasVistas;  
-
-    public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista) { 
+    private int cargasActuales = 0;
+    
+    public MenuPrincipalController(Usuario usuario, MenuPrincipalVista vista, List<Pelicula> cachPeliculas) { 
         this.usuario = usuario;
         this.vista = vista;
+        this.cachePeliculas = cachPeliculas;
         inicializar(); 
     }
     
@@ -48,15 +51,17 @@ public class MenuPrincipalController implements ActionListener {
         vista.addListeners(this);
         actualizarCatalogo();
         vista.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            ImportarListaABd cargaLista = new ImportarListaABd(this, cachePeliculas);
+            new Thread(cargaLista).start();
+        });
     }
     
     private void actualizarCatalogo() {
         vista.setCargando(true);
         Thread worker = new Thread(() -> { // Para que Cargue las peliculas en segundo plano
             try {
-                Thread.sleep(800);  
                 try {
-                    cachePeliculas = ImportarCSVaLista.getPeliculasParseadas();
                     if (cachePeliculas != null) {
                         peliculasVistas = cachePeliculas.stream()
                         .filter(p -> p!= null)
@@ -67,7 +72,7 @@ public class MenuPrincipalController implements ActionListener {
                     }
                     SwingUtilities.invokeLater(() -> {
                         actualizarVistaConListaVisible();
-                        vista.setCargando(false);
+                        actualizarCargando(false);
                         // Por si tira null tiramos un mensaje
                         if (cachePeliculas == null) {
                             System.err.println("Warning: Factory.getListaPeliculas() devolvió NULL.");
@@ -79,15 +84,15 @@ public class MenuPrincipalController implements ActionListener {
                 }                
             } catch (Exception e) {
                 e.printStackTrace();
-                SwingUtilities.invokeLater(() -> vista.setCargando(false));
+                SwingUtilities.invokeLater(() -> actualizarCargando(false));
             }
         });      
         worker.start();
     }
-
+    
     // Metodo para randomizar las peliculas la hacer click en continuar
     private void randomizarCatalogo() {
-        vista.setCargando(true);
+        actualizarCargando(true);
         Thread worker = new Thread(() -> {
             try {
                 List<Pelicula> listaEntera = ImportarCSVaLista.getPeliculasParseadas(); // Agarramos todas
@@ -98,7 +103,7 @@ public class MenuPrincipalController implements ActionListener {
                     cachePeliculas = copia.stream().filter(p->p!=null).limit(10).collect(Collectors.toList());                 
                     SwingUtilities.invokeLater(() -> {
                         actualizarVistaConListaVisible();
-                        vista.setCargando(false);
+                        actualizarCargando(false);
                         vista.mostrarMensaje("¡Catálogo randomizado!");
                     });
                 }
@@ -106,14 +111,14 @@ public class MenuPrincipalController implements ActionListener {
         });
         worker.start();
     }
-
+    
     // Metodo de la busqueda de peliculas
-   private void filtrarCatalogo() {
+    private void filtrarCatalogo() {
         String termino = vista.getTextoBusqueda().toLowerCase().trim();
         if (termino.isEmpty()){
             vista.mostrarMensaje("Escribir algo para buscar...");
         }
-        vista.setCargando(true); // Aca ponemos el perrito mientra busca la pelicula
+        actualizarCargando(true); // Aca ponemos el perrito mientra busca la pelicula
         Thread apiWorker = new Thread(() -> {
             try {
                 // Buscamos en la API
@@ -121,7 +126,7 @@ public class MenuPrincipalController implements ActionListener {
                 Pelicula peliApi = coneccionApi.buscarPeliculaApi(termino);
                 
                 SwingUtilities.invokeLater(() -> {
-                    vista.setCargando(false); // Apagamos el perrito
+                    actualizarCargando(false); // Apagamos el perrito
                     
                     if (peliApi != null) {
                         // ABRIMOS LA VENTANA NUEVA (JDialog)
@@ -134,14 +139,14 @@ public class MenuPrincipalController implements ActionListener {
             } catch (Exception e) {
                 e.printStackTrace();
                 SwingUtilities.invokeLater(() -> {
-                    vista.setCargando(false);
+                    actualizarCargando(false);
                     vista.mostrarMensaje("Error de conexión con la API.");
                 });
             }
         });
         apiWorker.start();
     }
-
+    
     // --- Para mostrar pantalla del resultado de la busqueda ---
     private void mostrarVentanaDetalle(Pelicula p) {
         // Creamos el dialog pasándole la vista principal como padre
@@ -167,7 +172,7 @@ public class MenuPrincipalController implements ActionListener {
         Collections.sort(peliculasVistas, new ComparadorPeliculaPorGenero());
         actualizarVistaConListaVisible();
     }
-
+    
     private void actualizarVistaConListaVisible() {
         SwingUtilities.invokeLater(() -> {
             vista.cargarPeliculas(peliculasVistas, this, p -> {          
@@ -183,7 +188,7 @@ public class MenuPrincipalController implements ActionListener {
                 }
                 return false; 
             });
-            vista.setCargando(false);
+            actualizarCargando(false);
         });
     }
     
@@ -262,6 +267,20 @@ public class MenuPrincipalController implements ActionListener {
                 }
             }
             break;
+        }
+    }
+    
+    public void actualizarCargando(boolean in){
+        if (in && cargasActuales==0){
+            cargasActuales++;
+            vista.setCargando(true);
+        }
+        else{
+            if (cargasActuales>0){
+                cargasActuales--;
+            }
+            else
+                vista.setCargando(false);
         }
     }
 }

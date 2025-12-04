@@ -17,13 +17,13 @@ public class ImportarListaABd implements Runnable{
     
     public void run(){
         System.out.println("ImportarListaABd - Pasando lista a BD");
-        //menuPrincipal.setCargando(true);
+        menuPrincipal.actualizarCargando(true);
         Factory.getPeliculasDAO().setImprimirDebug(false);
         Factory.getMetadatosDAO().setImprimirDebug(false);
         pasarListaPeliculas_a_BD(peliculasParseadas);
         Factory.getPeliculasDAO().setImprimirDebug(true);
         Factory.getMetadatosDAO().setImprimirDebug(true);
-        //menuPrincipal.setCargando(false);
+        menuPrincipal.actualizarCargando(false);
         
         System.out.println("ImportarListaABd - Carga terminada");
     }

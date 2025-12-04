@@ -201,7 +201,7 @@ public class MenuPrincipalVista extends JFrame {
         lblImg.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         lblImg.setText("...");
         // aca trae el URL de la imagen de los poster desde la APi
-        String urlImagen = p.getDireccionArchivo();
+        String urlImagen = p.getMetadatos().getUrlPoster();
         if (urlImagen != null && urlImagen.startsWith("http")) {
             cargarPosterDesdeUrl(lblImg, urlImagen);
         } else {

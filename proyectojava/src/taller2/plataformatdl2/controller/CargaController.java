@@ -7,13 +7,16 @@ import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.Usuario;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
+import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
 
 public class CargaController {
     private CargaVista vista;
     private String nombreUsuario; // Es el user/email que viene del Login
-    Usuario userFinal;
+    private Usuario userFinal;
+    private ImportarCSVaLista cargaLista;
+    private List<Pelicula> lista = null;
     
     public CargaController(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
@@ -51,13 +54,11 @@ public class CargaController {
                 }
                 userFinal = usuarioCompleto;
                 
-                
-                
-                
-                // --- TRANSICIÓN AL MENÚ ---
+                // Espera a que se termine la carga de peliculas en memoria para pasar a siguiente pantalla
                 SwingUtilities.invokeLater(() -> {
-                    ImportarCSVaLista carga = new ImportarCSVaLista(this);
-                    new Thread(carga).start(); // Cuando termine, llamará a onCSVTerminado()
+                    cargaLista = new ImportarCSVaLista(this);
+                    lista = cargaLista.getPeliculasParseadas();
+                    new Thread(cargaLista).start(); // Cuando termine, llamará a onCSVTerminado()
                 });
                 
             } catch (Exception e) {
@@ -77,7 +78,7 @@ public class CargaController {
         SwingUtilities.invokeLater(() -> {
             // Aquí poné lo que querías ejecutar luego de la línea 57
             MenuPrincipalVista menuVista = new MenuPrincipalVista();
-            new MenuPrincipalController(userFinal, menuVista);
+            new MenuPrincipalController(userFinal, menuVista, lista);
         });
     }
 }
