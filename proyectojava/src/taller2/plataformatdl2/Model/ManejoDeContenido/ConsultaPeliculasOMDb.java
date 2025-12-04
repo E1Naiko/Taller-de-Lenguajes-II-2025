@@ -86,7 +86,9 @@ public class ConsultaPeliculasOMDb {
             return pelicula;
         }
         
-        private Genero tomarPrimerGenero(String entrada){ // TODO - Por alguna razon no carga correctamente en el objeto peliculas, pero como es un detalle relativamente menor lo dejamos en lista de espera
+        private Genero tomarPrimerGenero(String entrada){
+            // TODO - Por alguna razon no carga correctamente en el objeto peliculas,
+            // pero como es un detalle relativamente menor lo dejamos en lista de espera
             Genero genero;
             String[] generosSeparados = entrada.split(",");
             
