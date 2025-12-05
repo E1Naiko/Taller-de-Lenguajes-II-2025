@@ -82,7 +82,12 @@ public class MenuPrincipalVista extends JFrame {
         panelBuscador.add(txtBusqueda);
         btnBuscar = new JButton("Buscar");
         estilarBotonAzul(btnBuscar);
-        panelBuscador.add(btnBuscar);     
+        panelBuscador.add(btnBuscar); 
+        // Perrito Cargando al lado de buscar
+        lblCargando = new JLabel(); 
+        cargarImagenEnLabel(lblCargando, PATH_LOADING, 30, 30); 
+        lblCargando.setVisible(false);
+        panelBuscador.add(lblCargando);    
         panelHeader.add(panelBuscador, BorderLayout.CENTER);
         
         // 3. DERECHA: USUARIO + CERRAR SESIÓN
@@ -139,17 +144,6 @@ public class MenuPrincipalVista extends JFrame {
         scrollPane.setViewportView(panelListaPeliculas);
         panelCentro.add(scrollPane, BorderLayout.CENTER);      
         contentPane.add(panelCentro, BorderLayout.CENTER);
-        
-        // --- BOTTOM (ABAJO): LOADING ---
-        JPanel panelBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelBottom.setBackground(COLOR_FONDO);      
-        lblCargando = new JLabel("Cargando catálogo...");
-        lblCargando.setForeground(Color.GRAY);
-        cargarImagenEnLabel(lblCargando, PATH_LOADING, 40, 40);
-        lblCargando.setVisible(false);      
-        panelBottom.add(lblCargando);
-        contentPane.add(panelBottom, BorderLayout.SOUTH);
-        
         
         // Nos aseguramos que todos los botones arranquen desactivados hasta que termine la carga
         setEstadoBotones(false);
