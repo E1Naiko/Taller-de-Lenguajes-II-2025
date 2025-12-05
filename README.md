@@ -1,7 +1,15 @@
 # Taller de Lenguajes II 2025
 Integrantes: Alam Meza y Nicolás Peñalba
 
-## Convenciones
+## Convenciones entregable 3
+ - Hicimos uso de la libreria [OpenCSV](https://mvnrepository.com/artifact/com.opencsv/opencsv "OpenCSV") para el manejo del CSV.
+ - Separamos la carga de datos en 2 etapas para reducir el tiempo de espera del usuario y aprovechar mejor del procesamiento multihilo.
+  - 1) ImportarCSVaLista ->  Cargar los datos del CSV en memoria utilizando una lista.
+   - 2) ImportarListaABd -> Cargar los datos en la lista resultante a la BD (evitando duplicados).
+ - Se deshabilita tanto la carga de calificaciones como la busqueda en api mientras se este cargando elementos en la BD.
+ - En primer carga, se muestran el top 10 peliculas con mejor rating encontradas en el CSV (por medio de la lista cargada en memoria).
+
+## Convenciones entregable 2
  - En el manejo de usuario: en un futuro pensamos implementar los géneros preferidos por el usuario y el historial en tablas individuales en la BD, asi que por el momento no lo manejamos.
   - En metadatos respetando el UML se considera arrays el elenco y subtítulo pero en el código usamos una lista temporal y luego cambiamos a Array.
   - En Pelicula la direccion de archivo es un string lo dejamos así ya que está fuera del alcance del entregable. Tenemos planeado guardar dichas direcciones en su correspondiente tabla de la BD.
