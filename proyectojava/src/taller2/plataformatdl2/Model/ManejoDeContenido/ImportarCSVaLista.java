@@ -129,7 +129,7 @@ public class ImportarCSVaLista implements Runnable{
     
     
     
-    public static List<Pelicula> getPeliculasParseadas() {
+    public List<Pelicula> getPeliculasParseadas() {
         return peliculasParseadas;
     }
     

@@ -6,7 +6,6 @@ import java.util.List;
 
 import taller2.DB.DAO.Factory;
 import taller2.DB.DAO.ReseniasDAO;
-import taller2.DB.DAO.UsuariosFinalDAO;
 import taller2.plataformatdl2.Model.ManejoDeContenido.*;
 import taller2.plataformatdl2.Model.ManejoDeUsuarios.UsuarioFinal;
 

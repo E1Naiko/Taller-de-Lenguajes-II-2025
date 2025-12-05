@@ -251,9 +251,9 @@ public class MenuResenia {
         
         
         System.out.println("Ingresar Lista Preferida: - ATENCION LISTA PREFERIDA NO IMPLEMENTADO EN BD, LO SALTEAMOS");
-        String listaPreferida = "ListaVacia"; //FIXME - Tambien como en Historial
+        String listaPreferida = "ListaVacia"; //FIXME - Tambien como en Historial - EXCEDE EL TP
         System.out.println("Ingresar Historial: - ATENCION HISTORIAL NO IMPLEMENTADO EN BD, LO SALTEAMOS");
-        String historial = "ListaVacia"; // TODO - Por el momento lo tratamos como string luego cambiamos a lista
+        String historial = "ListaVacia"; // TODO - Por el momento lo tratamos como string luego cambiamos a lista - EXCEDE EL TP
         
         UsuarioFinal nuevoUsuario = new UsuarioFinal(nombre,apellido,dni,email,contrasena,idioma,generosPreferidos,listaPreferida,historial);
         return nuevoUsuario;
@@ -521,8 +521,6 @@ public class MenuResenia {
             scanner.nextLine();
         } while (!verificarAudio(audio));
         
-        // FIXME - Replantear el uso de direccionArchivo
-        
         do {
             System.out.println("Ingrese Direccion del Archivo: ");
             direccionArchivo = scanner.next();
@@ -537,7 +535,7 @@ public class MenuResenia {
         } while (genero == null); //null si el género no es válido
         
         Metadatos metadatosPelicula= cargarMetadatos();
-        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero, metadatosPelicula); //TODO Modifique el constructor de Pelicula verificar en el DAO
+        Pelicula nuevaPelicula = new Pelicula(calidad, audio, direccionArchivo, genero, metadatosPelicula);
         return nuevaPelicula;
     }
     
@@ -726,7 +724,7 @@ public class MenuResenia {
             }
         } while (seleccion == -1);
         
-        //Contenido contenido = null; // TODO - No hay tabla de contenidos implementada, solo hace falta asociar la di
+        //Contenido contenido = null; // TODO - No hay tabla de contenidos implementada, solo hace falta asociar la direccion
         
         int puntuacion = 0;
         do {

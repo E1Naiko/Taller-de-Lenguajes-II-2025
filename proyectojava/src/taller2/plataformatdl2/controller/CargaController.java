@@ -12,9 +12,6 @@ import taller2.plataformatdl2.Model.ManejoDeContenido.ImportarCSVaLista;
 import taller2.plataformatdl2.Model.ManejoDeContenido.Pelicula;
 import taller2.plataformatdl2.view.CargaVista;
 import taller2.plataformatdl2.view.MenuPrincipalVista;
-import taller2.plataformatdl2.excepciones.ExcepcionPropiaDB;
-import taller2.plataformatdl2.excepciones.ExcepcionPropiaCamposVacios;
-import taller2.plataformatdl2.excepciones.ExcepcionPropiaValidacion;
 
 public class CargaController {
     private CargaVista vista;
@@ -42,7 +39,7 @@ public class CargaController {
                     List<UsuarioFinal> listaUsuarios = Factory.getUsuariosFinalDAO().obtenerUsuarios();
                     if (listaUsuarios != null) {
                         for (UsuarioFinal u : listaUsuarios) {
-                            // Comparamos ignorando mayúsculas/minúsculas para evitar quilombos
+                            // Comparamos ignorando mayúsculas/minúsculas para evitar problemas
                             if (u.getEmail().trim().equalsIgnoreCase(nombreUsuario.trim())) {
                                 usuarioCompleto = u;
                                 System.out.println("CARGA - ¡Usuario encontrado en la BD! ID: " + Factory.getUsuariosFinalDAO().devolverIdUsuarioFinal(u));
@@ -54,7 +51,7 @@ public class CargaController {
                 // Fallback por si no lo encontramos (para que no explote la app)
                 if (usuarioCompleto == null) {
                     System.err.println("CARGA - No se encontró el usuario real. Usando temporal.");
-                    // Creamos una instancia anónima para proseguir
+                    // Creamos una instancia anónima para seguir
                     usuarioCompleto = new Usuario(nombreUsuario, "Temporal", 0, nombreUsuario + "@temp.com", "1234") {};
                 }
                 userFinal = usuarioCompleto;
@@ -62,7 +59,7 @@ public class CargaController {
                 SwingUtilities.invokeLater(() -> {
                     cargaLista = new ImportarCSVaLista(this);
                     lista = cargaLista.getPeliculasParseadas();
-                    new Thread(cargaLista).start(); // Cuando termine, llamará a onCSVTerminado()
+                    new Thread(cargaLista).start(); // Cuando termine, llama a onCSVTerminado()
                 });             
             } catch (Exception e) {
                 e.printStackTrace();

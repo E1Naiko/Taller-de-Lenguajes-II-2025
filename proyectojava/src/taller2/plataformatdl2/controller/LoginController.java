@@ -3,9 +3,9 @@ package taller2.plataformatdl2.controller;
 import taller2.DB.DAO.Factory;
 import taller2.plataformatdl2.view.LoginVista;
 import taller2.plataformatdl2.view.RegistroVista;
-import taller2.plataformatdl2.excepciones.ExcepcionPropiaDB;
-import taller2.plataformatdl2.excepciones.ExcepcionPropiaCamposVacios;
-import taller2.plataformatdl2.excepciones.ExcepcionPropiaValidacion;
+import taller2.plataformatdl2.excepciones.ErroresDbException;
+import taller2.plataformatdl2.excepciones.enumErroresDB;
+import taller2.plataformatdl2.excepciones.CamposVaciosException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +38,7 @@ public class LoginController {
             String user = vista.getUsuario();
             String pass = vista.getContrasena();
             if (user.isEmpty() || pass.isEmpty()) {
-                throw new ExcepcionPropiaCamposVacios("Hay campos en blanco, completar");
+                throw new CamposVaciosException();
             }
             @SuppressWarnings("unused")
             boolean existe = false;
@@ -48,11 +48,11 @@ public class LoginController {
                     existe = Factory.getUsuariosFinalDAO().checkUsuarioViaLogin(user, pass);
                 } else {
                     // Mensajito por si la DB no levantó 
-                    throw new ExcepcionPropiaDB("WARN: DAO nulo, simulando login para pruebas...");
+                    throw new ErroresDbException(enumErroresDB.DB_SIN_CONEXION);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new ExcepcionPropiaDB("Error conectando a la base: " + e.getMessage());
+                throw new ErroresDbException(enumErroresDB.DB_ERROR_CONECTANDO);
             }
 
             // Usamos el método checkUsuarioViaLogin del factory que tenemos
@@ -63,13 +63,13 @@ public class LoginController {
                 CargaController carga = new CargaController(user); // Le pasamos el usuario
                 carga.iniciarCarga(); 
             } else {
-                throw new ExcepcionPropiaDB("Usuario o contraseña incorrectos. Intentar de nuevo.");
+                throw new ErroresDbException(enumErroresDB.DB_NO_ENCONTRADO);
             }
-        } catch (ExcepcionPropiaDB e) {
+        } catch (ErroresDbException e) {
             // Aca "atrapamos" los Errores del exepcion de DB
             // Le mostramos al usuario el mensaje limpio que definimos en el throw
             vista.mostrarError(e.getMessage());
-        } catch (ExcepcionPropiaCamposVacios e) {
+        } catch (CamposVaciosException e) {
             // Aca la de campos vacios
             vista.mostrarError(e.getMessage());
         } catch (Exception e) {

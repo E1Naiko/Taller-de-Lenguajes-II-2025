@@ -31,7 +31,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             " Elenco                TEXT          NOT NULL, " +
             " Director              TEXT          NOT NULL, " +
             " Duracion              INTEGER       NOT NULL, " +
-            " Idioma                TEXT          NOT NULL, " +  // TODO - crear tabla de Idiomas
+            " Idioma                TEXT          NOT NULL, " +  // TODO - crear tabla de Idiomas  - EXCEDE EL TP
             " Subtitulos            TEXT          NOT NULL, " +
             " RatingPromedio        REAL          NOT NULL, " +
             " Anio                  INTEGER       NOT NULL, " +
@@ -74,7 +74,7 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
                 pstmt.setInt(5, convertidorStringSegundos.getFormatoSegundos());
                 pstmt.setString(6, metadatos.getIdioma());
                 
-                // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd
+                // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd - EXCEDE EL TP
                 String subtitulosStr = (metadatos.getSubtitulos() != null) 
                 ? String.join(", ", metadatos.getSubtitulos()) 
                 : null;
@@ -144,11 +144,11 @@ public class MetadatosDAOJDBC implements MetadatosDAO {
             c.setAutoCommit(false);
             if (imprimirDebug) System.out.println("\"PlataformaTDL2 - MetadatosDAO - encontrarIdMetadatos - Intentando encontrar id del elemento");
             
-            // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla elenco en la bd
+            // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla elenco en la bd - EXCEDE EL TP
             String elencoStr = (metadatos.getElenco() != null) 
             ? String.join(", ", metadatos.getElenco()) 
             : null;
-            // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd
+            // TODO - SOLUCION TEMPORAL HECHA CON IA: hay que crear una tabla subtitulos en la bd - EXCEDE EL TP
             String subtitulosStr = (metadatos.getSubtitulos() != null) 
             ? String.join(", ", metadatos.getSubtitulos()) 
             : null;

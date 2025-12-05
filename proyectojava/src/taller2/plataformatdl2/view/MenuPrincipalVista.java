@@ -262,6 +262,7 @@ public class MenuPrincipalVista extends JFrame {
             btnCalificar.putClientProperty("PELICULA_DATA", p);
             btnCalificar.setActionCommand("CALIFICAR");
             btnCalificar.addActionListener(listener);
+            btnCalificar.setEnabled(false);
             botonesCalificar.add(btnCalificar);
         }      
         panelAcciones.add(btnCalificar); 
