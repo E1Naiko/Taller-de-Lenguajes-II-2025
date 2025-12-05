@@ -1,5 +1,6 @@
 # Taller de Lenguajes II 2025
 Integrantes: Alam Meza y Nicolás Peñalba
+[GitHub con el proyecto completo](https://github.com/E1Naiko/Taller-de-Lenguajes-II-2025 "GitHub con el proyecto completo").
 
 ## Convenciones entregable 3
  - Hicimos uso de la libreria [OpenCSV](https://mvnrepository.com/artifact/com.opencsv/opencsv "OpenCSV") para el manejo del CSV.
